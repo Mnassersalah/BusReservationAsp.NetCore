@@ -7,48 +7,49 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BusSystem.Data;
 using BusSystem.Models;
+using BusSystem.Services;
 
 namespace BusSystem.Controllers
 {
     public class TicketsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository<Ticket> tickets;
 
-        public TicketsController(ApplicationDbContext context)
+        public TicketsController(IRepository<Ticket> tickets)
         {
-            _context = context;
+            this.tickets = tickets;
         }
 
         // GET: Tickets
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-            var applicationDbContext = _context.Tickets.Include(t => t.Trip);
-            return View(await applicationDbContext.ToListAsync());
+
+            return View(tickets.GetAll());
         }
 
         // GET: Tickets/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .Include(t => t.Trip)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (ticket == null)
+            var t = tickets.Details((int)id);
+
+
+            if (t == null)
             {
                 return NotFound();
             }
 
-            return View(ticket);
+            return View(t);
         }
 
         // GET: Tickets/Create
         public IActionResult Create()
         {
-            ViewData["TripID"] = new SelectList(_context.Trips, "ID", "ID");
+            //   ViewData["TripID"] = new SelectList(_context.Trips, "ID", "ID");
             return View();
         }
 
@@ -57,33 +58,32 @@ namespace BusSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,PassengerCount,BookedSeats,TripID")] Ticket ticket)
+        public ActionResult Create([Bind("ID,PassengerCount,BookedSeats,TripID")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(ticket);
-                await _context.SaveChangesAsync();
+                tickets.Add(ticket);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TripID"] = new SelectList(_context.Trips, "ID", "ID", ticket.TripID);
+            //       ViewData["TripID"] = new SelectList(_context.Trips, "ID", "ID", ticket.TripID);
             return View(ticket);
         }
 
         // GET: Tickets/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets.FindAsync(id);
-            if (ticket == null)
+            var t = tickets.Details((int)id);
+            if (t == null)
             {
                 return NotFound();
             }
-            ViewData["TripID"] = new SelectList(_context.Trips, "ID", "ID", ticket.TripID);
-            return View(ticket);
+            //  ViewData["TripID"] = new SelectList(_context.Trips, "ID", "ID", ticket.TripID);
+            return View(t);
         }
 
         // POST: Tickets/Edit/5
@@ -91,7 +91,7 @@ namespace BusSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,PassengerCount,BookedSeats,TripID")] Ticket ticket)
+        public ActionResult Edit(int id, [Bind("ID,PassengerCount,BookedSeats,TripID")] Ticket ticket)
         {
             if (id != ticket.ID)
             {
@@ -102,8 +102,7 @@ namespace BusSystem.Controllers
             {
                 try
                 {
-                    _context.Update(ticket);
-                    await _context.SaveChangesAsync();
+                    tickets.Update(ticket);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,43 +117,40 @@ namespace BusSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TripID"] = new SelectList(_context.Trips, "ID", "ID", ticket.TripID);
+            // ViewData["TripID"] = new SelectList(_context.Trips, "ID", "ID", ticket.TripID);
             return View(ticket);
         }
 
         // GET: Tickets/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .Include(t => t.Trip)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (ticket == null)
+            var t = tickets.Details((int)id);
+
+            if (t == null)
             {
                 return NotFound();
             }
 
-            return View(ticket);
+            return View(t);
         }
 
         // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var ticket = await _context.Tickets.FindAsync(id);
-            _context.Tickets.Remove(ticket);
-            await _context.SaveChangesAsync();
+            tickets.Remove(tickets.Details(id));
             return RedirectToAction(nameof(Index));
         }
 
         private bool TicketExists(int id)
         {
-            return _context.Tickets.Any(e => e.ID == id);
+            return tickets.GetAll().Any(e => e.ID == id);
         }
     }
 }

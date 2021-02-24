@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BusSystem.Migrations
 {
-    public partial class migv1 : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -244,11 +244,18 @@ namespace BusSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PassengerCount = table.Column<int>(type: "int", nullable: false),
                     BookedSeats = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TripID = table.Column<int>(type: "int", nullable: false)
+                    TripID = table.Column<int>(type: "int", nullable: false),
+                    ClientID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tickets", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Tickets_AspNetUsers_ClientID",
+                        column: x => x.ClientID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Tickets_Trips_TripID",
                         column: x => x.TripID,
@@ -305,6 +312,11 @@ namespace BusSystem.Migrations
                 name: "IX_Routes_PickUpID",
                 table: "Routes",
                 column: "PickUpID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_ClientID",
+                table: "Tickets",
+                column: "ClientID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tickets_TripID",

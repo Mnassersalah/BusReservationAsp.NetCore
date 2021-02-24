@@ -92,6 +92,10 @@ namespace BusSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ClientID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("PassengerCount")
                         .HasColumnType("int");
 
@@ -99,6 +103,8 @@ namespace BusSystem.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ClientID");
 
                     b.HasIndex("TripID");
 
@@ -353,11 +359,19 @@ namespace BusSystem.Migrations
 
             modelBuilder.Entity("BusSystem.Models.Ticket", b =>
                 {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BusSystem.Models.Trip", "Trip")
                         .WithMany("Tickets")
                         .HasForeignKey("TripID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Client");
 
                     b.Navigation("Trip");
                 });

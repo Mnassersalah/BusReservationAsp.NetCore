@@ -40,6 +40,7 @@ namespace BusSystem
 
             services.AddScoped<IRepository<Bus>, BusesService>();
             services.AddScoped<IRepository<Station>, StationRepository>();
+            services.AddScoped<IRepository<Ticket>, TicketService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
