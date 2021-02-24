@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210224154020_init")]
-    partial class init
+    [Migration("20210224154731_mig")]
+    partial class mig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

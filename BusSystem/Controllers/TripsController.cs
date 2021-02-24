@@ -7,160 +7,129 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BusSystem.Data;
 using BusSystem.Models;
+using BusSystem.Services;
 
 namespace BusSystem.Controllers
 {
     public class TripsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository<Trip> _tripService;
+        private readonly IRepository<Bus> _busService;
+        private readonly IRepository<Route> _routeService;
 
-        public TripsController(ApplicationDbContext context)
+        public TripsController(IRepository<Trip> tripService, IRepository<Bus> busService, IRepository<Route> routeService)
         {
-            _context = context;
+            _tripService = tripService;
+            _busService = busService;
+            _routeService = routeService;
         }
 
-        // GET: Trips
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Trips.Include(t => t.Bus).Include(t => t.Route);
-            return View(await applicationDbContext.ToListAsync());
+            return View(_tripService.GetAll());
         }
 
-        // GET: Trips/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var trip = await _context.Trips
-                .Include(t => t.Bus)
-                .Include(t => t.Route)
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var trip = _tripService.Details((int)id);
             if (trip == null)
-            {
                 return NotFound();
-            }
 
             return View(trip);
         }
 
-        // GET: Trips/Create
         public IActionResult Create()
         {
-            ViewData["BusID"] = new SelectList(_context.Buses, "ID", "Category");
-            ViewData["RouteID"] = new SelectList(_context.Routes.Include(r=>r.PickUp).Include(r => r.DropOff), "ID");
+            this.Get_ForeignObjects();
             return View();
         }
 
-        // POST: Trips/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,StartDateTime,Price,AvailableSeats,RouteID,BusID")] Trip trip)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(trip);
-                await _context.SaveChangesAsync();
+                _tripService.Add(trip);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BusID"] = new SelectList(_context.Buses, "ID", "ID", trip.BusID);
-            ViewData["RouteID"] = new SelectList(_context.Routes, "ID", "ID", trip.RouteID);
+
+            this.Get_ForeignKey(trip);
             return View(trip);
         }
 
-        // GET: Trips/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var trip = await _context.Trips.FindAsync(id);
+            var trip = _tripService.Details((int)id);
             if (trip == null)
-            {
                 return NotFound();
-            }
-            ViewData["BusID"] = new SelectList(_context.Buses, "ID", "ID", trip.BusID);
-            ViewData["RouteID"] = new SelectList(_context.Routes, "ID", "ID", trip.RouteID);
+
+            this.Get_ForeignKey(trip);
+
             return View(trip);
         }
 
-        // POST: Trips/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,StartDateTime,Price,AvailableSeats,RouteID,BusID")] Trip trip)
         {
             if (id != trip.ID)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(trip);
-                    await _context.SaveChangesAsync();
+                    _tripService.Update(trip);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TripExists(trip.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BusID"] = new SelectList(_context.Buses, "ID", "ID", trip.BusID);
-            ViewData["RouteID"] = new SelectList(_context.Routes, "ID", "ID", trip.RouteID);
+
+            this.Get_ForeignKey(trip);
+
             return View(trip);
         }
 
-        // GET: Trips/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var trip = await _context.Trips
-                .Include(t => t.Bus)
-                .Include(t => t.Route)
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var trip = _tripService.Details((int)id);
             if (trip == null)
-            {
                 return NotFound();
-            }
 
             return View(trip);
         }
 
-        // POST: Trips/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id, Trip trip)
         {
-            var trip = await _context.Trips.FindAsync(id);
-            _context.Trips.Remove(trip);
-            await _context.SaveChangesAsync();
+            _tripService.Remove(trip);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TripExists(int id)
+        private void Get_ForeignKey(Trip trip)
         {
-            return _context.Trips.Any(e => e.ID == id);
+            ViewData["BusID"] = new SelectList(_busService.GetAll(), "ID", "ID", trip.BusID);
+            ViewData["RouteID"] = new SelectList(_routeService.GetAll(), "ID", "ID", trip.RouteID);
+        }
+
+        private void Get_ForeignObjects()
+        {
+            ViewData["BusID"] = new SelectList(_busService.GetAll(), "ID", "Category");
+            ViewData["RouteID"] = new SelectList(_routeService.GetAll(), "ID");
         }
     }
 }
