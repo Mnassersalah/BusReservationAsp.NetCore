@@ -25,13 +25,13 @@ namespace BusSystem.Models
         public int? DropOffID { get; set; }
 
         //Navigation Properities
-        public virtual Station PickUp { get; set; }
-        public virtual Station DropOff { get; set; }
+        public  Station PickUp { get; set; }
+        public  Station DropOff { get; set; }
         public virtual List<Trip> Trips{ get; set; }
 
         public override string ToString()
         {
-            return $"{PickUp} => {DropOff}"; 
+            return $"{PickUp} => {DropOff} "; 
         }
 
 

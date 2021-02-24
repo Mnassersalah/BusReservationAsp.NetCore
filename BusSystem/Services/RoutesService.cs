@@ -18,8 +18,8 @@ namespace BusSystem.Services
         }
         public List<Route> GetAll()
         {
-            return context.Routes.Include("PickUp")
-                                 .Include("DropOff")
+            return context.Routes.Include(r=>r.DropOff)
+                                 .Include(r=>r.PickUp)
                                  .ToList();
         }
 

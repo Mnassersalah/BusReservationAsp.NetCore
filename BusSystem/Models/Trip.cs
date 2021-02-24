@@ -33,8 +33,13 @@ namespace BusSystem.Models
         public int BusID{ get; set; }
 
         //Navigation Properties
-        public virtual Route Route { get; set; }
+        public Route Route { get; set; }
         public virtual Bus Bus { get; set; }
         public virtual List<Ticket> Tickets{ get; set; }
+
+        public override string ToString()
+        {
+            return $"{ID} {Route} {StartDateTime}";
+        }
     }
 }

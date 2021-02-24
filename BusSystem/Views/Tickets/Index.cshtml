@@ -4,17 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>
+    Tickets
+    <a class="btn btn-success" asp-action="Create"><i class="fa fa-plus"></i> New Ticket</a>
+</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table table-striped table-bordered" id="dataTable" style="width:100%">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ID)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.PassengerCount)
             </th>
@@ -22,38 +19,36 @@
                 @Html.DisplayNameFor(model => model.BookedSeats)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TripID)
+                @Html.DisplayNameFor(model => model.Client)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ClientID)
+                @Html.DisplayNameFor(model => model.Trip)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PassengerCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BookedSeats)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TripID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClientID)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PassengerCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BookedSeats)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Client.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Trip.ID)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ID"><i class="fa fa-edit"></i></a> |
+                    <a asp-action="Details" asp-route-id="@item.ID"><i class="fa fa-eye"></i></a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

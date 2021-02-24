@@ -24,6 +24,12 @@
             @Html.DisplayFor(model => model.BookedSeats)
         </dd>
         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Client)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Client.Id)
+        </dd class>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Trip)
         </dt>
         <dd class = "col-sm-10">

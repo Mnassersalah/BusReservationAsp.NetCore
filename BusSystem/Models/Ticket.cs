@@ -31,5 +31,7 @@ namespace BusSystem.Models
         //Navigation Properties
         public virtual IdentityUser Client { get; set; }
         public virtual Trip Trip { get; set; }
+
+        
     }
 }

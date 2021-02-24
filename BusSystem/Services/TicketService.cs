@@ -24,12 +24,12 @@ namespace BusSystem.Services
 
         public Ticket Details(int id)
         {
-            return ctx.Tickets.Include(t => t.Trip).FirstOrDefault(m => m.ID == id);
+            return ctx.Tickets.Include(t => t.Trip).Include(t => t.Client).FirstOrDefault(m => m.ID == id);
         }
 
         public List<Ticket> GetAll()
         {
-            return ctx.Tickets.Include(t => t.Trip).ToList();
+            return ctx.Tickets.Include(t=>t.Client).Include(t => t.Trip).ToList();
         }
 
         public void Remove(Ticket entity)

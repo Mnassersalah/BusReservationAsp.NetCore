@@ -19,7 +19,7 @@ namespace BusSystem.Services
 
         public List<Trip> GetAll()
         {
-            return _context.Trips.Include(t => t.Bus).Include(t => t.Route).ToList();
+            return _context.Trips.Include(t => t.Bus).Include("Route").Include("Route.DropOff").Include("Route.PickUp").ToList();
         }
 
         public Trip Details(int id)

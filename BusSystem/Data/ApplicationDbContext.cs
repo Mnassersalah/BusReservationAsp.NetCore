@@ -13,7 +13,7 @@ namespace BusSystem.Data
             : base(options)
         {
         }
-        
+
         public virtual DbSet<Bus> Buses { get; set; }
         public virtual DbSet<Route> Routes { get; set; }
         public virtual DbSet<Station> Stations { get; set; }
