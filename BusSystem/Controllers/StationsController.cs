@@ -7,34 +7,36 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BusSystem.Data;
 using BusSystem.Models;
+using BusSystem.Services;
 
 namespace BusSystem.Controllers
 {
     public class StationsController : Controller
     {
-        private readonly ApplicationDbContext _context;
-
-        public StationsController(ApplicationDbContext context)
+       
+        IRepository<Station> stationRepo;
+        public StationsController(IRepository<Station> _stationRepo)
         {
-            _context = context;
+            stationRepo = _stationRepo;
         }
 
+
+
         // GET: Stations
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Stations.ToListAsync());
+            return View(stationRepo.GetAll());
         }
 
         // GET: Stations/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var station = await _context.Stations
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var station = stationRepo.Details(id ?? 0);
             if (station == null)
             {
                 return NotFound();
@@ -54,26 +56,25 @@ namespace BusSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,City,Name")] Station station)
+        public IActionResult Create([Bind("ID,City,Name")] Station station)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(station);
-                await _context.SaveChangesAsync();
+                stationRepo.Add(station);
                 return RedirectToAction(nameof(Index));
             }
             return View(station);
         }
 
         // GET: Stations/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var station = await _context.Stations.FindAsync(id);
+            var station = stationRepo.Details(id ?? 0);
             if (station == null)
             {
                 return NotFound();
@@ -86,7 +87,7 @@ namespace BusSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,City,Name")] Station station)
+        public IActionResult Edit(int id, [Bind("ID,City,Name")] Station station)
         {
             if (id != station.ID)
             {
@@ -97,8 +98,7 @@ namespace BusSystem.Controllers
             {
                 try
                 {
-                    _context.Update(station);
-                    await _context.SaveChangesAsync();
+                    stationRepo.Update(station);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -117,15 +117,14 @@ namespace BusSystem.Controllers
         }
 
         // GET: Stations/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var station = await _context.Stations
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var station = stationRepo.Details(id ?? 0);
             if (station == null)
             {
                 return NotFound();
@@ -137,17 +136,18 @@ namespace BusSystem.Controllers
         // POST: Stations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var station = await _context.Stations.FindAsync(id);
-            _context.Stations.Remove(station);
-            await _context.SaveChangesAsync();
+
+            var station = stationRepo.Details(id);
+            stationRepo.Remove(station);
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool StationExists(int id)
         {
-            return _context.Stations.Any(e => e.ID == id);
+            return stationRepo.Details(id) == null;
         }
     }
 }
