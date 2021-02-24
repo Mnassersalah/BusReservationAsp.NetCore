@@ -11,6 +11,10 @@ namespace BusSystem.Models
         public int ID { get; set; }
 
         [Required]
+        [RegularExpression("[A-Z]{3}[0-9]{3}")]
+        public string BusNum { get; set; }
+
+        [Required]
         [EnumDataType(typeof(Category))]
         public Category Category { get; set; }
 
