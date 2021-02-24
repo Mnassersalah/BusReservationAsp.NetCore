@@ -24,8 +24,8 @@ namespace BusSystem.Models
         public int TripID { get; set; }
 
         [Required]
-        [ForeignKey("IdentityUser")]
-        public int ClientID { get; set; }
+        [ForeignKey("Client")]
+        public string ClientID { get; set; }
 
 
         //Navigation Properties
