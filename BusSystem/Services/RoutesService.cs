@@ -1,6 +1,7 @@
 ﻿using BusSystem.Data;
 using BusSystem.Models;
 using BusSystem.Services;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +18,16 @@ namespace BusSystem.Services
         }
         public List<Route> GetAll()
         {
-            return context.Routes.ToList();
+            return context.Routes.Include("PickUp")
+                                 .Include("DropOff")
+                                 .ToList();
         }
 
         public Route Details(int id)
         {
-            return context.Routes.Find(id);
+            return context.Routes.Include("PickUp")
+                                 .Include("DropOff")
+                                 .FirstOrDefault(r=> r.ID==id);
         }
 
         public void Add(Route rote)

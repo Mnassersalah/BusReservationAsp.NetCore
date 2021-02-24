@@ -41,7 +41,7 @@ namespace BusSystem.Controllers
                 default:
                     buses = buses.OrderBy(s => s.Category).ToList();
                     break;
-            }*/
+            }*/ 
             return View(buses);
 
         }
