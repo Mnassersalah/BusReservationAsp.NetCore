@@ -1,0 +1,76 @@
+﻿@model BusSystem.Models.Bus
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Bus Details</h1>
+
+<div>
+    
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Capacity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Capacity)
+        </dd>
+    </dl>
+
+    <h4>Bus Trips</h4>
+    <br/>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Trips.FirstOrDefault().StartDateTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Trips.FirstOrDefault().Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Trips.FirstOrDefault().AvailableSeats)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Trips.FirstOrDefault().Route)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Trips)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDateTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AvailableSeats)
+                    </td>
+                    <td>
+                        @item.Route
+                    </td>
+                    <td>
+                        <a asp-controller="Trips" asp-action="Details" asp-route-id="@item.ID" class="btn btn-info">Details</a> 
+                        @*<a asp-controller="Trips" asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger">Delete</a>*@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-primary" >Edit</a> 
+    <a asp-action="Index" class="btn btn-secondary" >Back to List</a>
+</div>

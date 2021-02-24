@@ -1,0 +1,43 @@
+﻿@model IEnumerable<BusSystem.Models.Bus>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Buses</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Category)*@
+                <a asp-action="Index" asp-route-sortOrder="@ViewBag.CategorySortParm" class="btn btn-link">Category</a>
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Capacity)*@
+                <a asp-action="Index" asp-route-sortOrder="@ViewBag.CapacitySortParm" class="btn btn-link">Capacity</a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Capacity)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-info" >Edit</a> 
+                <a asp-action="Details" asp-route-id="@item.ID" class="btn btn-info" >Details</a> 
+                <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger" >Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
