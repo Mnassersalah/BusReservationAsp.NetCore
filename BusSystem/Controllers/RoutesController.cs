@@ -7,23 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BusSystem.Data;
 using BusSystem.Models;
+using BusSystem.Services;
 
 namespace BusSystem.Controllers
 {
     public class RoutesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepository<Route> Routes;
+        private readonly IRepository<Station> stationRepo;
 
-        public RoutesController(ApplicationDbContext context)
+        public RoutesController(IRepository<Route> _Routes, IRepository<Station> _stationRepo)
         {
-            _context = context;
+            this.Routes = _Routes;
+            this.stationRepo = _stationRepo;
         }
 
         // GET: Routes
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Routes.Include(r => r.DropOff).Include(r => r.PickUp);
-            return View(await applicationDbContext.ToListAsync());
+            //var applicationDbContext = _context.Routes.Include(r => r.DropOff).Include(r => r.PickUp);
+            //return View(await applicationDbContext.ToListAsync());
+            return View(Routes.GetAll());
         }
 
         // GET: Routes/Details/5
@@ -34,23 +38,20 @@ namespace BusSystem.Controllers
                 return NotFound();
             }
 
-            var route = await _context.Routes
-                .Include(r => r.DropOff)
-                .Include(r => r.PickUp)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (route == null)
+            var routeR = Routes.Details((int)id);
+            if (routeR == null)
             {
                 return NotFound();
             }
 
-            return View(route);
+            return View(routeR);
         }
 
         // GET: Routes/Create
         public IActionResult Create()
         {
-            ViewData["DropOffID"] = new SelectList(_context.Stations, "ID", "City");
-            ViewData["PickUpID"] = new SelectList(_context.Stations, "ID", "City");
+            ViewData["DropOffID"] = new SelectList(stationRepo.GetAll(), "ID", "City");
+            ViewData["PickUpID"] = new SelectList(stationRepo.GetAll(), "ID", "City");
             return View();
         }
 
@@ -63,12 +64,12 @@ namespace BusSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(route);
-                await _context.SaveChangesAsync();
+                Routes.Add(route);
+               // await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DropOffID"] = new SelectList(_context.Stations, "ID", "City", route.DropOffID);
-            ViewData["PickUpID"] = new SelectList(_context.Stations, "ID", "City", route.PickUpID);
+            ViewData["DropOffID"] = new SelectList(stationRepo.GetAll(), "ID", "City");
+            ViewData["PickUpID"] = new SelectList(stationRepo.GetAll(), "ID", "City");
             return View(route);
         }
 
@@ -80,14 +81,15 @@ namespace BusSystem.Controllers
                 return NotFound();
             }
 
-            var route = await _context.Routes.FindAsync(id);
-            if (route == null)
+            //var route = await _context.Routes.FindAsync(id);
+            var Rroute= Routes.Details((int)id);
+            if (Rroute == null)
             {
                 return NotFound();
             }
-            ViewData["DropOffID"] = new SelectList(_context.Stations, "ID", "City", route.DropOffID);
-            ViewData["PickUpID"] = new SelectList(_context.Stations, "ID", "City", route.PickUpID);
-            return View(route);
+            ViewData["DropOffID"] = new SelectList(stationRepo.GetAll(), "ID", "City");
+            ViewData["PickUpID"] = new SelectList(stationRepo.GetAll(), "ID", "City");
+            return View(Rroute);
         }
 
         // POST: Routes/Edit/5
@@ -106,8 +108,9 @@ namespace BusSystem.Controllers
             {
                 try
                 {
-                    _context.Update(route);
-                    await _context.SaveChangesAsync();
+                    //_context.Update(route);
+                    //await _context.SaveChangesAsync();
+                    Routes.Update(route);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -122,8 +125,8 @@ namespace BusSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DropOffID"] = new SelectList(_context.Stations, "ID", "City", route.DropOffID);
-            ViewData["PickUpID"] = new SelectList(_context.Stations, "ID", "City", route.PickUpID);
+            ViewData["DropOffID"] = new SelectList(stationRepo.GetAll(), "ID", "City");
+            ViewData["PickUpID"] = new SelectList(stationRepo.GetAll(), "ID", "City");
             return View(route);
         }
 
@@ -135,16 +138,17 @@ namespace BusSystem.Controllers
                 return NotFound();
             }
 
-            var route = await _context.Routes
-                .Include(r => r.DropOff)
-                .Include(r => r.PickUp)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (route == null)
+            //var route = await _context.Routes
+            //    .Include(r => r.DropOff)
+            //    .Include(r => r.PickUp)
+            //    .FirstOrDefaultAsync(m => m.ID == id);
+            var RRout = Routes.Details((int)id);
+            if (RRout == null)
             {
                 return NotFound();
             }
 
-            return View(route);
+            return View(RRout);
         }
 
         // POST: Routes/Delete/5
@@ -152,15 +156,16 @@ namespace BusSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var route = await _context.Routes.FindAsync(id);
-            _context.Routes.Remove(route);
-            await _context.SaveChangesAsync();
+            //var route = await _context.Routes.FindAsync(id);
+            //_context.Routes.Remove(route);
+            //await _context.SaveChangesAsync();
+            Routes.Remove(Routes.Details(id));
             return RedirectToAction(nameof(Index));
         }
 
         private bool RouteExists(int id)
         {
-            return _context.Routes.Any(e => e.ID == id);
+            return Routes.GetAll().Any(e => e.ID == id);
         }
     }
 }

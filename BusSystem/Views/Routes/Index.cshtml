@@ -31,10 +31,10 @@
                 @Html.DisplayFor(modelItem => item.Duration)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PickUp.City)
+                @item.PickUp
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DropOff.City)
+                @item.DropOff
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
