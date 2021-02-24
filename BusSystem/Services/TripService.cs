@@ -30,19 +30,19 @@ namespace BusSystem.Services
         public void Add(Trip trip)
         {
             _context.Add(trip);
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
         public void Update(Trip trip)
         {
             _context.Update(trip);
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
 
         public void Remove(Trip trip)
         {
             _context.Trips.Remove(trip);
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
     }
 }
