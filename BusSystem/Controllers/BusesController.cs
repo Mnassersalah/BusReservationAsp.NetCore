@@ -23,9 +23,10 @@ namespace BusSystem.Controllers
         // GET: Buses
         public IActionResult Index(string sortOrder)
         {
+            var buses = busService.GetAll();
+            /*
             ViewBag.CategorySortParm = String.IsNullOrEmpty(sortOrder) ? "category_desc" : "";
             ViewBag.CapacitySortParm = sortOrder == "capacity" ? "capacity_desc" : "capacity";
-            var buses = busService.GetAll();
             switch (sortOrder)
             {
                 case "category_desc":
@@ -40,7 +41,7 @@ namespace BusSystem.Controllers
                 default:
                     buses = buses.OrderBy(s => s.Category).ToList();
                     break;
-            }
+            }*/
             return View(buses);
 
         }
