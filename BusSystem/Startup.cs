@@ -39,6 +39,7 @@ namespace BusSystem
             services.AddControllersWithViews();
 
             services.AddScoped<IRepository<Bus>, BusesService>();
+            services.AddScoped<IRepository<Station>, StationRepository>();
             services.AddScoped<IRepository<Ticket>, TicketService>();
         }
 
