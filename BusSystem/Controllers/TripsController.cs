@@ -108,6 +108,15 @@ namespace BusSystem.Controllers
             var trip = _tripService.Details((int)id);
             if (trip == null)
                 return NotFound();
+            ViewBag.Message = null;
+
+
+            // if (Routes.checkRoute(station.ID) == null)
+            if (trip.Tickets.Count != 0)
+            {
+                ViewBag.Message = " You can't Romove This trip Because IT has Tickets ";
+
+            }
 
             return View(trip);
         }
@@ -116,7 +125,11 @@ namespace BusSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id, Trip trip)
         {
-            _tripService.Remove(trip);
+            if (trip.Tickets.Count == 0)
+            {
+                _tripService.Remove(trip);
+            }
+           
             return RedirectToAction(nameof(Index));
         }
 

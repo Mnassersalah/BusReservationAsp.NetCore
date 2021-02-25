@@ -148,6 +148,16 @@ namespace BusSystem.Controllers
                 return NotFound();
             }
 
+            ViewBag.Message = null;
+
+
+            // if (Routes.checkRoute(station.ID) == null)
+            if (bus.Trips.Count != 0)
+            {
+                ViewBag.Message = " You can't Romove This bus Because IT has Trips ";
+
+            }
+
             return View(bus);
         }
 
@@ -157,7 +167,11 @@ namespace BusSystem.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             var bus = busService.Details(id);
-            busService.Remove(bus);
+            if (bus.Trips.Count == 0)
+            {
+                busService.Remove(bus);
+            }
+            
             return RedirectToAction(nameof(Index));
         }
 

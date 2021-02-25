@@ -20,6 +20,7 @@ namespace BusSystem.Services
         {
             return context.Routes.Include(r=>r.DropOff)
                                  .Include(r=>r.PickUp)
+                                 .Include(r => r.Trips)
                                  .ToList();
         }
 
@@ -27,8 +28,17 @@ namespace BusSystem.Services
         {
             return context.Routes.Include("PickUp")
                                  .Include("DropOff")
+                                 .Include("Trips")
                                  .FirstOrDefault(r=> r.ID==id);
         }
+        //public Route checkRoute(int id)
+        //{
+            
+        //    var router= context.Routes.FirstOrDefault(r => r.DropOff.ID == id);
+        //    if(router==null)
+        //        router = context.Routes.FirstOrDefault(r => r.PickUp.ID == id);
+        //    return router;
+        //}
 
         public void Add(Route rote)
         {

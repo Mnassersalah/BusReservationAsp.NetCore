@@ -13,11 +13,13 @@ namespace BusSystem.Controllers
 {
     public class StationsController : Controller
     {
-       
-        IRepository<Station> stationRepo;
-        public StationsController(IRepository<Station> _stationRepo)
+        //private readonly IRepository<Route> Routes;IRepository<Route> _Routes,
+        private readonly IRepository<Station> stationRepo;
+
+        public StationsController( IRepository<Station> _stationRepo)
         {
-            stationRepo = _stationRepo;
+           // this.Routes = _Routes;
+            this.stationRepo = _stationRepo;
         }
 
 
@@ -129,6 +131,15 @@ namespace BusSystem.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Message = null;
+
+
+            // if (Routes.checkRoute(station.ID) == null)
+            if (station.PickUpRoutes.Count != 0 || station.DropOffRoutes.Count != 0)
+            {
+                ViewBag.Message = " You can't Romove This Station Because IT has route ";
+               
+            }
 
             return View(station);
         }
@@ -140,7 +151,11 @@ namespace BusSystem.Controllers
         {
 
             var station = stationRepo.Details(id);
-            stationRepo.Remove(station);
+
+            
+           if (station.PickUpRoutes.Count == 0 && station.DropOffRoutes.Count == 0)
+                stationRepo.Remove(station);
+
 
             return RedirectToAction(nameof(Index));
         }
