@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BusSystem.Data;
 using BusSystem.Models;
 using BusSystem.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BusSystem.Controllers
 {
@@ -51,6 +52,8 @@ namespace BusSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("ID,StartDateTime,Price,AvailableSeats,RouteID,BusID")] Trip trip)
         {
+            this.ValidateTripDate(trip.StartDateTime);
+
             if (ModelState.IsValid)
             {
                 _tripService.Add(trip);
@@ -96,7 +99,6 @@ namespace BusSystem.Controllers
             }
 
             this.Get_ForeignKey(trip);
-
             return View(trip);
         }
 
@@ -108,14 +110,11 @@ namespace BusSystem.Controllers
             var trip = _tripService.Details((int)id);
             if (trip == null)
                 return NotFound();
+
             ViewBag.Message = null;
-
-
-            // if (Routes.checkRoute(station.ID) == null)
             if (trip.Tickets.Count != 0)
             {
-                ViewBag.Message = " You can't Romove This trip Because IT has Tickets ";
-
+                ViewBag.Message = "You can't Romove This trip Because IT has Tickets";
             }
 
             return View(trip);
@@ -123,26 +122,41 @@ namespace BusSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id, Trip trip)
+        public IActionResult Delete(int id, [Bind("ID,StartDateTime,Price,AvailableSeats,RouteID,BusID")] Trip trip)
         {
-            if (trip.Tickets.Count == 0)
+            trip = _tripService.Details(id);
+            this.ValidateTripDate(trip.StartDateTime);
+
+            if (ModelState.IsValid)
             {
-                _tripService.Remove(trip);
+                if (trip.Tickets.Count == 0)
+                {
+                    _tripService.Remove(trip);
+                }
+                return RedirectToAction(nameof(Index));
             }
-           
-            return RedirectToAction(nameof(Index));
+
+            return View(trip);
         }
 
         private void Get_ForeignKey(Trip trip)
         {
-            ViewData["BusID"] = new SelectList(_busService.GetAll(), "ID", "ID", trip.BusID);
+            ViewData["BusID"] = new SelectList(_busService.GetAll(), "ID", "BusNum", trip.BusID);
             ViewData["RouteID"] = new SelectList(_routeService.GetAll(), "ID", "ID", trip.RouteID);
         }
 
         private void Get_ForeignObjects()
         {
-            ViewData["BusID"] = new SelectList(_busService.GetAll(), "ID", "Category");
-            ViewData["RouteID"] = new SelectList(_routeService.GetAll(), "ID");
+            ViewData["BusID"] = new SelectList(_busService.GetAll(), "ID", "BusNum");
+            ViewData["RouteID"] = new SelectList(_routeService.GetAll(), "ID", "");
+        }
+
+        private void ValidateTripDate(DateTime tripDate)
+        {
+            if (tripDate <= DateTime.Now)
+            {
+                ModelState.AddModelError("StartDateTime", "Date is not applicable");
+            }
         }
     }
 }
