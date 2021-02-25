@@ -1,0 +1,58 @@
+﻿@model IEnumerable<BusSystem.Models.Trip>
+
+@{
+    ViewData["Title"] = "Trips";
+}
+
+<h1>Trips</h1>
+
+<p>
+    @Model.FirstOrDefault().Route.PickUp
+    <i class="fas fa-arrow-right"></i>
+    @Model.FirstOrDefault().Route.DropOff
+
+</p>
+<p>
+    @Model.FirstOrDefault().StartDateTime.ToString("d")
+</p>
+<table id="dataTable" class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayName("Departure Time")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AvailableSeats)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.StartDateTime.ToString("t")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvailableSeats)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bus.Category)
+            </td>
+            <td>
+                <a asp-action="TicketBooking" asp-route-tripID="@item.ID" asp-route-passengers="@ViewBag.Passengers" class="btn btn-dark">Choose Trip</a> 
+                
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
