@@ -7,13 +7,13 @@
 <h1>Trips</h1>
 
 <p>
-    @Model.FirstOrDefault().Route.PickUp
+    @ViewBag.pickUp
     <i class="fas fa-arrow-right"></i>
-    @Model.FirstOrDefault().Route.DropOff
+    @ViewBag.dropoff
 
 </p>
 <p>
-    @Model.FirstOrDefault().StartDateTime.ToString("d")
+    @ViewBag.departureDate.ToString("d")
 </p>
 <table id="dataTable" class="table">
     <thead>

@@ -12,6 +12,8 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            
             <div class="form-group">
                 <label asp-for="PassengerCount" class="control-label"></label>
                 <input asp-for="PassengerCount" class="form-control" />
@@ -22,18 +24,25 @@
                 <input asp-for="BookedSeats" class="form-control" />
                 <span asp-validation-for="BookedSeats" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="TripID" class="control-label"></label>
-                <select asp-for="TripID" class="form-control" asp-items="ViewBag.TripID"></select>
-                <span asp-validation-for="TripID" class="text-danger"></span>
-
-            </div>
+            
             <div class="form-group">
                 <label asp-for="ClientID" class="control-label"></label>
                 <select asp-for="ClientID" class="form-control" asp-items="ViewBag.ClientID"></select>
                 <span asp-validation-for="ClientID" class="text-danger"></span>
 
             </div>
+            <div class="form-group">
+                <label asp-for="TripID" class="control-label"></label>
+                <select required id="trip" asp-for="TripID" class="form-control" asp-items="ViewBag.TripID">
+                    <option disabled selected>choose trip</option>
+                </select>
+                <span asp-validation-for="TripID" class="text-danger"></span>
+            </div>
+
+            <div id="setsAvailable">
+
+            </div>
+            
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -47,4 +56,8 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    
+
+
 }

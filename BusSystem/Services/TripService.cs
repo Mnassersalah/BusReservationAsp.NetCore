@@ -24,7 +24,8 @@ namespace BusSystem.Services
 
         public Trip Details(int id)
         {
-            return _context.Trips.Include(t => t.Bus).Include(t => t.Route).Include(t => t.Tickets).FirstOrDefault(m => m.ID == id);
+            return _context.Trips.Include("Bus").Include("Route").Include("Route.DropOff").Include("Route.PickUp").FirstOrDefault(m => m.ID == id);
+
         }
 
         public void Add(Trip trip)
