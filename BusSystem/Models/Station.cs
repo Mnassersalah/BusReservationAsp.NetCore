@@ -19,7 +19,11 @@ namespace BusSystem.Models
         public virtual HashSet<Route> PickUpRoutes { get; set; } 
 
         [InverseProperty("DropOff")]
-        public virtual HashSet<Route> DropOffRoutes { get; set; } 
+        public virtual HashSet<Route> DropOffRoutes { get; set; }
+
+        [NotMapped]
+        public string tostringProp { get => Name == null ? City : $"{City} ( {Name} )";} 
+
 
         public override string ToString()
         {
