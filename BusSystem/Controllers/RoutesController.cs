@@ -23,7 +23,7 @@ namespace BusSystem.Controllers
         }
 
         // GET: Routes
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             //var applicationDbContext = _context.Routes.Include(r => r.DropOff).Include(r => r.PickUp);
             //return View(await applicationDbContext.ToListAsync());
@@ -31,7 +31,7 @@ namespace BusSystem.Controllers
         }
 
         // GET: Routes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
@@ -50,8 +50,8 @@ namespace BusSystem.Controllers
         // GET: Routes/Create
         public IActionResult Create()
         {
-            ViewData["DropOffID"] = new SelectList(stationRepo.GetAll(), "ID", "City");
-            ViewData["PickUpID"] = new SelectList(stationRepo.GetAll(), "ID", "City");
+            ViewData["DropOffID"] = new SelectList(stationRepo.GetAll(), "ID", "tostringProp");
+            ViewData["PickUpID"] = new SelectList(stationRepo.GetAll(), "ID", "tostringProp");
             return View();
         }
 
@@ -60,35 +60,41 @@ namespace BusSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Duration,PickUpID,DropOffID")] Route route)
+        public IActionResult Create([Bind("ID,Duration,PickUpID,DropOffID")] Route route)
         {
+            
+            if(route.PickUpID == route.DropOffID)
+            {
+                ModelState.AddModelError("DropOffID", "Dropoff station must be different from PickUp Station");
+            }
+
             if (ModelState.IsValid)
             {
                 Routes.Add(route);
-               // await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DropOffID"] = new SelectList(stationRepo.GetAll(), "ID", "City");
-            ViewData["PickUpID"] = new SelectList(stationRepo.GetAll(), "ID", "City");
+
+
+            ViewData["DropOffID"] = new SelectList(stationRepo.GetAll(), "ID", "tostringProp");
+            ViewData["PickUpID"] = new SelectList(stationRepo.GetAll(), "ID", "tostringProp");
             return View(route);
         }
 
         // GET: Routes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            //var route = await _context.Routes.FindAsync(id);
             var Rroute= Routes.Details((int)id);
             if (Rroute == null)
             {
                 return NotFound();
             }
-            ViewData["DropOffID"] = new SelectList(stationRepo.GetAll(), "ID", "City");
-            ViewData["PickUpID"] = new SelectList(stationRepo.GetAll(), "ID", "City");
+            ViewData["DropOffID"] = new SelectList(stationRepo.GetAll(), "ID", "tostringProp");
+            ViewData["PickUpID"] = new SelectList(stationRepo.GetAll(), "ID", "tostringProp");
             return View(Rroute);
         }
 
@@ -97,7 +103,7 @@ namespace BusSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Duration,PickUpID,DropOffID")] Route route)
+        public IActionResult Edit(int id, [Bind("ID,Duration,PickUpID,DropOffID")] Route route)
         {
             if (id != route.ID)
             {
@@ -108,8 +114,6 @@ namespace BusSystem.Controllers
             {
                 try
                 {
-                    //_context.Update(route);
-                    //await _context.SaveChangesAsync();
                     Routes.Update(route);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -125,13 +129,13 @@ namespace BusSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DropOffID"] = new SelectList(stationRepo.GetAll(), "ID", "City");
-            ViewData["PickUpID"] = new SelectList(stationRepo.GetAll(), "ID", "City");
+            ViewData["DropOffID"] = new SelectList(stationRepo.GetAll(), "ID", "tostringProp");
+            ViewData["PickUpID"] = new SelectList(stationRepo.GetAll(), "ID", "tostringProp");
             return View(route);
         }
 
         // GET: Routes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
@@ -148,18 +152,32 @@ namespace BusSystem.Controllers
                 return NotFound();
             }
 
+            ViewBag.Message = null;
+
+
+            // if (Routes.checkRoute(station.ID) == null)
+            if (RRout.Trips.Count != 0 )
+            {
+                ViewBag.Message = " You can't Romove This Route Because IT has Trips ";
+
+            }
+
             return View(RRout);
         }
 
         // POST: Routes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
             //var route = await _context.Routes.FindAsync(id);
             //_context.Routes.Remove(route);
             //await _context.SaveChangesAsync();
-            Routes.Remove(Routes.Details(id));
+            var RRout = Routes.Details((int)id);
+            if (RRout.Trips.Count == 0)
+            {
+                Routes.Remove(Routes.Details(id));
+            }
             return RedirectToAction(nameof(Index));
         }
 

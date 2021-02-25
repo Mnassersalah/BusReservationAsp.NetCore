@@ -74,7 +74,7 @@ namespace BusSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("ID,Category,Capacity")] Bus bus)
+        public IActionResult Create([Bind("ID,BusNum,Category,Capacity")] Bus bus)
         {
             if (ModelState.IsValid)
             {
@@ -105,7 +105,7 @@ namespace BusSystem.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("ID,Category,Capacity")] Bus bus)
+        public IActionResult Edit(int id, [Bind("ID,BusNum,Category,Capacity")] Bus bus)
         {
             if (id != bus.ID)
             {
@@ -148,16 +148,30 @@ namespace BusSystem.Controllers
                 return NotFound();
             }
 
+            ViewBag.Message = null;
+
+
+            // if (Routes.checkRoute(station.ID) == null)
+            if (bus.Trips.Count != 0)
+            {
+                ViewBag.Message = " You can't Romove This bus Because IT has Trips ";
+
+            }
+
             return View(bus);
         }
 
         // POST: Buses/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
             var bus = busService.Details(id);
-            busService.Remove(bus);
+            if (bus.Trips.Count == 0)
+            {
+                busService.Remove(bus);
+            }
+            
             return RedirectToAction(nameof(Index));
         }
 
