@@ -48,13 +48,25 @@ namespace BusSystem.Models
         [NotMapped]
         public string AvailableSeatsCount
         {
-            get => $"{AvailableSeats.Split(",").Count()}";
+            get
+            {
+                if (AvailableSeats != null)
+                    return $"{AvailableSeats.Split(",").Count()}";
+                else
+                    return AvailableSeats;
+            }
         }
 
         [NotMapped]
         public string RouteToString
         {
-            get => this.Route.ToString();
+            get
+            {
+                if (Route != null)
+                    return Route.ToString();
+                else
+                    return null;
+            }
         }
     }
 }

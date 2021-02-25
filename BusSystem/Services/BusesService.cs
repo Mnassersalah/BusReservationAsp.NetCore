@@ -29,6 +29,7 @@ namespace BusSystem.Services
                                 .ThenInclude(t=>t.Route)
                                 .Include("Trips.Route.PickUp")
                                 .Include("Trips.Route.DropOff")
+                                .Include("Trips")
                                 .FirstOrDefault(b => b.ID == id);
         }
         public void Add(Bus entity)
