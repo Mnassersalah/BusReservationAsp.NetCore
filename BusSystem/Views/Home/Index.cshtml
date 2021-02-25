@@ -35,24 +35,28 @@
 *@            <div class="form-group">
                 <label class="control-label"> From</label>
                 <select name="fromId" class="form-control" asp-items="ViewBag.Stations"></select>
+                
                 <label class="control-label"> To</label>
                 <select name="toId" class="form-control" asp-items="ViewBag.Stations"></select>
+             
             </div>
 
-            <div class="form-group">
-                <label class="control-label">Departure Date</label>
-                <input name="departureDate" type="date" class="form-control" />
-            </div>
+              <div class="form-group">
+                  <label class="control-label">Departure Date</label>
+                  <input name="departureDate" type="date" class="form-control" />
+               
+              </div>
 
-            <div class="form-group">
-                <label class="control-label"> Passengers</label>
-                <input name="passengers" type="number" class="form-control" />
-            </div>
+              <div class="form-group">
+                  <label class="control-label"> Passengers</label>
+                  <input name="passengers" type="number" class="form-control" />
+                
+              </div>
 
 
-            <div class="form-group">
-                <input type="submit" value="Show Trips" asp- class="btn btn-primary" />
-            </div>
+              <div class="form-group">
+                  <input type="submit" value="Show Trips" asp- class="btn btn-primary" />
+              </div>
 
         </form>
     </div>

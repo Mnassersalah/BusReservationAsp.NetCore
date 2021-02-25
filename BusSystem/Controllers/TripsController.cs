@@ -24,12 +24,12 @@ namespace BusSystem.Controllers
             _routeService = routeService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View(_tripService.GetAll());
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
                 return NotFound();
@@ -49,7 +49,7 @@ namespace BusSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,StartDateTime,Price,AvailableSeats,RouteID,BusID")] Trip trip)
+        public IActionResult Create([Bind("ID,StartDateTime,Price,AvailableSeats,RouteID,BusID")] Trip trip)
         {
             if (ModelState.IsValid)
             {
@@ -61,7 +61,7 @@ namespace BusSystem.Controllers
             return View(trip);
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
                 return NotFound();
@@ -77,7 +77,7 @@ namespace BusSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,StartDateTime,Price,AvailableSeats,RouteID,BusID")] Trip trip)
+        public IActionResult Edit(int id, [Bind("ID,StartDateTime,Price,AvailableSeats,RouteID,BusID")] Trip trip)
         {
             if (id != trip.ID)
                 return NotFound();
@@ -100,7 +100,7 @@ namespace BusSystem.Controllers
             return View(trip);
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
                 return NotFound();
@@ -114,7 +114,7 @@ namespace BusSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id, Trip trip)
+        public IActionResult Delete(int id, Trip trip)
         {
             _tripService.Remove(trip);
             return RedirectToAction(nameof(Index));

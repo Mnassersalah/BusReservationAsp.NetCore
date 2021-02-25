@@ -24,6 +24,11 @@ namespace BusSystem.Models
         [Display(Name = "Available Seats")]
         public string AvailableSeats { get; set; }
 
+
+        // version 1
+        [NotMapped]
+        public string[] AvailableSeatsArray { get => AvailableSeats.Split(","); }
+
         [Required]
         [ForeignKey("Route")]
         public int RouteID { get; set; }
