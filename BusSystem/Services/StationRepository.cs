@@ -1,5 +1,6 @@
 ﻿using BusSystem.Data;
 using BusSystem.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +24,12 @@ namespace BusSystem.Services
 
         public Station Details(int id)
         {
-            return myDBContext.Stations.FirstOrDefault(t => t.ID == id);
+            return myDBContext.Stations.Include("DropOffRoutes").Include("PickUpRoutes").FirstOrDefault(t => t.ID == id);
         }
 
         public List<Station> GetAll()
         {
-            return myDBContext.Stations.ToList();
+            return myDBContext.Stations.Include("DropOffRoutes").Include("PickUpRoutes").ToList();
         }
 
         public void Remove(Station entity)

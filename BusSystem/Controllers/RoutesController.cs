@@ -152,6 +152,16 @@ namespace BusSystem.Controllers
                 return NotFound();
             }
 
+            ViewBag.Message = null;
+
+
+            // if (Routes.checkRoute(station.ID) == null)
+            if (RRout.Trips.Count != 0 )
+            {
+                ViewBag.Message = " You can't Romove This Route Because IT has Trips ";
+
+            }
+
             return View(RRout);
         }
 
@@ -163,7 +173,11 @@ namespace BusSystem.Controllers
             //var route = await _context.Routes.FindAsync(id);
             //_context.Routes.Remove(route);
             //await _context.SaveChangesAsync();
-            Routes.Remove(Routes.Details(id));
+            var RRout = Routes.Details((int)id);
+            if (RRout.Trips.Count == 0)
+            {
+                Routes.Remove(Routes.Details(id));
+            }
             return RedirectToAction(nameof(Index));
         }
 
