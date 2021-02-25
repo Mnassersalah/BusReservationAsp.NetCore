@@ -29,6 +29,8 @@ namespace BusSystem.Services
 
         public void Add(Trip trip)
         {
+            trip.AvailableSeats = this.GetSeats(trip.BusID);
+
             _context.Add(trip);
             _context.SaveChanges();
         }
@@ -43,6 +45,20 @@ namespace BusSystem.Services
         {
             _context.Trips.Remove(trip);
             _context.SaveChanges();
+        }
+
+        private string GetSeats(int BusID)
+        {
+            int seatsCount = _context.Buses.Where(b => b.ID == BusID).FirstOrDefault().Capacity;
+
+            string seats = null;
+            if (seatsCount >= 1)
+            {
+                seats = "1";
+                for (int i = 2; i <= seatsCount; i++)
+                    seats += "," + i;
+            }
+            return seats;
         }
     }
 }

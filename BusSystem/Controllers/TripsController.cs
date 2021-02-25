@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BusSystem.Data;
 using BusSystem.Models;
 using BusSystem.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BusSystem.Controllers
 {
@@ -51,6 +52,8 @@ namespace BusSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,StartDateTime,Price,AvailableSeats,RouteID,BusID")] Trip trip)
         {
+            this.ValidateTripDate(trip.StartDateTime);
+
             if (ModelState.IsValid)
             {
                 _tripService.Add(trip);
@@ -116,20 +119,36 @@ namespace BusSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id, Trip trip)
         {
-            _tripService.Remove(trip);
-            return RedirectToAction(nameof(Index));
+            this.ValidateTripDate(trip.StartDateTime);
+
+            if (ModelState.IsValid)
+            {
+                _tripService.Remove(trip);
+                return RedirectToAction(nameof(Index));
+            }
+
+            //TBC
+            return View(trip);
         }
 
         private void Get_ForeignKey(Trip trip)
         {
-            ViewData["BusID"] = new SelectList(_busService.GetAll(), "ID", "ID", trip.BusID);
+            ViewData["BusID"] = new SelectList(_busService.GetAll(), "ID", "BusNum", trip.BusID);
             ViewData["RouteID"] = new SelectList(_routeService.GetAll(), "ID", "ID", trip.RouteID);
         }
 
         private void Get_ForeignObjects()
         {
-            ViewData["BusID"] = new SelectList(_busService.GetAll(), "ID", "Category");
-            ViewData["RouteID"] = new SelectList(_routeService.GetAll(), "ID");
+            ViewData["BusID"] = new SelectList(_busService.GetAll(), "ID", "BusNum");
+            ViewData["RouteID"] = new SelectList(_routeService.GetAll(), "ID", "");
+        }
+
+        private void ValidateTripDate(DateTime tripDate)
+        {
+            if (tripDate <= DateTime.Now)
+            {
+                ModelState.AddModelError("StartDateTime", "Date is not applicable");
+            }
         }
     }
 }

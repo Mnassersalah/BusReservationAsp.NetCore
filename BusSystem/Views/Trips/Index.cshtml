@@ -5,7 +5,7 @@
 }
 
 <h1>Trips
-    <a class="btn btn-success" asp-action="Create"><i class="fa fa-plus"></i> New Station</a></h1>
+    <a class="btn btn-success" asp-action="Create"><i class="fa fa-plus"></i> New Trip</a></h1>
 
 
 <table class="table table-striped table-bordered" id="dataTable" style="width:100%">
@@ -39,13 +39,13 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AvailableSeats)
+                @Html.DisplayFor(modelItem => item.AvailableSeatsCount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Route.ID)
+                @Html.DisplayFor(modelItem => item.RouteToString)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Bus.ID)
+                @Html.DisplayFor(modelItem => item.Bus.BusNum)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID" ><i class="fa fa-edit"></i></a> 
