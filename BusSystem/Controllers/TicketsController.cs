@@ -53,26 +53,37 @@ namespace BusSystem.Controllers
         // GET: Tickets/Create
         public IActionResult Create()
         {
-            ViewData["TripID"] = new SelectList(trips.GetAll(), "ID");
-            ViewData["ClientID"] = new SelectList(users.GetAll(), "Id", "Id");
+            ViewData["TripID"] = new SelectList(trips.GetAll(), "ID", "tostringprop");
+            ViewData["ClientID"] = new SelectList(users.GetAll(), "Id", "UserName");
 
             return View();
         }
 
-        // POST: Tickets/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind("ID,PassengerCount,BookedSeats,TripID,ClientID")] Ticket ticket)
         {
+            //Make Sure!!
+            //Check for seats availability
+            if (ticket.PassengerCount > ((trips.Details(ticket.TripID).AvailableSeats)?.Length ?? 0 / 2))
+            {
+                ModelState.AddModelError("PassengerCount", $"There are not available seats for {ticket.PassengerCount} passengers ");
+            }
+
+            //
+            //Check for date 
+            if ((trips.Details(ticket.TripID)?.StartDateTime < DateTime.Now))
+            {
+                ModelState.AddModelError("TripID","This trip is out of date");
+            }
             if (ModelState.IsValid)
             {
                 tickets.Add(ticket);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TripID"] = new SelectList(trips.GetAll(), "ID", "ID");
-            ViewData["ClientID"] = new SelectList(users.GetAll(), "Id", "Id");
+            ViewData["TripID"] = new SelectList(trips.GetAll(), "ID", "tostringprop");
+            ViewData["ClientID"] = new SelectList(users.GetAll(), "Id", "UserName");
             return View(ticket);
         }
 
@@ -89,8 +100,8 @@ namespace BusSystem.Controllers
             {
                 return NotFound();
             }
-            ViewData["TripID"] = new SelectList(trips.GetAll(), "ID", "ID",t.TripID);
-            ViewData["ClientID"] = new SelectList(users.GetAll(),"Id", "Id",t.ClientID);
+            ViewData["TripID"] = new SelectList(trips.GetAll(), "ID", "tostringprop", t.TripID);
+            ViewData["ClientID"] = new SelectList(users.GetAll(),"Id", "UserName", t.ClientID);
             return View(t);
         }
 
@@ -102,6 +113,17 @@ namespace BusSystem.Controllers
             {
                 return NotFound();
             }
+
+            //Check for date 
+            if ((trips.Details(ticket.TripID)?.StartDateTime > DateTime.Now))
+            {
+                ModelState.AddModelError("TripID", "This trip is out of date");
+            }
+            if (ticket.PassengerCount > ((trips.Details(ticket.TripID).AvailableSeats)?.Length ?? 0 / 2))
+            {
+                ModelState.AddModelError("PassengerCount", $"There are not available seats for {ticket.PassengerCount} passengers ");
+            }
+
 
             if (ModelState.IsValid)
             {
@@ -122,8 +144,8 @@ namespace BusSystem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientID"] = new SelectList(users.GetAll(), "Id", "Id");
-            ViewData["TripID"] = new SelectList(trips.GetAll(), "ID", "ID");
+            ViewData["ClientID"] = new SelectList(users.GetAll(),"Id", "UserName");
+            ViewData["TripID"] = new SelectList(trips.GetAll(),"ID", "tostringprop");
             return View(ticket);
         }
 
@@ -141,6 +163,7 @@ namespace BusSystem.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Date = trips.Details(tickets.Details(id ?? 0).TripID).StartDateTime;
 
             return View(t);
         }
@@ -150,8 +173,14 @@ namespace BusSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
+            
+            if(trips.Details(tickets.Details(id).TripID).StartDateTime > DateTime.Now)
+            {
+                return RedirectToAction(nameof(Index));
+            }
             tickets.Remove(tickets.Details(id));
             return RedirectToAction(nameof(Index));
+
         }
 
         private bool TicketExists(int id)

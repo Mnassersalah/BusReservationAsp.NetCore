@@ -11,35 +11,42 @@
     <h4>Ticket</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PassengerCount)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PassengerCount)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.BookedSeats)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.BookedSeats)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Client)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Client.Id)
-        </dd class>
-        <dt class = "col-sm-2">
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Client.UserName)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Trip)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Trip.ID)
-        </dd class>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Trip)
+        </dd>
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="ID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        @if (ViewBag.Date < DateTime.Now)
+        {
+            <span class="alert alert-warning" >This ticket can't deleted ,"it is out of date"!</span>
+        }
+        else
+        {
+            <input type="hidden" asp-for="ID" />
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        }
+        |<a asp-action="Index">Back to List</a>
     </form>
 </div>
