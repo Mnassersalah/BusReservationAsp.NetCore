@@ -41,5 +41,8 @@ namespace BusSystem.Models
         {
             return $"{ID} {Route} {StartDateTime}";
         }
+
+        [NotMapped]
+        public string tostringprop { get => $"{ID} {Route} {StartDateTime}"; }
     }
 }

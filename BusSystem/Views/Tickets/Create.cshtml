@@ -24,11 +24,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="TripID" class="control-label"></label>
-                <select asp-for="TripID" class ="form-control" asp-items="ViewBag.TripID"></select>
+                <select asp-for="TripID" class="form-control" asp-items="ViewBag.TripID"></select>
+                <span asp-validation-for="TripID" class="text-danger"></span>
+
             </div>
             <div class="form-group">
                 <label asp-for="ClientID" class="control-label"></label>
-                <select asp-for="ClientID" class ="form-control" asp-items="ViewBag.ClientID"></select>
+                <select asp-for="ClientID" class="form-control" asp-items="ViewBag.ClientID"></select>
+                <span asp-validation-for="ClientID" class="text-danger"></span>
+
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
