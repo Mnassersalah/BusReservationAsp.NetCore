@@ -11,38 +11,41 @@
     <h4>Trip</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StartDateTime)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StartDateTime)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Price)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Price)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.AvailableSeats)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AvailableSeats)
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.AvailableSeats)*@
+            @Html.DisplayFor(model => model.AvailableSeatsCount)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Route)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Route.ID)
-        </dd class>
-        <dt class = "col-sm-2">
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.Route.ID)*@
+            @Html.DisplayFor(model => model.RouteToString)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Bus)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Bus.ID)
-        </dd class>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.Bus.ID)*@
+            @Html.DisplayFor(model => model.Bus.BusNum)
+        </dd>
     </dl>
-    
+
     <form asp-action="Delete">
         @if (ViewBag.Message != null)
         {
@@ -53,6 +56,6 @@
             <input type="hidden" asp-for="ID" />
             <input type="submit" value="Delete" class="btn btn-danger" />
         }
-        <a asp-action="Index">Back to List</a>
+        |<a asp-action="Index">Back to List</a>
     </form>
 </div>

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BusSystem.Data;
 using BusSystem.Models;
 using BusSystem.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BusSystem.Controllers
 {
@@ -23,6 +24,8 @@ namespace BusSystem.Controllers
             _busService = busService;
             _routeService = routeService;
         }
+
+        #region CRUD
 
         public IActionResult Index()
         {
@@ -51,6 +54,7 @@ namespace BusSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("ID,StartDateTime,Price,AvailableSeats,RouteID,BusID")] Trip trip)
         {
+            this.ValidateTrip(trip);
             if (ModelState.IsValid)
             {
                 _tripService.Add(trip);
@@ -70,8 +74,8 @@ namespace BusSystem.Controllers
             if (trip == null)
                 return NotFound();
 
+            this.CanEdit(trip);
             this.Get_ForeignKey(trip);
-
             return View(trip);
         }
 
@@ -82,6 +86,7 @@ namespace BusSystem.Controllers
             if (id != trip.ID)
                 return NotFound();
 
+            this.ValidateTrip(trip);
             if (ModelState.IsValid)
             {
                 try
@@ -96,7 +101,6 @@ namespace BusSystem.Controllers
             }
 
             this.Get_ForeignKey(trip);
-
             return View(trip);
         }
 
@@ -108,41 +112,102 @@ namespace BusSystem.Controllers
             var trip = _tripService.Details((int)id);
             if (trip == null)
                 return NotFound();
-            ViewBag.Message = null;
 
+            this.CanEdit(trip);
+            return View(trip);
+        }
 
-            // if (Routes.checkRoute(station.ID) == null)
-            if (trip.Tickets.Count != 0)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            Trip trip = _tripService.Details(id);
+            this.ValidateDate(trip.StartDateTime);
+
+            if (ModelState.IsValid)
             {
-                ViewBag.Message = " You can't Romove This trip Because IT has Tickets ";
-
+                if (trip.Tickets == null)
+                {
+                    _tripService.Remove(trip);
+                }
+                return RedirectToAction(nameof(Index));
             }
 
             return View(trip);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id, Trip trip)
-        {
-            if (trip.Tickets.Count == 0)
-            {
-                _tripService.Remove(trip);
-            }
-           
-            return RedirectToAction(nameof(Index));
-        }
+        #endregion
+
+        #region Methods
+
+        #region ViewBags
 
         private void Get_ForeignKey(Trip trip)
         {
-            ViewData["BusID"] = new SelectList(_busService.GetAll(), "ID", "ID", trip.BusID);
-            ViewData["RouteID"] = new SelectList(_routeService.GetAll(), "ID", "ID", trip.RouteID);
+            ViewData["BusID"] = new SelectList(_busService.GetAll(), "ID", "BusNum", trip.BusID);
+            ViewData["RouteID"] = new SelectList(_routeService.GetAll(), "ID", "", trip.RouteID);
         }
 
         private void Get_ForeignObjects()
         {
-            ViewData["BusID"] = new SelectList(_busService.GetAll(), "ID", "Category");
-            ViewData["RouteID"] = new SelectList(_routeService.GetAll(), "ID");
+            ViewData["BusID"] = new SelectList(_busService.GetAll(), "ID", "BusNum");
+            ViewData["RouteID"] = new SelectList(_routeService.GetAll(), "ID", "");
         }
+
+        #endregion
+
+        #region Validation
+
+        private void ValidateTrip(Trip trip)
+        {
+            this.ValidateDate(trip.StartDateTime);
+            this.ValidateBus(trip.BusID, trip.StartDateTime);
+        }
+
+        private void ValidateDate(DateTime tripDate)
+        {
+            if (tripDate <= DateTime.Now)
+            {
+                ModelState.AddModelError("StartDateTime", "Date is not applicable");
+            }
+        }
+
+        private void ValidateBus(int BusID, DateTime tripDate)
+        {
+            Bus _bus = _busService.Details(BusID);
+            if (_bus.Trips.Where(t => t.StartDateTime <= tripDate && t.ReturnDateTime >= tripDate).Count() != 0)
+            {
+                ModelState.AddModelError("BusID", "Bus is not avaliable at that time");
+            }
+        }
+
+        #endregion
+
+        private void CanEdit(Trip trip)
+        {
+            string msg = "You can't edit or delete this trip";
+            ViewBag.Message = null;
+
+            if (trip.Tickets != null)
+            {
+                ViewBag.Message = msg;
+            }
+
+            if (trip.AvailableSeatsCount != null)
+            {
+                int AvailableSeats = Convert.ToInt32(trip.AvailableSeatsCount);
+                if (AvailableSeats != trip.Bus.Capacity)
+                {
+                    ViewBag.Message = msg;
+                }
+            }
+
+            if (trip.StartDateTime <= DateTime.Now)
+            {
+                ViewBag.Message = msg;
+            }
+        }
+
+        #endregion
     }
 }

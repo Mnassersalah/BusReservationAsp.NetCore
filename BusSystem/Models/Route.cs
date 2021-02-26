@@ -10,7 +10,6 @@ namespace BusSystem.Models
     public class Route
     {
         public int ID { get; set; }
-        
 
         [Required]
         [Range(1, int.MaxValue)]
@@ -25,15 +24,13 @@ namespace BusSystem.Models
         public int? DropOffID { get; set; }
 
         //Navigation Properities
-        public  Station PickUp { get; set; }
-        public  Station DropOff { get; set; }
-        public virtual List<Trip> Trips{ get; set; }
+        public Station PickUp { get; set; }
+        public Station DropOff { get; set; }
+        public virtual List<Trip> Trips { get; set; }
 
         public override string ToString()
         {
-            return $"{PickUp} => {DropOff} "; 
+            return $"{PickUp} => {DropOff} ";
         }
-
-
     }
 }
