@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BusSystem.Controllers
 {
@@ -78,7 +79,7 @@ namespace BusSystem.Controllers
         }
        
 
-
+        [Authorize]
         public IActionResult ticketBookseats(int tripID,string[] sets)
         {
 
