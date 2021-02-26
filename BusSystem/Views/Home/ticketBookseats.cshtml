@@ -1,0 +1,56 @@
+﻿@model BusSystem.Models.Ticket
+
+@{
+    ViewData["Title"] = "ticketBookseats";
+    string[] Sets = (string[])ViewBag.sets;
+    int bookedSeats = @Model.BookedSeats.Length;
+    decimal price = @Model.Trip.Price;
+    decimal Coast = ((bookedSeats + 1) / 2) * (price);
+}
+
+<h1>ticketBookseats</h1>
+
+<div>
+    <h4>Ticket</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-4">
+            Number Of Booked Seats
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.PassengerCount)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.BookedSeats)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.BookedSeats)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Trip)
+        </dt>
+        <dd class="col-sm-8">
+            @Model.Trip.tostringprop.Substring(1)
+        </dd>
+        <dt class="col-sm-4">
+            Price
+        <dd class="col-sm-8">
+            @Coast LE
+        </dd>
+
+    </dl>
+</div>
+<div>
+    
+    <form asp-action="DeleteTicket">
+        <input type="hidden" asp-for="@Model.ID" />
+        <input type="hidden" asp-for="@Sets" />
+        <a href="Index"><input type="button" value="Confirm" class="btn btn-success" /></a>
+        <input type="submit" value="Cancel" class="btn btn-danger" />
+
+    </form>
+        
+
+    
+
+</div>

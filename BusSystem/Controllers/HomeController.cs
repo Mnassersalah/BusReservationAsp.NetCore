@@ -86,29 +86,55 @@ namespace BusSystem.Controllers
         [Authorize]
         public IActionResult ticketBookseats(int tripID,string[] sets)
         {
-
-            //userID
             
+
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             string setsstring = String.Join(",", sets);
             Ticket t = new Ticket() { ClientID = userId, PassengerCount = sets.Length, TripID = tripID, BookedSeats = setsstring };
+
             _ticketService.Add(t);
             //create taiket
 
             // update available seat
-            Trip tr = _tripsService.Details(tripID);
-            
+            Trip tr = _tripsService.Details(t.TripID);
+
             //
-            string[] available =  tr.AvailableSeats.Split(",").Except(sets).ToArray();
+            string[] available = tr.AvailableSeats.Split(",").Except(sets).ToArray();
             tr.AvailableSeats = String.Join(",", available);
             _tripsService.Update(tr);
+            //userID
 
 
+            ViewBag.sets = sets;
             
 
-            return RedirectToAction("Index");
+            return View(t);
         }
+
+        [HttpPost]
+        public IActionResult DeleteTicket(int id , string[] sets)
+        {
+
+            if (_tripsService.Details(_ticketService.Details(id).TripID).StartDateTime < DateTime.Now)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            Trip t = _tripsService.Details(_ticketService.Details(id).TripID);
+            
+            foreach(var i in sets)
+            {
+                t.AvailableSeats += "," + i;
+            }
+            _tripsService.Update(t);
+            _ticketService.Remove(_ticketService.Details(id));
+
+            
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        
 
 
 
