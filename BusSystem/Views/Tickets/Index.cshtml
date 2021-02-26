@@ -52,11 +52,7 @@
                     @item.Trip.StartDateTime
                 </td>
                 <td>
-                    @{ 
-                        
-                    }
-                    @*<a class="btn btn-light" asp-controller="Home" asp-action="ticketBookseats" asp-route-tripID="@item.TripID" asp-route-sets="@item.BookedSeats.Split(",")"><i class="fa fa-user-edit"></i></a>
-*@                  <a class="btn btn-light" asp-action="Edit" asp-route-id="@item.ID"><i class="fa fa-edit"></i></a>
+                    <a class="btn btn-light" asp-action="Edit" asp-route-id="@item.ID"><i class="fa fa-edit"></i></a>
                     <a class="btn btn-light" asp-action="Details" asp-route-id="@item.ID"><i class="fa fa-eye"></i></a>
                     <a class="btn btn-light" asp-action="Delete" asp-route-id="@item.ID"><i class="fa fa-trash"></i></a>
                 </td>
