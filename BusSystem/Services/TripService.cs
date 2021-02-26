@@ -38,6 +38,8 @@ namespace BusSystem.Services
 
         public void Update(Trip trip)
         {
+            trip.AvailableSeats = this.GetSeats(trip.BusID);
+
             _context.Update(trip);
             _context.SaveChanges();
         }

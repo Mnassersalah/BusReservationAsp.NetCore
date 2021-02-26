@@ -31,17 +31,18 @@
             @Html.DisplayFor(model => model.AvailableSeatsCount)
         </dd>
         <dt class="col-sm-2">
-            @*@Html.DisplayNameFor(model => model.Route)*@
-            @Html.DisplayNameFor(model => model.RouteToString)
+            @Html.DisplayNameFor(model => model.Route)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Route.ID)
+            @*@Html.DisplayFor(model => model.Route.ID)*@
+            @Html.DisplayFor(model => model.RouteToString)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Bus)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Bus.ID)
+            @*@Html.DisplayFor(model => model.Bus.ID)*@
+            @Html.DisplayFor(model => model.Bus.BusNum)
         </dd>
     </dl>
 
@@ -49,10 +50,6 @@
         @if (ViewBag.Message != null)
         {
             <span class="alert alert-warning"> @ViewBag.Message!</span>
-        }
-        else if (Model.StartDateTime <= DateTime.Now)
-        {
-            <span class="alert alert-warning">This trip can't deleted ,"it is out of date"!</span>
         }
         else
         {

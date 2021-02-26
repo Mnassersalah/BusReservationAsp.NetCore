@@ -24,11 +24,6 @@ namespace BusSystem.Models
         [Display(Name = "Available Seats")]
         public string AvailableSeats { get; set; }
 
-
-        // version 1
-        [NotMapped]
-        public string[] AvailableSeatsArray { get => AvailableSeats.Split(","); }
-
         [Required]
         [ForeignKey("Route")]
         public int RouteID { get; set; }
@@ -69,6 +64,33 @@ namespace BusSystem.Models
             {
                 if (Route != null)
                     return Route.ToString();
+                else
+                    return null;
+            }
+        }
+
+        [NotMapped]
+        public string[] AvailableSeatsArray
+        {
+            get
+            {
+                if (AvailableSeats != null)
+                    return AvailableSeats.Split(",");
+                else
+                    return null;
+            }
+        }
+
+        [NotMapped]
+        public DateTime? ReturnDateTime
+        {
+            get
+            {
+                if (this.Route != null)
+                {
+                    DateTime? dt = this.StartDateTime + 2 * (new TimeSpan(Route.Duration, 0, 0));
+                    return dt;
+                }
                 else
                     return null;
             }

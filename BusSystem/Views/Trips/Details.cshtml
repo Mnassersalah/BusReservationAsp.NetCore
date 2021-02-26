@@ -39,8 +39,9 @@
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Bus)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Bus.ID)
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.Bus.ID)*@
+            @Html.DisplayFor(model => model.Bus.BusNum)
         </dd>
     </dl>
 </div>
