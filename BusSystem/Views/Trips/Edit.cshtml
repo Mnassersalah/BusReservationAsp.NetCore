@@ -36,11 +36,11 @@
             <div class="form-group">
                 @if (ViewBag.Message != null)
                 {
-                    <span class="alert alert-warning"> @ViewBag.Message!</span>
+                <span class="alert alert-warning"> @ViewBag.Message!</span>
                 }
                 else
                 {
-                    <input type="submit" value="Save" class="btn btn-success" />
+                <input type="submit" value="Save" class="btn btn-success" />
                 }
                 <a asp-action="Index" class="btn btn-secondary">Back to List</a>
             </div>
