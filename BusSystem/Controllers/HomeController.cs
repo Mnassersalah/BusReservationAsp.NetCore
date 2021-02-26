@@ -33,6 +33,8 @@ namespace BusSystem.Controllers
 
         public IActionResult Index()
         {
+
+            
             ViewBag.Stations = new SelectList(_stationsService.GetAll(),"ID","");
             
             return View();

@@ -2,62 +2,79 @@
     ViewData["Title"] = "Home Page";
 }
 
-    
-<style>
-    #container {
-        width: 500px;
-        height: 400px;
-        border: solid 2px black;
-        margin: auto
-    }
-</style>
-    
-@*<div id="container" class="text-center">
-    <select asp-for="" class="form-control" asp-items="ViewBag.DropOffID"></select>
-</div>*@
+
 
 
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Trips">
 
-            @*<div class="form-group">
-            <input asp-for="Duration" class="form-control" />
-        </div>
-        <div class="form-group">
-            <label asp-for="PickUpID" class="control-label"></label>
-            <select asp-for="PickUpID" class="form-control" asp-items="ViewBag.PickUpID"></select>
-        </div>*@
-
-            @*int fromId, int toId, DateTime dateTime, int passengers
-
-
-*@            <div class="form-group">
+            <div class="form-group">
                 <label class="control-label"> From</label>
                 <select name="fromId" class="form-control" asp-items="ViewBag.Stations"></select>
-                
+
                 <label class="control-label"> To</label>
                 <select name="toId" class="form-control" asp-items="ViewBag.Stations"></select>
-             
+                <span id="stationError" class="text-danger"></span>
             </div>
 
-              <div class="form-group">
-                  <label class="control-label">Departure Date</label>
-                  <input name="departureDate" type="date" class="form-control" />
-               
-              </div>
+            <div class="form-group">
+                <label class="control-label">Departure Date</label>
+                <input name="departureDate" type="date" class="form-control" required/>
+                <span id="DeptDateError" class="text-danger"></span>
 
-              <div class="form-group">
-                  <label class="control-label"> Passengers</label>
-                  <input name="passengers" type="number" class="form-control" required value="1" max="5"/>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label"> Passengers</label>
+                <input name="passengers" type="number" class="form-control" required value="1" max="5" />
                 
-              </div>
+
+            </div>
 
 
-              <div class="form-group">
-                  <input type="submit" value="Show Trips" asp- class="btn btn-primary" />
-              </div>
+            <div class="form-group">
+                <input type="submit" value="Show Trips" asp-class="btn btn-primary" />
+                
+            </div>
 
         </form>
     </div>
 </div>
+
+
+
+@section Scripts {
+    <script>
+
+        $("form").submit(function (e) {
+            var isValid = true;
+            if($("[name=fromId]").value == $("[name=toId]").value) {
+                $("#stationError").text("Drop-off station can't be the same as pick-up station");
+                $("#stationError").text("");
+
+                isValid = false;
+            }
+
+            if ($("[name=departureDate]").value <= Date.now()) {
+                $("#DeptDateError").text("Invalid Departure Date");
+                $("#DeptDateError").text("");
+                isValid = false;
+            }
+        @*
+            if (!isValid)
+                e.preventDefault();
+            else
+                return true;*@
+
+
+        });
+
+
+
+
+
+
+
+    </script>
+}
