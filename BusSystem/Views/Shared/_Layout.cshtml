@@ -23,12 +23,22 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                       
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Buses" asp-action="Index">Bus</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Stations" asp-action="Index">Station</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Trips" asp-action="Index">Trip</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Tickets" asp-action="Index">Ticket</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Routes" asp-action="Index">Route</a>
+                        </li>     
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -54,7 +64,14 @@
     <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
     <script>
         $(document).ready(function () {
-            $('#dataTable').DataTable();
+            $('#dataTable').DataTable({
+               
+                "columnDefs": [{
+                    "targets": 'no-sort',
+                    "orderable": false,
+                }]
+                
+            });
         });
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>

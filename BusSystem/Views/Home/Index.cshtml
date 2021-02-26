@@ -20,8 +20,9 @@
 
             <div class="form-group">
                 <label class="control-label">Departure Date</label>
-                <input name="departureDate" type="date" class="form-control" required/>
-                
+
+                <input name="departureDate" type="date" class="form-control" required />
+
                 <span id="DeptDateError" class="text-danger"></span>
 
             </div>
@@ -29,14 +30,14 @@
             <div class="form-group">
                 <label class="control-label"> Passengers</label>
                 <input name="passengers" type="number" class="form-control" required value="1" max="5" />
-                
+
 
             </div>
 
 
             <div class="form-group">
                 <input type="submit" value="Show Trips" asp-class="btn btn-primary" />
-                
+
             </div>
 
         </form>
@@ -44,30 +45,32 @@
 </div>
 
 
-
 @section Scripts {
     <script>
 
         $("form").submit(function (e) {
             var isValid = true;
-            if ($("[name=fromId]").val() == $("[name=toId]").val()) {             
+
+            if ($("[name=fromId]").val() == $("[name=toId]").val()) {
                 $("#stationError").text("Drop-off station can't be the same as pick-up station");
                 isValid = false;
-            } else {           
+            } else {
+
                 $("#stationError").text("");
             }
 
             var d = new Date();
             d.setHours(0, 0, 0, 0);
-            if (Date.parse($("[name=departureDate]").val()) < d) {              
-                $("#DeptDateError").text("Invalid Departure Date");         
+            if (Date.parse($("[name=departureDate]").val()) < d) {
+                $("#DeptDateError").text("Invalid Departure Date");
                 isValid = false;
-            } else {           
+            } else {
                 $("#DeptDateError").text("");
-            }       
+            }
             return isValid;
-            
+
         });
 
     </script>
 }
+

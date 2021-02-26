@@ -6,9 +6,8 @@
 
 <h1>
     Tickets
-    <a class="btn btn-success" asp-action="Create"><i class="fa fa-plus"></i> New Ticket</a>
+    <a class="btn btn-success" asp-action="Create"><i class="fa fa-plus"></i> Add New</a>
 </h1>
-
 <table class="table table-striped table-bordered" id="dataTable" style="width:100%">
     <thead>
         <tr>
@@ -24,7 +23,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Trip)
             </th>
-            <th></th>
+            <th class="no-sort"></th>
         </tr>
     </thead>
     <tbody>
@@ -44,9 +43,9 @@
                     @Html.DisplayFor(modelItem => item.Trip.tostringprop)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ID"><i class="fa fa-edit"></i></a> |
-                    <a asp-action="Details" asp-route-id="@item.ID"><i class="fa fa-eye"></i></a> |
-                    <a asp-action="Delete" asp-route-id="@item.ID"><i class="fa fa-trash"></i></a>
+                    <a class="btn btn-light" asp-action="Edit" asp-route-id="@item.ID"><i class="fa fa-edit"></i></a>
+                    <a class="btn btn-light" asp-action="Details" asp-route-id="@item.ID"><i class="fa fa-eye"></i></a>
+                    <a class="btn btn-light" asp-action="Delete" asp-route-id="@item.ID"><i class="fa fa-trash"></i></a>
                 </td>
             </tr>
         }

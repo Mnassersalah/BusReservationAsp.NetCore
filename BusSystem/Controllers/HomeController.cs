@@ -96,7 +96,7 @@ namespace BusSystem.Controllers
             _ticketService.Add(t);
             //create taiket
 
-            // update available set
+            // update available seat
             Trip tr = _tripsService.Details(tripID);
             
             //
@@ -112,10 +112,7 @@ namespace BusSystem.Controllers
 
 
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

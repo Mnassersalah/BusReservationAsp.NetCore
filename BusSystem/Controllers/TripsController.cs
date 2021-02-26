@@ -9,6 +9,7 @@ using BusSystem.Data;
 using BusSystem.Models;
 using BusSystem.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Text;
 
 namespace BusSystem.Controllers
 {
@@ -57,7 +58,10 @@ namespace BusSystem.Controllers
             this.ValidateTrip(trip);
             if (ModelState.IsValid)
             {
+                
+                Trip.GenerateAvailableSeats(trip, _busService.Details(trip.BusID).Capacity);
                 _tripService.Add(trip);
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -86,11 +90,19 @@ namespace BusSystem.Controllers
             if (id != trip.ID)
                 return NotFound();
 
-            this.ValidateTrip(trip);
+/*
+            if (_tripService.Details(id).BusID != trip.BusID)
+                this.ValidateBus(trip.BusID, trip.StartDateTime);*/
+
+            this.ValidateDate(trip.StartDateTime);
+
             if (ModelState.IsValid)
             {
                 try
                 {
+                    //Trip.GenerateAvailableSeats(trip, _busService.Details(trip.BusID).Capacity);
+
+
                     _tripService.Update(trip);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -163,6 +175,9 @@ namespace BusSystem.Controllers
             this.ValidateDate(trip.StartDateTime);
             this.ValidateBus(trip.BusID, trip.StartDateTime);
         }
+
+
+
 
         private void ValidateDate(DateTime tripDate)
         {

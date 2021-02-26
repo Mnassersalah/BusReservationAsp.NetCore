@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BusSystem.Models
@@ -88,12 +89,26 @@ namespace BusSystem.Models
             {
                 if (this.Route != null)
                 {
-                    DateTime? dt = this.StartDateTime + 2 * (new TimeSpan(Route.Duration, 0, 0));
+                    DateTime? dt = this.StartDateTime + 2 * (new TimeSpan(0, Route.Duration, 0));
                     return dt;
                 }
                 else
                     return null;
             }
         }
+
+        
+        public static void GenerateAvailableSeats(Trip trip, int capacity)
+        {
+            StringBuilder sb = new();
+            for (int i = 0; i < capacity; i++)
+            {
+                sb.Append(i);
+                if(i != capacity - 1)
+                    sb.Append(',');
+            }
+                trip.AvailableSeats = sb.ToString();
+        }
+
     }
 }
