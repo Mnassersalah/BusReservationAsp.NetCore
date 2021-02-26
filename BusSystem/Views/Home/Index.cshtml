@@ -3,59 +3,64 @@
 }
 
 
-<section class="banner">
-    <div class="overlay">
-        <div class="container">
-            <h1>
-                <span>W</span>inter <span>C</span>ollection
-            </h1>
-            <p>
-                Shop with us and enjoy by our discounts.
-                electronic , computing , sporting and many other section. Please spread a website to your friends.
-            </p>
-            <a href="category.html" class="btn btn-primary">Shop Now</a>
+
+
+@section homepage{
+    
+    <section class="panner">
+        <video autoplay muted loop id="myVideo">
+            <source src="~/Videos/service-video-bg-n.webm" type="video/webm" />
+        </video>
+    </section>
+
+}
+
+
+
+@*<div class="contentx">
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Trips">
+
+                <div class="form-group">
+                    <label class="control-label"> From</label>
+                    <select name="fromId" class="form-control" asp-items="ViewBag.Stations"></select>
+
+                    <label class="control-label"> To</label>
+                    <select name="toId" class="form-control" asp-items="ViewBag.Stations"></select>
+                    <span id="stationError" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Departure Date</label>
+
+                    <input name="departureDate" type="date" class="form-control" required />
+
+                    <span id="DeptDateError" class="text-danger"></span>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label"> Passengers</label>
+                    <input name="passengers" type="number" class="form-control" required value="1" max="5" />
+
+
+                </div>
+
+
+                <div class="form-group">
+                    <input type="submit" value="Show Trips" asp-class="btn btn-primary" />
+
+                </div>
+
+            </form>
         </div>
     </div>
-</section>
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Trips">
-
-            <div class="form-group">
-                <label class="control-label"> From</label>
-                <select name="fromId" class="form-control" asp-items="ViewBag.Stations"></select>
-
-                <label class="control-label"> To</label>
-                <select name="toId" class="form-control" asp-items="ViewBag.Stations"></select>
-                <span id="stationError" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label class="control-label">Departure Date</label>
-
-                <input name="departureDate" type="date" class="form-control" required />
-
-                <span id="DeptDateError" class="text-danger"></span>
-
-            </div>
-
-            <div class="form-group">
-                <label class="control-label"> Passengers</label>
-                <input name="passengers" type="number" class="form-control" required value="1" max="5" />
+</div>*@
 
 
-            </div>
 
 
-            <div class="form-group">
-                <input type="submit" value="Show Trips" asp-class="btn btn-primary" />
-
-            </div>
-
-        </form>
-    </div>
-</div>
 
 
 @section Scripts {

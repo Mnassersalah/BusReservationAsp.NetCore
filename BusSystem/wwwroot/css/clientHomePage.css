@@ -1,4 +1,12 @@
-﻿body {
+﻿#myVideo {
 
-
+   width:100%;
 }
+
+/* Add some content at the bottom of the video/page */
+/*.content {
+    background: rgba(0, 0, 0, 0.5);
+    color: #f1f1f1;
+    padding: 20px;
+}
+*/
