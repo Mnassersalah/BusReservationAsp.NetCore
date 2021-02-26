@@ -134,11 +134,39 @@ namespace BusSystem.Controllers
 
         }
 
-        
+
+        //User Tickets management
+        public IActionResult UserTickets()
+        {
+            string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            
+            return View(_ticketService.GetAll().Where(t => t.ClientID == userId));
+        }
+
+        [HttpPost]
+        public IActionResult DeleteUserTicket(int id)
+        {
+            Ticket ticket = _ticketService.Details(id);
+            if (_tripsService.Details(ticket.TripID).StartDateTime < DateTime.Now)
+            {
+                return RedirectToAction(nameof(UserTickets));
+            }
+            Trip t = _tripsService.Details(_ticketService.Details(id).TripID);
+
+            t.AvailableSeats += "," + ticket.BookedSeats;
+            _tripsService.Update(t);
+            _ticketService.Remove(ticket);
+
+
+            return RedirectToAction(nameof(UserTickets));
+
+        }
 
 
 
-        
+
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
