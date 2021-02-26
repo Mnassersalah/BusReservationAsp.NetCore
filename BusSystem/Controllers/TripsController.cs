@@ -175,7 +175,7 @@ namespace BusSystem.Controllers
         private void ValidateBus(int BusID, DateTime tripDate)
         {
             Bus _bus = _busService.Details(BusID);
-            if (_bus.Trips.Where(t => t.StartDateTime >= tripDate && t.ReturnDateTime <= tripDate) != null)
+            if (_bus.Trips.Where(t => t.StartDateTime <= tripDate && t.ReturnDateTime >= tripDate).Count() != 0)
             {
                 ModelState.AddModelError("BusID", "Bus is not avaliable at that time");
             }
