@@ -26,10 +26,19 @@
             @Html.DisplayFor(model => model.Client.UserName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Trip)
+            @Html.DisplayName("Trip Route")
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Trip)
+            @Model.Trip.Route.PickUp
+            <i class="fas fa-arrow-right"></i>
+            @Model.Trip.Route.DropOff
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayName("Trip Date")
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Trip.StartDateTime
         </dd>
     </dl>
     

@@ -21,7 +21,10 @@
                 @Html.DisplayNameFor(model => model.Client)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Trip)
+                @Html.DisplayName("Trip Route")
+            </th>
+            <th>
+                @Html.DisplayName("Trip Date")
             </th>
             <th class="no-sort"></th>
         </tr>
@@ -40,7 +43,13 @@
                     @Html.DisplayFor(modelItem => item.Client.UserName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Trip.tostringprop)
+                    @*@Html.DisplayFor(modelItem => item.Trip.tostringprop)*@
+                    @item.Trip.Route.PickUp
+                    <i class="fas fa-arrow-right"></i>
+                    @item.Trip.Route.DropOff
+                </td>
+                <td>
+                    @item.Trip.StartDateTime
                 </td>
                 <td>
                     <a class="btn btn-light" asp-action="Edit" asp-route-id="@item.ID"><i class="fa fa-edit"></i></a>
