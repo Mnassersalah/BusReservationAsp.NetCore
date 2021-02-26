@@ -96,7 +96,7 @@ namespace BusSystem.Controllers
             _ticketService.Add(t);
             //create taiket
 
-            // update available set
+            // update available seat
             Trip tr = _tripsService.Details(tripID);
             
             //
