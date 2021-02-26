@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BusSystem.Controllers
 {
@@ -53,6 +54,7 @@ namespace BusSystem.Controllers
 
 
             var trips = _tripsService.GetAll().Where(t => t.StartDateTime.Date == departureDate 
+                                                        && t.StartDateTime >= DateTime.Now
                                                         && t.Route.PickUpID == fromId
                                                         && t.Route.DropOffID== toId
                                                         && passengers <= t.AvailableSeatsArray.Length);
@@ -78,12 +80,14 @@ namespace BusSystem.Controllers
         }
        
 
-
+        [Authorize]
         public IActionResult ticketBookseats(int tripID,string[] sets)
         {
 
             //userID
+            
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             string setsstring = String.Join(",", sets);
             Ticket t = new Ticket() { ClientID = userId, PassengerCount = sets.Length, TripID = tripID, BookedSeats = setsstring };
             _ticketService.Add(t);
@@ -96,6 +100,9 @@ namespace BusSystem.Controllers
             string[] available =  tr.AvailableSeats.Split(",").Except(sets).ToArray();
             tr.AvailableSeats = String.Join(",", available);
             _tripsService.Update(tr);
+
+
+            
 
             return RedirectToAction("Index");
         }
