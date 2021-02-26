@@ -3,7 +3,20 @@
 }
 
 
-
+<section class="banner">
+    <div class="overlay">
+        <div class="container">
+            <h1>
+                <span>W</span>inter <span>C</span>ollection
+            </h1>
+            <p>
+                Shop with us and enjoy by our discounts.
+                electronic , computing , sporting and many other section. Please spread a website to your friends.
+            </p>
+            <a href="category.html" class="btn btn-primary">Shop Now</a>
+        </div>
+    </div>
+</section>
 
 <div class="row">
     <div class="col-md-4">
@@ -20,7 +33,9 @@
 
             <div class="form-group">
                 <label class="control-label">Departure Date</label>
+
                 <input name="departureDate" type="date" class="form-control" required />
+
                 <span id="DeptDateError" class="text-danger"></span>
 
             </div>
@@ -48,10 +63,12 @@
 
         $("form").submit(function (e) {
             var isValid = true;
+
             if ($("[name=fromId]").val() == $("[name=toId]").val()) {
                 $("#stationError").text("Drop-off station can't be the same as pick-up station");
                 isValid = false;
             } else {
+
                 $("#stationError").text("");
             }
 
@@ -64,6 +81,7 @@
                 $("#DeptDateError").text("");
             }
             return isValid;
+
         });
 
     </script>

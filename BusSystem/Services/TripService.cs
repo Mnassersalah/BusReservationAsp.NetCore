@@ -19,19 +19,26 @@ namespace BusSystem.Services
 
         public List<Trip> GetAll()
         {
-            return _context.Trips.Include(t => t.Bus).Include("Route").Include("Route.DropOff").Include("Route.PickUp").ToList();//.Include("Tickets")
+            return _context.Trips.Include(t => t.Bus)
+                                 .Include("Route")
+                                 .Include("Route.DropOff")
+                                 .Include("Route.PickUp")
+                                 .ToList();//.Include("Tickets")
         }
 
         public Trip Details(int id)
         {
-            return _context.Trips.Include("Bus").Include("Route").Include("Route.DropOff").Include("Route.PickUp").FirstOrDefault(m => m.ID == id);
+            return _context.Trips.Include("Bus")
+                                 .Include("Tickets")
+                                 .Include("Route")
+                                 .Include("Route.DropOff")
+                                 .Include("Route.PickUp")
+                                 .FirstOrDefault(m => m.ID == id);
 
         }
 
         public void Add(Trip trip)
         {
-            //trip.AvailableSeats = this.GetSeats(trip.BusID);
-
             _context.Add(trip);
             _context.SaveChanges();
         }
@@ -48,7 +55,7 @@ namespace BusSystem.Services
             _context.SaveChanges();
         }
 
-        public string GetSeats(int BusID)
+        /*public string GetSeats(int BusID)
         {
             int seatsCount = _context.Buses.Where(b => b.ID == BusID).FirstOrDefault().Capacity;
 
@@ -60,6 +67,6 @@ namespace BusSystem.Services
                     seats += "," + i;
             }
             return seats;
-        }
+        }*/
     }
 }

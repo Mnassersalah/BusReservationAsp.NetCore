@@ -1,12 +1,10 @@
 ﻿@model BusSystem.Models.Bus
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Bus";
 }
 
-<h1>Edit</h1>
-
-<h4>Bus</h4>
+<h1>Edit Bus</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -32,14 +30,11 @@
                 <span asp-validation-for="Capacity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index" class="btn btn-secondary" >Back to List</a>
 </div>
 
 @section Scripts {

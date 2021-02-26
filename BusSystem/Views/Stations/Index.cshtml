@@ -5,12 +5,9 @@
 }
 
 <h1>Stations
-    <a class="btn btn-success" asp-action="Create"><i class="fa fa-plus"></i> New Station</a>
-    </h1>
+    <a class="btn btn-success" asp-action="Create"><i class="fa fa-plus"></i> Add New</a>
+</h1>
 
-<p>
-    
-</p>
 <table class="table table-striped table-bordered" id="dataTable" style="width:100%">
     <thead>
         <tr>
@@ -20,8 +17,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th>
-                Control
+            <th class="no-sort">
+                
             </th>
         </tr>
     </thead>
@@ -35,9 +32,9 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.ID"><i class="fa fa-edit"></i></a> 
-                <a class="btn btn-info" asp-action="Details" asp-route-id="@item.ID"><i class="fa fa-eye"></i></a> 
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.ID"><i class="fa fa-trash"></i></a>
+                <a class="btn btn-light" asp-action="Edit" asp-route-id="@item.ID"><i class="fa fa-edit"></i></a> 
+                <a class="btn btn-light" asp-action="Details" asp-route-id="@item.ID"><i class="fa fa-eye"></i></a> 
+                <a class="btn btn-light" asp-action="Delete" asp-route-id="@item.ID"><i class="fa fa-trash"></i></a>
             </td>
         </tr>
 }
