@@ -1,13 +1,12 @@
 ﻿@model BusSystem.Models.Trip
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Trip Details";
 }
 
-<h1>Details</h1>
+<h1>Details Trip <a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-light"><i class="fa fa-edit"></i></a></h1>
 
 <div>
-    <h4>Trip</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -108,6 +107,7 @@
 
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
 </div>
+
+

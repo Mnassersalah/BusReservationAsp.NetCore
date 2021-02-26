@@ -1,7 +1,7 @@
 ﻿@model BusSystem.Models.Trip
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Trip";
 }
 
 <h1>Edit Trip</h1>
@@ -36,13 +36,15 @@
             <div class="form-group">
                 @if (ViewBag.Message != null)
                 {
-                <span class="alert alert-warning"> @ViewBag.Message!</span>
+                    <span class="alert alert-warning"> you catn edit this trip!</span>
                 }
                 else
                 {
-                <input type="submit" value="Save" class="btn btn-success" />
+                    <input type="submit" value="Save" class="btn btn-success" />
+
                 }
                 <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+
             </div>
         </form>
     </div>
