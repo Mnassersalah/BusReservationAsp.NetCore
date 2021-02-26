@@ -33,7 +33,10 @@ namespace BusSystem.Controllers
 
         public IActionResult Index()
         {
+
+            
             ViewBag.Stations = new SelectList(_stationsService.GetAll(),"ID","");
+            
             return View();
         }
 
@@ -54,6 +57,7 @@ namespace BusSystem.Controllers
 
 
             var trips = _tripsService.GetAll().Where(t => t.StartDateTime.Date == departureDate 
+                                                        && t.StartDateTime >= DateTime.Now
                                                         && t.Route.PickUpID == fromId
                                                         && t.Route.DropOffID== toId
                                                         && passengers <= t.AvailableSeatsArray.Length);
@@ -84,7 +88,9 @@ namespace BusSystem.Controllers
         {
 
             //userID
+            
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
             string setsstring = String.Join(",", sets);
             Ticket t = new Ticket() { ClientID = userId, PassengerCount = sets.Length, TripID = tripID, BookedSeats = setsstring };
             _ticketService.Add(t);
@@ -97,6 +103,9 @@ namespace BusSystem.Controllers
             string[] available =  tr.AvailableSeats.Split(",").Except(sets).ToArray();
             tr.AvailableSeats = String.Join(",", available);
             _tripsService.Update(tr);
+
+
+            
 
             return RedirectToAction("Index");
         }
