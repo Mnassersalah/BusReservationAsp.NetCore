@@ -106,9 +106,8 @@ namespace BusSystem.Models
                 sb.Append(i);
                 if(i != capacity - 1)
                     sb.Append(',');
-
-                trip.AvailableSeats = sb.ToString();
             }
+                trip.AvailableSeats = sb.ToString();
         }
 
     }
