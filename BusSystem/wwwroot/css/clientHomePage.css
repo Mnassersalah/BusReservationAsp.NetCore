@@ -1,0 +1,48 @@
+﻿#myVideo {
+width:100%;
+   
+}
+.banner .overlay {
+    background: #66b4ad;
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.banner {
+    width: 100%;
+    height: 600px;
+    min-height: 600px;
+    max-height: 600px;
+    position: relative;
+    overflow:hidden;
+}
+
+.vid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.banner-content {
+    margin-top:70px;
+    margin-left:40px;
+    width:500px;
+}
+.banner-content .card {
+    background: rgba(30,30,30,.5);
+}
+
+.banner-content .card label{
+    color: #eee;
+}
+    
+.banner-content h4::first-letter, .banner-content span {
+    color: #66b4ad;
+}

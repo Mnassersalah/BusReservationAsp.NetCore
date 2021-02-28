@@ -1,0 +1,52 @@
+﻿@model BusSystem.Models.Ticket
+
+@{
+    ViewData["Title"] = "Ticket Details";
+}
+
+<h1>Ticket Details <a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-light"><i class="fa fa-edit"></i></a></h1>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PassengerCount)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PassengerCount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BookedSeats)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BookedSeats)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Client)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Client.UserName)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayName("Trip Route")
+        </dt>
+        <dd  class="col-sm-10">
+            @Model.Trip.Route.PickUp
+            <i class="fas fa-arrow-right"></i>
+            @Model.Trip.Route.DropOff
+        </dd>
+      
+        <dt class="col-sm-2">
+            @Html.DisplayName("Trip Date")
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Trip.StartDateTime
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>
+

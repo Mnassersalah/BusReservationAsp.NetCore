@@ -1,0 +1,58 @@
+﻿@model BusSystem.Models.Trip
+
+@{
+    ViewData["Title"] = "Delete Trip";
+}
+
+<h3>Are you sure you want to delete Trip ?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDateTime)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StartDateTime)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AvailableSeats)
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.AvailableSeats)*@
+            @Html.DisplayFor(model => model.AvailableSeatsCount)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Route)
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.Route.ID)*@
+            @Html.DisplayFor(model => model.RouteToString)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Bus)
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.Bus.ID)*@
+            @Html.DisplayFor(model => model.Bus.BusNum)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        @if (ViewBag.Message != null)
+        {
+            <span class="alert alert-warning"> @ViewBag.Message!</span>
+        }
+        else
+        {
+            <input type="hidden" asp-for="ID" />
+            <input type="submit" value="Delete" class="btn btn-danger" />
+        }
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </form>
+</div>
