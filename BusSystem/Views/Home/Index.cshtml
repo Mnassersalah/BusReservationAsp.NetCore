@@ -2,7 +2,16 @@
     ViewData["Title"] = "Home Page";
 }
 
+<style>
+    .select2-container--default .select2-selection--single {
+        height: 38px;
+    }
 
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+           
+        margin-top: 6px;
+    }
+</style>
 
 
 @section homepage{
@@ -22,10 +31,10 @@
 
                         <div class="form-group">
                             <label class="control-label"> From</label>
-                            <select name="fromId" class="form-control" asp-items="ViewBag.Stations"></select>
+                            <select name="fromId" class="form-control selectSearch" asp-items="ViewBag.Stations"></select>
 
                             <label class="control-label"> To</label>
-                            <select name="toId" class="form-control" asp-items="ViewBag.Stations"></select>
+                            <select name="toId" class="form-control selectSearch" asp-items="ViewBag.Stations"></select>
                             <span id="stationError" class="text-danger"></span>
                         </div>
 
@@ -63,7 +72,9 @@
 
 @section Scripts {
     <script>
-
+        $(document).ready(function () {
+            $('.selectSearch').select2();
+        });
         $("form").submit(function (e) {
             var isValid = true;
 
