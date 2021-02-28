@@ -34,9 +34,19 @@ namespace BusSystem
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            
+            services.AddIdentity<IdentityUser, IdentityRole>(options => {
+                options.SignIn.RequireConfirmedAccount = true;
+       
+            }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders()
+                .AddDefaultUI();
             services.AddControllersWithViews();
+            services.AddRazorPages();
+
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddControllersWithViews();
+
 
             services.AddScoped<IRepository<Bus>, BusesService>();
             services.AddScoped<IRepository<Station>, StationRepository>();

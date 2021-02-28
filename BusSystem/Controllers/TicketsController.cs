@@ -10,182 +10,193 @@ using BusSystem.Models;
 using BusSystem.Services;
 using Microsoft.AspNetCore.Identity;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace BusSystem.Controllers
 {
-    public class TicketsController : Controller
+
+
+    namespace BusSystem.Controllers
     {
-        private readonly IRepository<Ticket> tickets;
-        private readonly IRepository<Trip> trips;
-        private readonly IRepository<IdentityUser> users;
-
-        public TicketsController(IRepository<Ticket> tickets ,IRepository<Trip> trips, IRepository<IdentityUser> users)
+        [Authorize(Roles = "Employee")]
+        public class TicketsController : Controller
         {
-            this.tickets = tickets;
-            this.trips = trips;
-            this.users = users;
-        }
+            private readonly IRepository<Ticket> tickets;
+            private readonly IRepository<Trip> trips;
+            private readonly IRepository<IdentityUser> users;
 
-        // GET: Tickets
-        public ActionResult Index()
-        {
-            return View(tickets.GetAll());
-        }
-
-        // GET: Tickets/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
+            public TicketsController(IRepository<Ticket> tickets, IRepository<Trip> trips, IRepository<IdentityUser> users)
             {
-                return NotFound();
+                this.tickets = tickets;
+                this.trips = trips;
+                this.users = users;
             }
 
-            var t = tickets.Details(id??0);
-
-
-            if (t == null)
+            // GET: Tickets
+            public ActionResult Index()
             {
-                return NotFound();
+                return View(tickets.GetAll());
             }
 
-            return View(t);
-        }
-
-        // GET: Tickets/Create
-        public IActionResult Create()
-        {
-            ViewData["TripID"] = new SelectList(trips.GetAll(), "ID", "tostringprop");
-            ViewData["ClientID"] = new SelectList(users.GetAll(), "Id", "UserName");
-
-            return View();
-        }
-
-        
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("ID,PassengerCount,BookedSeats,TripID,ClientID")] Ticket ticket)
-        {
-            //Make Sure!!
-            //Check for seats availability
-            if (ticket.PassengerCount > ((trips.Details(ticket.TripID).AvailableSeats)?.Length ?? 0 / 2))
+            // GET: Tickets/Details/5
+            public ActionResult Details(int? id)
             {
-                ModelState.AddModelError("PassengerCount", $"There are not available seats for {ticket.PassengerCount} passengers ");
-            }
-
-            //
-            //Check for date 
-            if ((trips.Details(ticket.TripID)?.StartDateTime < DateTime.Now))
-            {
-                ModelState.AddModelError("TripID","This trip is out of date");
-            }
-            if (ModelState.IsValid)
-            {
-                tickets.Add(ticket);
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["TripID"] = new SelectList(trips.GetAll(), "ID", "tostringprop");
-            ViewData["ClientID"] = new SelectList(users.GetAll(), "Id", "UserName");
-            return View(ticket);
-        }
-
-        // GET: Tickets/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var t = tickets.Details((int)id);
-            if (t == null)
-            {
-                return NotFound();
-            }
-            ViewData["TripID"] = new SelectList(trips.GetAll(), "ID", "tostringprop", t.TripID);
-            ViewData["ClientID"] = new SelectList(users.GetAll(),"Id", "UserName", t.ClientID);
-            return View(t);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, [Bind("ID,PassengerCount,BookedSeats,TripID,ClientID")] Ticket ticket)
-        {
-            if (id != ticket.ID)
-            {
-                return NotFound();
-            }
-
-            //Check for date 
-            if ((trips.Details(ticket.TripID)?.StartDateTime > DateTime.Now))
-            {
-                ModelState.AddModelError("TripID", "This trip is out of date");
-            }
-            if (ticket.PassengerCount > ((trips.Details(ticket.TripID).AvailableSeats)?.Length ?? 0 / 2))
-            {
-                ModelState.AddModelError("PassengerCount", $"There are not available seats for {ticket.PassengerCount} passengers ");
-            }
-
-
-            if (ModelState.IsValid)
-            {
-                try
+                if (id == null)
                 {
-                    tickets.Update(ticket);
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                var t = tickets.Details(id ?? 0);
+
+
+                if (t == null)
                 {
-                    if (!TicketExists(ticket.ID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
                 }
+
+                return View(t);
+            }
+
+            // GET: Tickets/Create
+            public IActionResult Create()
+            {
+                ViewData["TripID"] = new SelectList(trips.GetAll(), "ID", "tostringprop");
+                ViewData["ClientID"] = new SelectList(users.GetAll(), "Id", "UserName");
+
+                return View();
+            }
+
+
+            [HttpPost]
+            [ValidateAntiForgeryToken]
+            public ActionResult Create([Bind("ID,PassengerCount,BookedSeats,TripID,ClientID")] Ticket ticket)
+            {
+                //Make Sure!!
+                //Check for seats availability
+                if (ticket.PassengerCount > ((trips.Details(ticket.TripID).AvailableSeats)?.Length ?? 0 / 2))
+                {
+                    ModelState.AddModelError("PassengerCount", $"There are not available seats for {ticket.PassengerCount} passengers ");
+                }
+
+                //
+                //Check for date 
+                if ((trips.Details(ticket.TripID)?.StartDateTime < DateTime.Now))
+                {
+                    ModelState.AddModelError("TripID", "This trip is out of date");
+                }
+                if (ModelState.IsValid)
+                {
+                    tickets.Add(ticket);
+                    return RedirectToAction(nameof(Index));
+                }
+                ViewData["TripID"] = new SelectList(trips.GetAll(), "ID", "tostringprop");
+                ViewData["ClientID"] = new SelectList(users.GetAll(), "Id", "UserName");
+                return View(ticket);
+            }
+
+            // GET: Tickets/Edit/5
+            #region Edit Useless
+            //public ActionResult Edit(int? id)
+            //{
+            //    if (id == null)
+            //    {
+            //        return NotFound();
+            //    }
+
+            //    var t = tickets.Details((int)id);
+            //    if (t == null)
+            //    {
+            //        return NotFound();
+            //    }
+            //    ViewData["TripID"] = new SelectList(trips.GetAll(), "ID", "tostringprop", t.TripID);
+            //    ViewData["ClientID"] = new SelectList(users.GetAll(),"Id", "UserName", t.ClientID);
+            //    return View(t);
+            //}
+
+            //[HttpPost]
+            //[ValidateAntiForgeryToken]
+            //public ActionResult Edit(int id, [Bind("ID,PassengerCount,BookedSeats,TripID,ClientID")] Ticket ticket)
+            //{
+            //    if (id != ticket.ID)
+            //    {
+            //        return NotFound();
+            //    }
+
+            //    //Check for date 
+            //    if ((trips.Details(ticket.TripID)?.StartDateTime > DateTime.Now))
+            //    {
+            //        ModelState.AddModelError("TripID", "This trip is out of date");
+            //    }
+            //    if (ticket.PassengerCount > ((trips.Details(ticket.TripID).AvailableSeats)?.Length ?? 0 / 2))
+            //    {
+            //        ModelState.AddModelError("PassengerCount", $"There are not available seats for {ticket.PassengerCount} passengers ");
+            //    }
+
+
+            //    if (ModelState.IsValid)
+            //    {
+            //        try
+            //        {
+            //            tickets.Update(ticket);
+            //        }
+            //        catch (DbUpdateConcurrencyException)
+            //        {
+            //            if (!TicketExists(ticket.ID))
+            //            {
+            //                return NotFound();
+            //            }
+            //            else
+            //            {
+            //                throw;
+            //            }
+            //        }
+            //        return RedirectToAction(nameof(Index));
+            //    }
+            //    ViewData["ClientID"] = new SelectList(users.GetAll(),"Id", "UserName");
+            //    ViewData["TripID"] = new SelectList(trips.GetAll(),"ID", "tostringprop");
+            //    return View(ticket);
+            //} 
+            #endregion
+
+            // GET: Tickets/Delete/5
+            public ActionResult Delete(int? id)
+            {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+
+                var t = tickets.Details((int)id);
+
+                if (t == null)
+                {
+                    return NotFound();
+                }
+                ViewBag.Date = trips.Details(tickets.Details(id ?? 0).TripID).StartDateTime;
+
+                return View(t);
+            }
+
+            // POST: Tickets/Delete/5
+            [HttpPost, ActionName("Delete")]
+            [ValidateAntiForgeryToken]
+            public IActionResult DeleteConfirmed(int id)
+            {
+
+                if (trips.Details(tickets.Details(id).TripID).StartDateTime > DateTime.Now)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                tickets.Remove(tickets.Details(id));
                 return RedirectToAction(nameof(Index));
-            }
-            ViewData["ClientID"] = new SelectList(users.GetAll(),"Id", "UserName");
-            ViewData["TripID"] = new SelectList(trips.GetAll(),"ID", "tostringprop");
-            return View(ticket);
-        }
 
-        // GET: Tickets/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
+            }
+
+            private bool TicketExists(int id)
             {
-                return NotFound();
+                return tickets.GetAll().Any(e => e.ID == id);
             }
-
-            var t = tickets.Details((int)id);
-
-            if (t == null)
-            {
-                return NotFound();
-            }
-            ViewBag.Date = trips.Details(tickets.Details(id ?? 0).TripID).StartDateTime;
-
-            return View(t);
-        }
-
-        // POST: Tickets/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            
-            if(trips.Details(tickets.Details(id).TripID).StartDateTime > DateTime.Now)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            tickets.Remove(tickets.Details(id));
-            return RedirectToAction(nameof(Index));
-
-        }
-
-        private bool TicketExists(int id)
-        {
-            return tickets.GetAll().Any(e => e.ID == id);
         }
     }
 }
+

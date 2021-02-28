@@ -11,6 +11,7 @@ namespace BusSystem.Models
     
     public class Bus
     {
+
         public int ID { get; set; }
 
         [Required]
@@ -18,7 +19,8 @@ namespace BusSystem.Models
         public string BusNum { get; set; }
 
         [Required]
-        [EnumDataType(typeof(Category))]
+
+        [EnumDataType(typeof(Category))] 
         public Category Category { get; set; }
 
         [Required]

@@ -2,29 +2,27 @@
 
 @{
     ViewData["Title"] = "Tickets";
+    
 }
 
 <h1>
     Tickets
-    <a class="btn btn-success" asp-action="Create"><i class="fa fa-plus"></i> Add New</a>
+    <a class="btn btn-success" asp-action="Index"><i class="fa fa-plus"></i> Book a new trip</a>
 </h1>
 <table class="table table-striped table-bordered" id="dataTable" style="width:100%">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.PassengerCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BookedSeats)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Client)
+                Number Of seats
             </th>
             <th>
                 @Html.DisplayName("Trip Route")
             </th>
             <th>
                 @Html.DisplayName("Trip Date")
+            </th>
+            <th>
+                Cost
             </th>
             <th class="no-sort"></th>
         </tr>
@@ -37,13 +35,6 @@
                     @Html.DisplayFor(modelItem => item.PassengerCount)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.BookedSeats)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Client.UserName)
-                </td>
-                <td>
-                    @*@Html.DisplayFor(modelItem => item.Trip.tostringprop)*@
                     @item.Trip.Route.PickUp
                     <i class="fas fa-arrow-right"></i>
                     @item.Trip.Route.DropOff
@@ -52,9 +43,21 @@
                     @item.Trip.StartDateTime
                 </td>
                 <td>
-                    @*<a class="btn btn-light" asp-action="Edit" asp-route-id="@item.ID"><i class="fa fa-edit"></i></a>*@
-                    <a class="btn btn-light" asp-action="Details" asp-route-id="@item.ID"><i class="fa fa-eye"></i></a>
-                    <a class="btn btn-light" asp-action="Delete" asp-route-id="@item.ID"><i class="fa fa-trash"></i></a>
+                    @{ 
+                        decimal cost = @item.Trip.Price * item.PassengerCount;
+                    }
+                    @cost LE
+                </td>
+                <td>
+                   @if(item.Trip.StartDateTime > DateTime.Now)
+                   {
+                       
+                    <span></span>
+                       <form asp-action="DeleteUserTicket">
+                           <input type="hidden" value="@item.ID" name="ID"/>
+                           <input type="submit" class="btn btn-outline-danger" value="Cancel Ticket" />
+                       </form>
+                   }
                 </td>
             </tr>
         }

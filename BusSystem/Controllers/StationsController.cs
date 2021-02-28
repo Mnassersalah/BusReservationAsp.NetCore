@@ -8,9 +8,14 @@ using Microsoft.EntityFrameworkCore;
 using BusSystem.Data;
 using BusSystem.Models;
 using BusSystem.Services;
+using Microsoft.AspNetCore.Authorization;
+
+
 
 namespace BusSystem.Controllers
 {
+    [Authorize(Roles = "Employee")]
+
     public class StationsController : Controller
     {
         //private readonly IRepository<Route> Routes;IRepository<Route> _Routes,

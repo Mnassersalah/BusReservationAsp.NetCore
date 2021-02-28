@@ -9,8 +9,15 @@ using BusSystem.Data;
 using BusSystem.Models;
 using BusSystem.Services;
 
+using Microsoft.AspNetCore.Authorization;
+
+
+    
+
+
 namespace BusSystem.Controllers
 {
+    [Authorize(Roles = "Employee")]
     public class BusesController : Controller
     {
         private readonly IRepository<Bus> busService;
@@ -23,6 +30,7 @@ namespace BusSystem.Controllers
         // GET: Buses
         public IActionResult Index(string sortOrder)
         {
+            throw new Exception("Ay kalam");
             var buses = busService.GetAll();
             /*
             ViewBag.CategorySortParm = String.IsNullOrEmpty(sortOrder) ? "category_desc" : "";
