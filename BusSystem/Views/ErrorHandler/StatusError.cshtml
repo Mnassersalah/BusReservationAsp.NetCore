@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewData["Title"] = "StatusError";
+    string message = ViewBag.Message;
+}
+
+
+<style>
+    section{
+        margin:20px auto;
+        text-align:center;
+    }
+    img{
+        display:inline-block;
+        width:25%;
+    }
+    #message{
+        width:50%;
+        line-height:100px;
+        display:block;
+        margin:20px auto;
+    }
+</style>
+
+<section>
+    <img src="~/img/ErrorIcon.png" />
+    <p class="alert alert-danger" id="message">@message</p>
+</section>
+
