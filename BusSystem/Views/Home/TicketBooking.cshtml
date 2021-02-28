@@ -61,7 +61,7 @@
 
     <br />
     <div class="setsvisualize">
-        <form asp-action="ticketBookseats">
+        <form asp-action="ticketBookseats" >
             <div class="row">
                 <input type="hidden" name="tripID" value="@Model.ID" />
                 @for (int i = 1; i <= Model.Bus.Capacity; i++)

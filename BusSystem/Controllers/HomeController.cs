@@ -17,14 +17,16 @@ namespace BusSystem.Controllers
     public class HomeController : Controller
     {
         private readonly UserManager<IdentityUser> _user;
+        private readonly SignInManager<IdentityUser> signInManager;
         private readonly ILogger<HomeController> _logger;
         private readonly IRepository<Station> _stationsService;
         private readonly IRepository<Trip> _tripsService;
         private readonly IRepository<Ticket> _ticketService;
 
-        public HomeController(ILogger<HomeController> logger, IRepository<Station> stationsService, IRepository<Trip> tripsService, IRepository<Ticket> ticketService,UserManager<IdentityUser> user)
+        public HomeController(ILogger<HomeController> logger, IRepository<Station> stationsService, IRepository<Trip> tripsService, IRepository<Ticket> ticketService,UserManager<IdentityUser> user , SignInManager<IdentityUser> signInManager)
         {
             _user = user;
+            this.signInManager = signInManager;
             _logger = logger;
             _stationsService = stationsService;
             _tripsService = tripsService;
@@ -69,6 +71,7 @@ namespace BusSystem.Controllers
             return View(trips);
         }
 
+        [Authorize]
         public IActionResult TicketBooking(int tripID, int passengers) 
         {
             var trip = _tripsService.Details(tripID);
@@ -83,7 +86,6 @@ namespace BusSystem.Controllers
         }
        
 
-        [Authorize]
         public IActionResult ticketBookseats(int tripID,string[] sets)
         {
             
@@ -160,6 +162,13 @@ namespace BusSystem.Controllers
 
             return RedirectToAction(nameof(UserTickets));
 
+        }
+
+
+        public async Task<IActionResult> LogOut()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction(nameof(Index));
         }
 
 

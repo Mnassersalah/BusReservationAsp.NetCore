@@ -12,9 +12,11 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 
+
 namespace BusSystem.Controllers
 {
     [Authorize(Roles = "Employee")]
+
     public class TripsController : Controller
     {
         private readonly IRepository<Trip> _tripService;

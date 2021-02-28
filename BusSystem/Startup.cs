@@ -33,6 +33,7 @@ namespace BusSystem
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
+
             
             services.AddIdentity<IdentityUser, IdentityRole>(options => {
                 options.SignIn.RequireConfirmedAccount = true;
@@ -41,6 +42,11 @@ namespace BusSystem
                 .AddDefaultUI();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddControllersWithViews();
+
 
             services.AddScoped<IRepository<Bus>, BusesService>();
             services.AddScoped<IRepository<Station>, StationRepository>();
