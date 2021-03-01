@@ -1,4 +1,5 @@
 ﻿using BusSystem.Data;
+using BusSystem.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BusSystem.Services
 {
-    public class ClientService:IRepository<IdentityUser>
+    public class ClientService:IRepository<ApplicationUser>
     {
         private readonly ApplicationDbContext context;
 
@@ -16,29 +17,29 @@ namespace BusSystem.Services
             this.context = context;
         }
 
-        public void Add(IdentityUser entity)
+        public void Add(ApplicationUser entity)
         {
            
             
             throw new NotImplementedException();
         }
 
-        public IdentityUser Details(int id)
+        public ApplicationUser Details(int id)
         {
             throw new NotImplementedException();
         }
 
-        public List<IdentityUser> GetAll()
+        public List<ApplicationUser> GetAll()
         {
             return context.Users.ToList();
         }
 
-        public void Remove(IdentityUser entity)
+        public void Remove(ApplicationUser entity)
         {
             throw new NotImplementedException();
         }
 
-        public void Update(IdentityUser entity)
+        public void Update(ApplicationUser entity)
         {
             throw new NotImplementedException();
         }
