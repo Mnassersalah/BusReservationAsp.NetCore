@@ -1,4 +1,5 @@
-﻿using BusSystem.ViewModels;
+﻿using BusSystem.Models;
+using BusSystem.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +14,9 @@ namespace BusSystem.Controllers
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
-        private readonly Microsoft.AspNetCore.Identity.UserManager<IdentityUser> userManager;
+        private readonly Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager;
 
-        public AdministrationController(RoleManager<IdentityRole> roleManager ,UserManager<IdentityUser> userManager)
+        public AdministrationController(RoleManager<IdentityRole> roleManager ,UserManager<ApplicationUser> userManager)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;

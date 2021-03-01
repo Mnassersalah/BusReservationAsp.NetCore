@@ -16,14 +16,14 @@ namespace BusSystem.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly UserManager<IdentityUser> _user;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly UserManager<ApplicationUser> _user;
+        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly ILogger<HomeController> _logger;
         private readonly IRepository<Station> _stationsService;
         private readonly IRepository<Trip> _tripsService;
         private readonly IRepository<Ticket> _ticketService;
 
-        public HomeController(ILogger<HomeController> logger, IRepository<Station> stationsService, IRepository<Trip> tripsService, IRepository<Ticket> ticketService,UserManager<IdentityUser> user , SignInManager<IdentityUser> signInManager)
+        public HomeController(ILogger<HomeController> logger, IRepository<Station> stationsService, IRepository<Trip> tripsService, IRepository<Ticket> ticketService,UserManager<ApplicationUser> user , SignInManager<ApplicationUser> signInManager)
         {
             _user = user;
             this.signInManager = signInManager;

@@ -23,9 +23,9 @@ namespace BusSystem.Controllers
         {
             private readonly IRepository<Ticket> tickets;
             private readonly IRepository<Trip> trips;
-            private readonly IRepository<IdentityUser> users;
+            private readonly IRepository<ApplicationUser> users;
 
-            public TicketsController(IRepository<Ticket> tickets, IRepository<Trip> trips, IRepository<IdentityUser> users)
+            public TicketsController(IRepository<Ticket> tickets, IRepository<Trip> trips, IRepository<ApplicationUser> users)
             {
                 this.tickets = tickets;
                 this.trips = trips;

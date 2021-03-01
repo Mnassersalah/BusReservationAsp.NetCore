@@ -44,9 +44,10 @@ namespace BusSystem.Models
         }
 
         [NotMapped]
-        public string tostringprop { 
-            get => $"{ID} {Route} {StartDateTime}"; 
-        
+        public string tostringprop
+        {
+            get => $"{ID} {Route} {StartDateTime}";
+
         }
 
         [NotMapped]
@@ -100,7 +101,7 @@ namespace BusSystem.Models
             }
         }
 
-        
+
         public static void GenerateAvailableSeats(Trip trip, int capacity)
         {
             StringBuilder sb = new();
@@ -110,7 +111,7 @@ namespace BusSystem.Models
                 if(i != capacity )
                     sb.Append(',');
             }
-                trip.AvailableSeats = sb.ToString();
+            trip.AvailableSeats = sb.ToString();
         }
 
     }

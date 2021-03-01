@@ -35,13 +35,25 @@ namespace BusSystem
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             
-            services.AddIdentity<IdentityUser, IdentityRole>(options => {
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
                 options.SignIn.RequireConfirmedAccount = true;
        
             }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders()
                 .AddDefaultUI();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddAuthentication()
+                    .AddGoogle(options =>
+                    {
+                        options.ClientId = "781909915244-vgi61hpmr5recdbe6b8bd5jdeoihbft5.apps.googleusercontent.com";
+                        options.ClientSecret = "-Gu4SxrxZ7vpy04sUCibHClz";
+                    })
+                    .AddFacebook(options =>
+                    {
+                        options.AppId = "419357189359106";
+                        options.AppSecret= "5a20bc6c6bb938181e0a0d74884b03d8";
+                    });
 
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -53,7 +65,7 @@ namespace BusSystem
             services.AddScoped<IRepository<Ticket>, TicketService>();
             services.AddScoped<IRepository<Trip>, TripService>();
             services.AddScoped<IRepository<Route>, RoutesService>(); 
-            services.AddScoped<IRepository<IdentityUser>, ClientService>(); 
+            services.AddScoped<IRepository<ApplicationUser>, ClientService>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
