@@ -30,7 +30,7 @@ namespace BusSystem.Controllers
         // GET: Buses
         public IActionResult Index(string sortOrder)
         {
-            throw new Exception("Ay kalam");
+            
             var buses = busService.GetAll();
             /*
             ViewBag.CategorySortParm = String.IsNullOrEmpty(sortOrder) ? "category_desc" : "";

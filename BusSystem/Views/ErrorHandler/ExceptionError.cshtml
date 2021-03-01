@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewData["Title"] = "ExceptionError";
+    string message = ViewBag.ExceptionMessage;
+}
+
+<style>
+    section {
+        margin: 20px auto;
+        text-align: center;
+    }
+
+    img {
+        display: inline-block;
+        width: 25%;
+    }
+
+    #message {
+        width: 50%;
+        line-height: 50px;
+        display: block;
+        margin: 20px auto;
+    }
+    a{
+        font-weight:bold;
+    }
+</style>
+
+<section>
+
+    <img src="~/img/ErrorIconYellow.png" />
+    <p class="alert alert-warning" id="message">@message <br> 
+        For help we are happy to  <a href="mailto: BusSystem@Company.com">Mail Us</a>
+    </p>
+</section>
+
+

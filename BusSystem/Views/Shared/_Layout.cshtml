@@ -14,7 +14,7 @@
 
     <link href="~/css/clientHomePage.css" rel="stylesheet" />
     <link href="~/lib/datatables/css/dataTables.bootstrap4.css" rel="stylesheet" />
-
+    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -31,7 +31,7 @@
 
 
 
-                        @if (@User.IsInRole("Employee")|| @User.IsInRole("Admin"))
+                        @if (@User.IsInRole("Employee") || @User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Buses" asp-action="Index">Bus</a>
@@ -90,6 +90,7 @@
     <script src="~/lib/datatables.net/jquery.dataTables.js"></script>
 
     <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
+    <script src="~/lib/select2/js/select2.js"></script>
     <script>
         $(document).ready(function () {
             $('#dataTable').DataTable({
