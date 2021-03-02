@@ -1,0 +1,31 @@
+﻿.Text {
+    font-size: 20px;
+    word-wrap: break-word;
+    text-align: justify;
+}
+
+.Image {
+    width: 100%;
+}
+
+.TextSamll {
+    font-size: 16px;
+    word-wrap: break-word;
+    text-align: justify;
+}
+
+.TextMid {
+    font-size: 18px;
+    word-wrap: break-word;
+    text-align: justify;
+}
+
+.tdImg {
+    width: 20%;
+    display: block;
+    margin-top:0%;
+}
+
+.tdText {
+    width: 80%;
+}
