@@ -6,28 +6,10 @@
 
 <p>Passengers Count : @ViewBag.Passengers</p>
 
-<style>
-    img {
-        width: 50px;
-        height: 50px;
-        padding: 10px;
-        margin-bottom: 10px;
-        cursor:pointer;
-    }
-
-    .setsvisualize {
-        width: 600px;
-    }
-
-    input[type="checkbox"] {
-        display: none;
-    }
-
-    .selectedimg {
-        border: 1px solid #090;
-        border-radius: 50%;
-    }
-</style>
+@*<style>
+    
+</style>*@
+<link href="~/css/min/AllStyles.min.css" rel="stylesheet" />
 
 <div>
     <h4>Trip</h4>
@@ -76,13 +58,13 @@
 
                         @if (Array.IndexOf(ViewBag.availableSets, c) != -1)
                         {
-                            <img class="img" src="~/img/GreenSeat.png" />
+                            <img class="imgTckt" src="~/img/GreenSeat.png" />
                             <input name="sets[]" value="@i" type="checkbox" />
                         }
                         else
                         {
 
-                            <img class="img" src="~/img/RedSeat.png" />
+                            <img class="imgTckt" src="~/img/RedSeat.png" />
                             <input name="sets[]" value="@i" type="checkbox" disabled="disabled" />
                         }
                     </div>
@@ -136,4 +118,4 @@
 
     </script>
 }
-
+<script src="~/js/TicketScript.js"></script>
