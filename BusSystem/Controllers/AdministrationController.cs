@@ -14,7 +14,7 @@ namespace BusSystem.Controllers
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> roleManager;
-        private readonly Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> userManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
         public AdministrationController(RoleManager<IdentityRole> roleManager ,UserManager<ApplicationUser> userManager)
         {
@@ -128,6 +128,47 @@ namespace BusSystem.Controllers
                 }
 
                 return View(model);
+            }
+        }
+
+        public async Task<IActionResult> DeleteRole(string id)
+        {
+            var role = await roleManager.FindByIdAsync(id);
+
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"Role with Id = {id} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                return View(role);
+            }
+        }
+
+        public async Task<IActionResult> ConfirmDeleteRole(string id)
+        {
+            var role = await roleManager.FindByIdAsync(id);
+
+            if (role == null)
+            {
+                ViewBag.ErrorMessage = $"Role with Id = {id} cannot be found";
+                return View("NotFound");
+            }
+            else
+            {
+                var result = await roleManager.DeleteAsync(role);
+                if(result.Succeeded)
+                {
+                    return RedirectToAction(nameof(ListRoles));
+                }
+
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                return View(nameof(ListRoles));
             }
         }
 
