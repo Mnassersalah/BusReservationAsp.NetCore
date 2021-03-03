@@ -104,7 +104,7 @@ namespace BusSystem.Models
         public static void GenerateAvailableSeats(Trip trip, int capacity)
         {
             StringBuilder sb = new();
-            for (int i = 0; i < capacity; i++)
+            for (int i = 1; i < capacity; i++)
             {
                 sb.Append(i);
                 if(i != capacity - 1)
