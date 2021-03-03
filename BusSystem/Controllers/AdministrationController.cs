@@ -16,7 +16,7 @@ namespace BusSystem.Controllers
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public AdministrationController(RoleManager<IdentityRole> roleManager ,UserManager<ApplicationUser> userManager)
+        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
@@ -159,7 +159,7 @@ namespace BusSystem.Controllers
             else
             {
                 var result = await roleManager.DeleteAsync(role);
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
                     return RedirectToAction(nameof(ListRoles));
                 }
@@ -178,6 +178,7 @@ namespace BusSystem.Controllers
         public async Task<IActionResult> EditUsersInRole(string roleId)
         {
             ViewBag.roleId = roleId;
+            ViewBag.NoAdmins = null;
 
             var role = await roleManager.FindByIdAsync(roleId);
 
@@ -224,35 +225,45 @@ namespace BusSystem.Controllers
                 return View("NotFound");
             }
 
-            for (int i = 0; i < model.Count; i++)
+            int UserCount = model.Where(m => m.IsSelected == true).Count();
+            if (UserCount == 0 && role.Name == "Admin")
             {
-                var user = await userManager.FindByIdAsync(model[i].UserId);
-
-                IdentityResult result = null;
-
-                if (model[i].IsSelected && !(await userManager.IsInRoleAsync(user, role.Name)))
-                {
-                    result = await userManager.AddToRoleAsync(user, role.Name);
-                }
-                else if (!model[i].IsSelected && await userManager.IsInRoleAsync(user, role.Name))
-                {
-                    result = await userManager.RemoveFromRoleAsync(user, role.Name);
-                }
-                else
-                {
-                    continue;
-                }
-
-                if (result.Succeeded)
-                {
-                    if (i < (model.Count - 1))
-                        continue;
-                    else
-                        return RedirectToAction("EditRole", new { Id = roleId });
-                }
+                ViewBag.NoAdmins = "You must select at least on admin";
+                return View(model);
             }
+            else
+            {
+                ViewBag.NoAdmins = null;
+                for (int i = 0; i < model.Count; i++)
+                {
+                    var user = await userManager.FindByIdAsync(model[i].UserId);
 
-            return RedirectToAction("EditRole", new { Id = roleId });
+                    IdentityResult result = null;
+
+                    if (model[i].IsSelected && !(await userManager.IsInRoleAsync(user, role.Name)))
+                    {
+                        result = await userManager.AddToRoleAsync(user, role.Name);
+                    }
+                    else if (!model[i].IsSelected && await userManager.IsInRoleAsync(user, role.Name))
+                    {
+                        result = await userManager.RemoveFromRoleAsync(user, role.Name);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if (result.Succeeded)
+                    {
+                        if (i < (model.Count - 1))
+                            continue;
+                        else
+                            return RedirectToAction("EditRole", new { Id = roleId });
+                    }
+                }
+
+                return RedirectToAction("EditRole", new { Id = roleId });
+            }
         }
     }
 }

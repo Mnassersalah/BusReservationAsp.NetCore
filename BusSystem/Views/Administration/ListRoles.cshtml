@@ -25,10 +25,13 @@
                    asp-controller="Administration" asp-route-id="@role.Id">
                     Edit
                 </a>
-                <a class="btn btn-danger" asp-action="DeleteRole"
-                   asp-controller="Administration" asp-route-id="@role.Id">
-                    Delete
-                </a>
+                @if (@role.Name != "Admin")
+                {
+                    <a class="btn btn-danger" asp-action="DeleteRole"
+                       asp-controller="Administration" asp-route-id="@role.Id">
+                        Delete
+                    </a>
+                }
             </div>
         </div>
     }
