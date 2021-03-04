@@ -1,0 +1,35 @@
+﻿.ByHead {
+    width: 100%;
+    height: 25px;
+    background-color: black;
+}
+
+.FreeNav {
+    width: 100%;
+    background-color: black;
+    position: absolute;
+    left:0%;
+    top: 100px;
+    height:50px;
+    padding: 10px;
+    color: white;
+    font-size: 16px;
+}
+
+.About {
+    color: white;
+    padding-left: 240px;
+    padding-right: 20px;
+}
+
+.FAQ {
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.Cont {
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+}

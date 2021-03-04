@@ -2,17 +2,10 @@
     ViewData["Title"] = "Home Page";
 }
 
-<style>
-    .select2-container--default .select2-selection--single {
-        height: 38px;
-    }
-
-    .select2-container--default .select2-selection--single .select2-selection__arrow {
-           
-        margin-top: 6px;
-    }
-</style>
-
+@*<style>
+    
+</style>*@
+<link href="~/css/min/AllStyles.min.css" rel="stylesheet" />
 
 @section homepage{
     
@@ -71,33 +64,5 @@
 
 
 @section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('.selectSearch').select2();
-        });
-        $("form").submit(function (e) {
-            var isValid = true;
-
-            if ($("[name=fromId]").val() == $("[name=toId]").val()) {
-                $("#stationError").text("Drop-off station can't be the same as pick-up station");
-                isValid = false;
-            } else {
-
-                $("#stationError").text("");
-            }
-
-            var d = new Date();
-            d.setHours(0, 0, 0, 0);
-            if (Date.parse($("[name=departureDate]").val()) < d) {
-                $("#DeptDateError").text("Invalid Departure Date");
-                isValid = false;
-            } else {
-                $("#DeptDateError").text("");
-            }
-            return isValid;
-
-        });
-
-    </script>
+    <script src="~/js/HomePage.js"></script>
 }
-

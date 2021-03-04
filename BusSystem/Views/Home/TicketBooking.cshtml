@@ -6,28 +6,10 @@
 
 <p>Passengers Count : @ViewBag.Passengers</p>
 
-<style>
-    img {
-        width: 50px;
-        height: 50px;
-        padding: 10px;
-        margin-bottom: 10px;
-        cursor:pointer;
-    }
+@*<style>
 
-    .setsvisualize {
-        width: 600px;
-    }
-
-    input[type="checkbox"] {
-        display: none;
-    }
-
-    .selectedimg {
-        border: 1px solid #090;
-        border-radius: 50%;
-    }
-</style>
+    </style>*@
+<link href="~/css/min/AllStyles.min.css" rel="stylesheet" />
 
 <div>
     <h4>Trip</h4>
@@ -61,7 +43,7 @@
 
     <br />
     <div class="setsvisualize">
-        <form asp-action="ticketBookseats" >
+        <form asp-action="ticketBookseats">
             <div class="row">
                 <input type="hidden" name="tripID" value="@Model.ID" />
                 @for (int i = 1; i <= Model.Bus.Capacity; i++)
@@ -76,13 +58,13 @@
 
                         @if (Array.IndexOf(ViewBag.availableSets, c) != -1)
                         {
-                            <img class="img" src="~/img/GreenSeat.png" />
+                            <img class="imgTckt" src="~/img/GreenSeat.png" />
                             <input name="sets[]" value="@i" type="checkbox" />
                         }
                         else
                         {
 
-                            <img class="img" src="~/img/RedSeat.png" />
+                            <img class="imgTckt" src="~/img/RedSeat.png" />
                             <input name="sets[]" value="@i" type="checkbox" disabled="disabled" />
                         }
                     </div>
@@ -90,7 +72,7 @@
 
             </div>
             <hr />
-            <input  type="submit" class="btn btn-secondary btn-lg" id="submitbtn" disabled value="Book"/>
+            <input type="submit" class="btn btn-secondary btn-lg" id="submitbtn" disabled value="Book" />
             <span id="message" class="alert alert-danger">Make sure that you Selected  @ViewBag.Passengers seats</span>
         </form>
     </div>
@@ -99,41 +81,7 @@
 
 
 @section Scripts {
-    <script>
-        var selectCount = 0;
-        var message = "Make sure that you Selected " +@ViewBag.Passengers+" seats";
-        $("img").click(function () {
-            console.log(selectCount);
-            if ($(this).siblings("input").attr("disabled") != "disabled") {
-                if ($(this).siblings("input").attr("checked") == "checked") {
-                    $(this).removeClass("selectedimg");
-                    $(this).siblings("input").removeAttr("checked")
-                    selectCount--;
-                }else if(@ViewBag.Passengers > selectCount) {
-                    $(this).siblings("input").attr("checked", "checked")
-                    $(this).addClass("selectedimg");
-                    selectCount++;
-                }
-
-                if (@ViewBag.Passengers == selectCount) {
-                    $("#submitbtn").removeClass("btn btn-secondary btn-lg").addClass("btn btn-primary").prop('disabled', false);
-                    $("#message").css("display","none")
-
-                }
-
-                if (@ViewBag.Passengers > selectCount) {
-                    $("#submitbtn").removeClass("btn btn-primary").addClass("btn btn-secondary btn-lg").prop('disabled', true);
-                    $("#message").css("display", "inline-block")
-
-                }
-
-
-            }
-
-
-
-        });
-
-    </script>
+    <script src="~/js/TicketScript.js"></script>
+    <script>OpenMsg(@ViewBag.Passengers);</script>
 }
 
