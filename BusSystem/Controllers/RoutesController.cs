@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BusSystem.Controllers
 {
-        [Authorize(Roles = "Employee")]
+        [Authorize(Roles = "Admin,Employee")]
         public class RoutesController : Controller
     {
         private readonly IRepository<Route> Routes;

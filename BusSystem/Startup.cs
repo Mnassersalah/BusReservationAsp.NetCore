@@ -1,11 +1,13 @@
 using BusSystem.Data;
 using BusSystem.Models;
 using BusSystem.Services;
+using BusSystem.utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,14 +34,17 @@ namespace BusSystem
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             
             services.AddIdentity<ApplicationUser, IdentityRole>(options => {
-                options.SignIn.RequireConfirmedAccount = false;
+                options.SignIn.RequireConfirmedAccount = true;
        
-            }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders()
-                .AddDefaultUI();
+            }).AddEntityFrameworkStores<ApplicationDbContext>()
+              .AddDefaultTokenProviders()
+              .AddDefaultUI();
+            
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -55,9 +60,8 @@ namespace BusSystem
                         options.AppSecret= "5a20bc6c6bb938181e0a0d74884b03d8";
                     });
 
-            //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-            //    .AddEntityFrameworkStores<ApplicationDbContext>();
-            //services.AddControllersWithViews();
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
 
 
             services.AddScoped<IRepository<Bus>, BusesService>();
@@ -66,6 +70,7 @@ namespace BusSystem
             services.AddScoped<IRepository<Trip>, TripService>();
             services.AddScoped<IRepository<Route>, RoutesService>(); 
             services.AddScoped<IRepository<ApplicationUser>, ClientService>(); 
+            services.AddScoped<IEmailSender, EmailSender>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
