@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,12 +71,17 @@ namespace BusSystem
             services.AddScoped<IRepository<Trip>, TripService>();
             services.AddScoped<IRepository<Route>, RoutesService>(); 
             services.AddScoped<IRepository<ApplicationUser>, ClientService>(); 
-            services.AddScoped<IEmailSender, EmailSender>(); 
+            services.AddScoped<IEmailSender, EmailSender>();
+            services.Configure<StripeSettings>(Configuration.GetSection("stripe"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+            // stripe
+            StripeConfiguration.SetApiKey(Configuration.GetSection("stripe")["SecretKey"]);
+
             if (!env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

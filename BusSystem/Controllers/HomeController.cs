@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Stripe;
 
 namespace BusSystem.Controllers
 {
@@ -113,6 +114,24 @@ namespace BusSystem.Controllers
 
             return View(t);
         }
+
+
+        public IActionResult paystripe(string stripeEmail,string stripeToken, decimal amount,string desc)
+        {
+            var customers = new CustomerService();
+            var chargs = new ChargeService();
+            var customer = customers.Create(new CustomerCreateOptions { Email = stripeEmail,Source = stripeToken});
+            
+            var charge = chargs.Create(new ChargeCreateOptions { Amount = Convert.ToInt64(amount) * 100 , Description = desc, Currency = "usd",Customer = customer.Id });
+            
+            if(charge.Status == "succeeded")
+            {
+                var result = charge.BalanceTransactionId;
+            }
+            
+            return RedirectToAction(nameof(Index));
+        }
+
 
         [HttpPost]
         public IActionResult DeleteTicket(int id , string[] sets)
