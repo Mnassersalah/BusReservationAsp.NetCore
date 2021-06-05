@@ -11,10 +11,6 @@ using BusSystem.Services;
 
 using Microsoft.AspNetCore.Authorization;
 
-
-    
-
-
 namespace BusSystem.Controllers
 {
     [Authorize(Roles = "Admin,Employee")]

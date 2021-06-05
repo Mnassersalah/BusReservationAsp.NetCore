@@ -10,6 +10,5 @@ namespace BusSystem.Models
         Economic,
         Standard,
         Premium
-        
     }
 }

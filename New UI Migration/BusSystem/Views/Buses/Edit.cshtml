@@ -1,0 +1,90 @@
+﻿@model BusSystem.Models.Bus
+
+@{
+    ViewData["Title"] = "Edit Bus";
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+<div class="container" style="min-height: 500px;">
+    <div class="row">
+        <div class="col-12">
+            <h1>Edit Bus</h1>
+        </div>
+    </div>
+    <div class="row">
+        <form asp-action="Edit">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="ID" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-sm-2">
+                                <label asp-for="BusNum" class="control-label"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input asp-for="BusNum" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <span asp-validation-for="BusNum" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-sm-2">
+                                <label asp-for="Category" class="control-label"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <select asp-for="Category" asp-items="Html.GetEnumSelectList<Category>()" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <span asp-validation-for="Category" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-sm-2">
+                                <label asp-for="Capacity" class="control-label"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input asp-for="Capacity" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <span asp-validation-for="Capacity" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <input type="submit" value="Save" class="btn btn-success" />
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<br />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
