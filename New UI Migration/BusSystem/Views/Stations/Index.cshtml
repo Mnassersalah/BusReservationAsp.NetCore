@@ -47,7 +47,7 @@
                             <td>
                                 @Station
                             </td>
-                            <td class="center d-none d-md-table-cell">
+                            <td class="center d-none d-md-table-cell" style="min-width: 225px;">
                                 <a class="btn btn-light" asp-action="Details" asp-route-id="@item.ID" style="border: 1.5px solid black;"><div style="font-size: 10pt; width: 18px;">➜</div></a>
                                 <a class="btn btn-light" asp-action="Edit" asp-route-id="@item.ID" style="border: 1.5px solid black;"><div style="font-size: 10pt;">⚙️</div></a>
                                 <a class="btn btn-light" asp-action="Delete" asp-route-id="@item.ID" style="border: 1.5px solid black;"><div style="font-size: 10pt;">✖️</div></a>
@@ -65,7 +65,7 @@
                             </td>
                         </tr>
                         <tr class="d-table-row d-md-none" style="border-bottom: 1.5px solid black;">
-                            <td class="center" colspan="3">
+                            <td class="center" colspan="100">
                                 <a class="btn btn-light" asp-action="Details" asp-route-id="@item.ID" style="border: 1.5px solid black;"><div style="font-size: 10pt; width: 18px;">➜</div></a>
                                 <a class="btn btn-light" asp-action="Edit" asp-route-id="@item.ID" style="border: 1.5px solid black;"><div style="font-size: 10pt;">⚙️</div></a>
                                 <a class="btn btn-light" asp-action="Delete" asp-route-id="@item.ID" style="border: 1.5px solid black;"><div style="font-size: 10pt;">✖️</div></a>

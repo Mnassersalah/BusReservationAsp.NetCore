@@ -86,7 +86,7 @@
                             <td>
                                 @item.Route
                             </td>
-                            <td class="center d-none d-md-table-cell">
+                            <td class="center d-none d-md-table-cell" style="min-width: 75px;">
                                 <a class="btn btn-light" asp-controller="Trips" asp-action="Details" asp-route-id="@item.ID" style="border: 1.5px solid black;"><div style="font-size: 10pt; width: 18px;">➜</div></a>
                             </td>
                         </tr>
@@ -112,7 +112,7 @@
                             </td>
                         </tr>
                         <tr class="d-table-row d-md-none" style="border-bottom: 1.5px solid black;">
-                            <td class="center" colspan="4">
+                            <td class="center" colspan="100">
                                 <a class="btn btn-light" asp-controller="Trips" asp-action="Details" asp-route-id="@item.ID" style="border: 1.5px solid black;"><div style="font-size: 10pt; width: 18px;">➜</div></a>
                             </td>
                         </tr>

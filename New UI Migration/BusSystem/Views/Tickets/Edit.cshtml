@@ -1,0 +1,46 @@
+﻿@model BusSystem.Models.Ticket
+
+@{
+    ViewData["Title"] = "Edit Ticket";
+}
+
+<h1>Edit Ticket</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="PassengerCount" class="control-label"></label>
+                <input asp-for="PassengerCount" class="form-control" />
+                <span asp-validation-for="PassengerCount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BookedSeats" class="control-label"></label>
+                <input asp-for="BookedSeats" class="form-control" />
+                <span asp-validation-for="BookedSeats" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TripID" class="control-label"></label>
+                <select asp-for="TripID" class="form-control" asp-items="ViewBag.TripID"></select>
+                <span asp-validation-for="TripID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClientID" class="control-label"></label>
+                <select asp-for="ClientID" class="form-control" asp-items="ViewBag.ClientID"></select>
+                <span asp-validation-for="ClientID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
