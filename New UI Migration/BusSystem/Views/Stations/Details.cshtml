@@ -1,0 +1,47 @@
+﻿@model BusSystem.Models.Station
+
+@{
+    ViewData["Title"] = "Station Details";
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<link href="~/css/ResponsiveStyle.css" rel="stylesheet" />
+
+<div class="container" style="min-height: 500px;">
+    <div class="row">
+        <div class="col-9">
+            <h1>Station Details</h1>
+        </div>
+        <div class="col-3 right">
+            <a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-light" style="border: 1.5px solid black; height: 47.5px;"><p style="font-size: 15pt;">⚙️</p></a>
+        </div>
+    </div>
+    <dl class="row">
+        <dt class="col-3 col-sm-2 col-lg-1">
+            @Html.DisplayNameFor(model => model.City)
+        </dt>
+        <dd class="col-9 col-sm-10 col-lg-11">
+            @Html.DisplayFor(model => model.City)
+        </dd>
+        <dt class="col-3 col-sm-2 col-lg-1">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-9 col-sm-10 col-lg-11">
+            @{
+                if (Model.Name != null)
+                {
+                    @Html.DisplayFor(model => model.Name)
+                }
+                else
+                {
+                    <p>Main Station</p>
+                }
+            }
+        </dd>
+    </dl>
+    <div class="row">
+        <div class="col-12">
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

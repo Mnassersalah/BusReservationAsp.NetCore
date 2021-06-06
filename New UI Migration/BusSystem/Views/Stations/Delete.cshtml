@@ -1,0 +1,63 @@
+﻿@model BusSystem.Models.Station
+
+@{
+    ViewData["Title"] = "Delete Station";
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+<div class="container" style="min-height: 500px;">
+    @if (ViewBag.Message != null)
+    {
+        <div class="row">
+            <div class="col-12">
+                <h3>@ViewBag.Message!</h3>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12">
+                <h3>Are you sure you want to delete this Station ?</h3>
+            </div>
+        </div>
+
+        <dl class="row">
+            <dt class="col-3 col-sm-2 col-lg-1">
+                @Html.DisplayNameFor(model => model.City)
+            </dt>
+            <dd class="col-9 col-sm-10 col-lg-11">
+                @Html.DisplayFor(model => model.City)
+            </dd>
+            <dt class="col-3 col-sm-2 col-lg-1">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-9 col-sm-10 col-lg-11">
+                @{
+                    if (Model.Name != null)
+                    {
+                        @Html.DisplayFor(model => model.Name)
+                    }
+                    else
+                    {
+                        <p>Main Station</p>
+                    }
+                }
+            </dd>
+        </dl>
+    }
+
+    <div class="row">
+        <div class="col-12">
+            <form asp-action="Delete">
+                @if (!(ViewBag.Message != null))
+                {
+                    <input type="hidden" asp-for="ID" />
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                }
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </form>
+        </div>
+    </div>
+</div>
