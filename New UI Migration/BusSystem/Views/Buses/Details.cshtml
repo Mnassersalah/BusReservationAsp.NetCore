@@ -44,7 +44,7 @@
     </div>
 
     <div class="row" id="tbl-trips" style="display: none">
-        <div class="col-12">
+        <div class="table-responsive">
             <br />
             <table class="table table-striped table-bordered" id="dataTable" style="width:100%">
                 <thead>
@@ -61,7 +61,7 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Trips.FirstOrDefault().Route)
                         </th>
-                        <th class="no-sort"></th>
+                        <th class="no-sort d-none d-md-table-cell"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,7 +86,7 @@
                             <td>
                                 @item.Route
                             </td>
-                            <td class="center">
+                            <td class="center d-none d-md-table-cell">
                                 <a class="btn btn-light" asp-controller="Trips" asp-action="Details" asp-route-id="@item.ID" style="border: 1.5px solid black;"><div style="font-size: 10pt; width: 18px;">➜</div></a>
                             </td>
                         </tr>
@@ -111,8 +111,8 @@
                                 @item.Route
                             </td>
                         </tr>
-                        <tr class="d-table-row d-sm-none" style="background-color: lightgray;">
-                            <td class="center">
+                        <tr class="d-table-row d-md-none" style="border-bottom: 1.5px solid black;">
+                            <td class="center" colspan="4">
                                 <a class="btn btn-light" asp-controller="Trips" asp-action="Details" asp-route-id="@item.ID" style="border: 1.5px solid black;"><div style="font-size: 10pt; width: 18px;">➜</div></a>
                             </td>
                         </tr>
