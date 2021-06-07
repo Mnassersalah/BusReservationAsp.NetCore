@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "ExceptionError";
+    string message = ViewBag.ExceptionMessage;
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<link href="~/css/ResponsiveStyle.css" rel="stylesheet" />
+
+<div class="container" style="min-height: 500px;">
+    <div class="row">
+        <div class="col-12 center">
+            <p style="font-size: 105pt;">ERROR!</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 center">
+            <p style=" font-size: 35pt;">@message</p>
+        </div>
+    </div>
+</div>

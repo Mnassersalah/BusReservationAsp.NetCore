@@ -19,8 +19,10 @@ namespace BusSystem.Controllers
             }
             else
             {
-                ViewBag.Message = "SOMETHING WEN'T WRONG DURING YOUR REQUEST";
+                ViewBag.Message = "SOMETHING WENT WRONG DURING YOUR REQUEST";
             }
+
+            ViewBag.StatusCode = statusCode;
 
             return View();
         }
