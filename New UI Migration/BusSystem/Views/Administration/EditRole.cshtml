@@ -1,0 +1,91 @@
+﻿@model EditRoleViewModel
+
+@{
+    ViewBag.Title = "Edit Role";
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+<div class="container" style="min-height: 500px;">
+    <div class="row">
+        <div class="col-12">
+            <h1>Edit Role</h1>
+        </div>
+    </div>
+    <div class="row">
+        <form method="post">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-sm-2 col-md-1">
+                                <label asp-for="Id" class="col-sm-2 col-form-label"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input asp-for="Id" disabled class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-sm-2 col-md-1">
+                                <label asp-for="RoleName" class="col-sm-2 col-form-label">Title</label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input asp-for="RoleName" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <span asp-validation-for="RoleName" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <input type="submit" value="Save" class="btn btn-success" />
+                        <a asp-action="ListRoles" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-12 col-sm-8 col-md-7">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Users in this role</h3>
+                </div>
+                <div class="card-body">
+                    @if (Model.Users.Any())
+                    {
+                        foreach (var user in Model.Users)
+                        {
+                            <h5 class="card-title">@user</h5>
+                        }
+                    }
+                    else
+                    {
+                        <h5 class="card-title">None at the moment</h5>
+                    }
+                </div>
+                <div class="card-footer">
+                    <a asp-controller="Administration" asp-action="EditUsersInRole"
+                       asp-route-roleId="@Model.Id" class="btn btn-primary">
+                        Edit
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />

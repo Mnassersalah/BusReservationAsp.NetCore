@@ -1,0 +1,45 @@
+﻿@model CreateRoleViewModel
+
+@{
+    ViewBag.Title = "Create New Role";
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<link href="~/css/ResponsiveStyle.css" rel="stylesheet" />
+
+<div class="container" style="min-height: 500px;">
+    <div class="row">
+        <div class="col-12">
+            <h1>Add Route</h1>
+        </div>
+    </div>
+    <div class="row">
+        <form asp-action="CreateRole" method="post">
+            <div class="col-12">
+                <div class="row form-group">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-sm-2">
+                                <label asp-for="RoleName" class="col-sm-2 col-form-label"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input asp-for="RoleName" class="form-control" placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <span asp-validation-for="RoleName" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <input type="submit" value="Create" class="btn btn-success" />
+                        <a asp-controller="administration" asp-action="ListRoles" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
