@@ -1,0 +1,100 @@
+﻿@model BusSystem.Models.Trip
+
+@{
+    ViewData["Title"] = "Add Trip";
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<link href="~/css/ResponsiveStyle.css" rel="stylesheet" />
+
+<div class="container" style="min-height: 500px;">
+    <div class="row">
+        <div class="col-12">
+            <h1>Add Trip</h1>
+        </div>
+    </div>
+    <div class="row">
+        <form asp-action="Create">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-sm-4 col-md-2">
+                                <label asp-for="StartDateTime" class="control-label"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input asp-for="StartDateTime" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <span asp-validation-for="StartDateTime" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-sm-4 col-md-2">
+                                <label asp-for="Price" class="control-label"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <input asp-for="Price" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-sm-4 col-md-2">
+                                <label asp-for="RouteID" class="control-label"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <select asp-for="RouteID" class="form-control" asp-items="ViewBag.RouteID"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-12 col-sm-4 col-md-2">
+                                <label asp-for="BusID" class="control-label"></label>
+                            </div>
+                            <div class="col-12 col-sm-6">
+                                <select asp-for="BusID" class="form-control" asp-items="ViewBag.BusID"></select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <span asp-validation-for="BusID" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-12">
+                        <input type="submit" value="Create" class="btn btn-success" />
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
