@@ -1,0 +1,67 @@
+﻿@model BusSystem.Models.Ticket
+@using Microsoft.Extensions.Options
+@inject IOptions<BusSystem.Models.StripeSettings> stripe 
+
+@{
+    ViewData["Title"] = "ticketBookseats";
+    string[] Sets = (string[])ViewBag.sets;
+    int bookedSeats = @Model.BookedSeats.Length;
+    decimal price = @Model.Trip.Price;
+    decimal Coast = ((bookedSeats + 1) / 2) * (price);
+    decimal Coast2 = Sets.Length * price;
+}
+
+<h1>Confirm Booking</h1>
+
+<div>
+    <h4>Ticket</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-4">
+            Number Of Booked Seats
+            @Html.DisplayFor(model => model.PassengerCount)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.PassengerCount)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.BookedSeats)
+        </dt>
+        <dd class="col-sm-8">
+            @Html.DisplayFor(model => model.BookedSeats)
+        </dd>
+        <dt class="col-sm-4">
+            @Html.DisplayNameFor(model => model.Trip)
+        </dt>
+        <dd class="col-sm-8">
+            @Model.Trip.tostringprop.Substring(1)
+        </dd>
+        <dt class="col-sm-4">
+            Price
+        <dd class="col-sm-8">
+            @Coast2 LE
+        </dd>
+
+    </dl>
+</div>
+<div>
+    
+    <form asp-action="DeleteTicket">
+        <input type="hidden" asp-for="@Model.ID" />
+        <input type="hidden" asp-for="@Sets" />
+        <a href="Index"><input type="button" value="Book another ticket" class="btn btn-success" /></a>
+        <input type="submit" value="Cancel" class="btn btn-danger" />
+
+    </form>
+    <br />
+    <form asp-action="paystripe" asp-route-desc="@Model.Trip for seats @Model.BookedSeats" asp-route-amount="@Coast2" method="post">
+        <script src="//checkout.stripe.com/v2/checkout.js" 
+                data-locale="auto" data-key="@stripe.Value.AppKey" 
+                data-description="Pay Ticket" 
+                class="stripe-button">
+        </script>
+    </form>
+
+    
+
+</div>

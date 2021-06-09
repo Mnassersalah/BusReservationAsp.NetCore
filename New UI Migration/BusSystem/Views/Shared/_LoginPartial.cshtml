@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    @if (string.IsNullOrEmpty(UserManager.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).ClientName))
+    {
+        <a asp-controller="Home" asp-action="UserDashboard">
+            <img src="~/img/user-icon.png" style="height: 20px;" /> @User.Identity.Name
+        </a>
+    }
+    else
+    {
+        <a asp-controller="Home" asp-action="AdminDashboard">
+            <img src="~/img/user-icon.png" style="height: 20px;" /> @UserManager.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).ClientName
+        </a>
+    }
+}
+else
+{
+    <a asp-area="Identity" asp-page="/Account/Login">
+        <img src="~/img/user-icon.png" style="height: 20px;" /> Login
+    </a>
+}

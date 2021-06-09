@@ -18,7 +18,7 @@ namespace BusSystem.Controllers
 
     namespace BusSystem.Controllers
     {
-        [Authorize(Roles = "Admin,Employee")]
+        //[Authorize(Roles = "Admin,Employee")]
         public class TicketsController : Controller
         {
             private readonly IRepository<Ticket> tickets;

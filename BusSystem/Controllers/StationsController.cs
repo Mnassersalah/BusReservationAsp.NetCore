@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BusSystem.Controllers
 {
-    [Authorize(Roles = "Admin,Employee")]
+    //[Authorize(Roles = "Admin,Employee")]
 
     public class StationsController : Controller
     {

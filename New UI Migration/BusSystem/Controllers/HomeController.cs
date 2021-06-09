@@ -1,17 +1,17 @@
-﻿/*using BusSystem.Models;
+﻿using BusSystem.Models;
 using BusSystem.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authorization;
-using Stripe;
+using System.Threading.Tasks;
 
 namespace BusSystem.Controllers
 {
@@ -24,7 +24,7 @@ namespace BusSystem.Controllers
         private readonly IRepository<Trip> _tripsService;
         private readonly IRepository<Ticket> _ticketService;
 
-        public HomeController(ILogger<HomeController> logger, IRepository<Station> stationsService, IRepository<Trip> tripsService, IRepository<Ticket> ticketService,UserManager<ApplicationUser> user , SignInManager<ApplicationUser> signInManager)
+        public HomeController(ILogger<HomeController> logger, IRepository<Station> stationsService, IRepository<Trip> tripsService, IRepository<Ticket> ticketService, UserManager<ApplicationUser> user, SignInManager<ApplicationUser> signInManager)
         {
             _user = user;
             this.signInManager = signInManager;
@@ -36,10 +36,15 @@ namespace BusSystem.Controllers
 
         public IActionResult Index()
         {
+            return View();
+        }
 
-            
-            ViewBag.Stations = new SelectList(_stationsService.GetAll(),"ID","");
-            
+        public IActionResult Search()
+        {
+
+
+            ViewBag.Stations = new SelectList(_stationsService.GetAll(), "ID", "");
+
             return View();
         }
 
@@ -59,12 +64,20 @@ namespace BusSystem.Controllers
             }
 
 
-            var trips = _tripsService.GetAll().Where(t => t.StartDateTime.Date == departureDate 
+            var trips = _tripsService.GetAll().Where(t => t.StartDateTime.Date == departureDate
                                                         && t.StartDateTime >= DateTime.Now
                                                         && t.Route.PickUpID == fromId
-                                                        && t.Route.DropOffID== toId
+                                                        && t.Route.DropOffID == toId
                                                         && passengers <= t.AvailableSeatsArray.Length);
-            
+
+            //To be removed
+            trips = _tripsService.GetAll();
+            passengers = 3;
+            toId = 4;
+            fromId = 1;
+            departureDate = DateTime.Now;
+            //-------------
+
             ViewBag.Passengers = passengers;
             ViewBag.dropoff = _stationsService.Details(toId);
             ViewBag.pickUp = _stationsService.Details(fromId);
@@ -72,9 +85,14 @@ namespace BusSystem.Controllers
             return View(trips);
         }
 
-        [Authorize]
-        public IActionResult TicketBooking(int tripID, int passengers) 
+        //[Authorize]
+        public IActionResult TicketBooking(int tripID, int passengers)
         {
+            //To be removed
+            tripID = 1;
+            passengers = 3;
+            //-------------
+
             var trip = _tripsService.Details(tripID);
             if (trip == null)
             {
@@ -82,14 +100,14 @@ namespace BusSystem.Controllers
             }
             ViewBag.Passengers = passengers;
             ViewBag.availableSets = trip.AvailableSeats.Split(",");
-           
+
             return View(trip);
         }
-       
 
-        public IActionResult ticketBookseats(int tripID,string[] sets)
+
+        public IActionResult ticketBookseats(int tripID, string[] sets)
         {
-            
+
 
             var userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -110,31 +128,31 @@ namespace BusSystem.Controllers
 
 
             ViewBag.sets = sets;
-            
+
 
             return View(t);
         }
 
 
-        public IActionResult paystripe(string stripeEmail,string stripeToken, decimal amount,string desc)
+        public IActionResult paystripe(string stripeEmail, string stripeToken, decimal amount, string desc)
         {
             var customers = new CustomerService();
             var chargs = new ChargeService();
-            var customer = customers.Create(new CustomerCreateOptions { Email = stripeEmail,Source = stripeToken});
-            
-            var charge = chargs.Create(new ChargeCreateOptions { Amount = Convert.ToInt64(amount) * 100 , Description = desc, Currency = "usd",Customer = customer.Id });
-            
-            if(charge.Status == "succeeded")
+            var customer = customers.Create(new CustomerCreateOptions { Email = stripeEmail, Source = stripeToken });
+
+            var charge = chargs.Create(new ChargeCreateOptions { Amount = Convert.ToInt64(amount) * 100, Description = desc, Currency = "usd", Customer = customer.Id });
+
+            if (charge.Status == "succeeded")
             {
                 var result = charge.BalanceTransactionId;
             }
-            
+
             return RedirectToAction(nameof(Index));
         }
 
 
         [HttpPost]
-        public IActionResult DeleteTicket(int id , string[] sets)
+        public IActionResult DeleteTicket(int id, string[] sets)
         {
 
             if (_tripsService.Details(_ticketService.Details(id).TripID).StartDateTime < DateTime.Now)
@@ -142,15 +160,15 @@ namespace BusSystem.Controllers
                 return RedirectToAction(nameof(Index));
             }
             Trip t = _tripsService.Details(_ticketService.Details(id).TripID);
-            
-            foreach(var i in sets)
+
+            foreach (var i in sets)
             {
                 t.AvailableSeats += "," + i;
             }
             _tripsService.Update(t);
             _ticketService.Remove(_ticketService.Details(id));
 
-            
+
             return RedirectToAction(nameof(Index));
 
         }
@@ -160,7 +178,11 @@ namespace BusSystem.Controllers
         public IActionResult UserTickets()
         {
             string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            
+
+            //To be removed
+            return View(_ticketService.GetAll());
+            //-------------
+
             return View(_ticketService.GetAll().Where(t => t.ClientID == userId));
         }
 
@@ -190,68 +212,11 @@ namespace BusSystem.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-
-        public IActionResult About()
-        {
-            return View();
-        }
-
-        public IActionResult Contacts()
-        {
-            return View();
-        }
-
-        public IActionResult FAQ()
-        {
-            return View();
-        }
-
         //[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         //public IActionResult Error()
         //{
         //    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         //}
-    }
-}*/
-
-//----------------------------------------------------------------------------------------------------------------------
-
-using BusSystem.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BusSystem.Controllers
-{
-    public class HomeController : Controller
-    {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }
 

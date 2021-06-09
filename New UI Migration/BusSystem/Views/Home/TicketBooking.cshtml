@@ -1,0 +1,146 @@
+﻿@model BusSystem.Models.Trip
+
+@{
+    ViewData["Title"] = "TicketBooking";
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<link href="~/css/ResponsiveStyle.css" rel="stylesheet" />
+
+<div class="container" style="min-height: 500px;">
+    <div class="row">
+        <div class="col-12">
+            <h1>Trip</h1>
+        </div>
+    </div>
+    <dl class="row">
+        <dt class="col-4 col-sm-3 col-lg-2">
+            @Html.DisplayName("Date")
+        </dt>
+        <dd class="col-8 col-sm-9 col-lg-10">
+            @Html.DisplayFor(model => model.StartDateTime)
+        </dd>
+        <dt class="col-4 col-sm-3 col-lg-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-8 col-sm-9 col-lg-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <dt class="col-4 col-sm-3 col-lg-2">
+            @Html.DisplayNameFor(model => model.Route)
+        </dt>
+        <dd class="col-8 col-sm-9 col-lg-10">
+            @Model.Route.ToString()
+        </dd>
+        <dt class="col-4 col-sm-3 col-lg-2">
+            @Html.DisplayName("# Passengers")
+        </dt>
+        <dd class="col-8 col-sm-9 col-lg-10">
+            @ViewBag.Passengers
+        </dd>
+        <dt class="col-4 col-sm-3 col-lg-2">
+            @Html.DisplayNameFor(model => model.Bus)
+        </dt>
+        <dd class="col-8 col-sm-9 col-lg-10">
+            @Html.DisplayFor(model => model.Bus.BusNum)
+        </dd>
+    </dl>
+    <div class="row">
+        <div class="col-12">
+            <h3>Seats</h3>
+            <span id="message" style="color:orangered;">* Make sure that you Selected  @ViewBag.Passengers seats</span>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-12 col-sm-9 col-md-7 col-lg-5">
+            <form asp-action="ticketBookseats">
+                <div class="row">
+                    <input type="hidden" name="tripID" value="@Model.ID" />
+
+                    @for (int i = 1; i <= Model.Bus.Capacity; i++)
+                    {
+                        string c = i.ToString();
+
+                        <div class="col-3">
+                            @if (Array.IndexOf(ViewBag.availableSets, c) != -1)
+                            {
+                                <img class="img-tkt" src="~/img/seats/seat-grey.png" style="width: 50px; height: 50px;" />
+                                <input name="sets[]" value="@i" type="checkbox" class="d-none" />
+                            }
+                            else
+                            {
+
+                                <img class="img-tkt" src="~/img/seats/seat-red.png" style="width: 50px; height: 50px;" />
+                                <input name="sets[]" value="@i" type="checkbox" disabled="disabled" class="d-none" />
+                            }
+                        </div>
+
+                        if (i % 4 == 0)
+                        {
+                            <div class="col-12" style="color: white;">
+                                ...
+                            </div>
+                        }
+                    }
+
+                </div>
+                <input type="submit" class="btn btn-secondary" id="submitbtn" disabled value="Book Trip" />
+            </form>
+        </div>
+    </div>
+</div>
+
+<br />
+
+@section Scripts {
+    @*<script src="~/js/TicketScript.js"></script>*@
+
+    <script>
+        var selectCount = 0;
+        var message;
+        var Passenger;
+
+        function OpenMsg(msg) {
+
+            message = "Make sure that you Selected " + msg + " seats";
+            Passenger = msg;
+        }
+
+        $(".img-tkt").click(function () {
+
+            if ($(this).siblings("input").attr("disabled") != "disabled") {
+
+                if ($(this).siblings("input").attr("checked") == "checked") {
+                    $(this).removeClass("selectedimg");
+                    $(this).siblings("input").removeAttr("checked")
+                    selectCount--;
+
+                    $(this).attr("src", "../img/seats/seat-grey.png");
+                }
+
+                else if (Passenger > selectCount) {
+                    $(this).siblings("input").attr("checked", "checked")
+                    $(this).addClass("selectedimg");
+                    selectCount++;
+
+                    $(this).attr("src", "../img/seats/seat-green.png");
+                }
+
+                if (Passenger == selectCount) {
+                    $("#submitbtn").removeClass("btn btn-secondary").addClass("btn btn-primary").prop('disabled', false);
+                    $("#message").css("display", "none")
+
+                }
+
+                if (Passenger > selectCount) {
+                    $("#submitbtn").removeClass("btn btn-primary").addClass("btn btn-secondary").prop('disabled', true);
+                    $("#message").css("display", "inline-block")
+                }
+            }
+        });
+    </script>
+
+    <script>OpenMsg(@ViewBag.Passengers);</script>
+}
+
