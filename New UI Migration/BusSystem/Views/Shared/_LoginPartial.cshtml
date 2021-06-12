@@ -4,18 +4,16 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    @if (string.IsNullOrEmpty(UserManager.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).ClientName))
-    {
-        <a asp-controller="Home" asp-action="UserDashboard">
+    <a asp-controller="Home" asp-action="Dashboard">
+        @if (string.IsNullOrEmpty(UserManager.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).ClientName))
+        {
             <img src="~/img/user-icon.png" style="height: 20px;" /> @User.Identity.Name
-        </a>
-    }
-    else
-    {
-        <a asp-controller="Home" asp-action="AdminDashboard">
+        }
+        else
+        {
             <img src="~/img/user-icon.png" style="height: 20px;" /> @UserManager.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).ClientName
-        </a>
-    }
+        }
+    </a>
 }
 else
 {

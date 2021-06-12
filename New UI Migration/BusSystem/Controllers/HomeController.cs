@@ -39,6 +39,11 @@ namespace BusSystem.Controllers
             return View();
         }
 
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
+
         public IActionResult Search()
         {
 
@@ -71,11 +76,11 @@ namespace BusSystem.Controllers
                                                         && passengers <= t.AvailableSeatsArray.Length);
 
             //To be removed
-            trips = _tripsService.GetAll();
-            passengers = 3;
-            toId = 4;
-            fromId = 1;
-            departureDate = DateTime.Now;
+            //trips = _tripsService.GetAll();
+            //passengers = 3;
+            //toId = 4;
+            //fromId = 1;
+            //departureDate = DateTime.Now;
             //-------------
 
             ViewBag.Passengers = passengers;
@@ -85,12 +90,12 @@ namespace BusSystem.Controllers
             return View(trips);
         }
 
-        //[Authorize]
+        [Authorize]
         public IActionResult TicketBooking(int tripID, int passengers)
         {
             //To be removed
-            tripID = 1;
-            passengers = 3;
+            //tripID = 1;
+            //passengers = 3;
             //-------------
 
             var trip = _tripsService.Details(tripID);
@@ -180,7 +185,7 @@ namespace BusSystem.Controllers
             string userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             //To be removed
-            return View(_ticketService.GetAll());
+            //return View(_ticketService.GetAll());
             //-------------
 
             return View(_ticketService.GetAll().Where(t => t.ClientID == userId));
