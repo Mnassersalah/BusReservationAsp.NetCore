@@ -33,7 +33,7 @@ namespace BusSystem.Migrations
                                 "ADMIN@BYBUS.COM",
                                 "Admin@ByBus.com",
                                 "ADMIN@BYBUS.COM",
-                                false,
+                                true,
                                 "AQAAAAEAACcQAAAAEMqkMaizZM9FJE4uVT9VN6LkBPfR+Fso7GWpEVHc+gVj8XPCabtMD7ou0R9uHftpeA==",
                                 "IWX32XRDPAUWNSW2QNXAR6NZWVNMNNWT",
                                 "077d5b40-dbc1-4574-85f1-c294e6d7893c",
