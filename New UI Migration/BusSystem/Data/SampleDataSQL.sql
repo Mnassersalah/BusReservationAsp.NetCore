@@ -48,11 +48,11 @@ SET IDENTITY_INSERT [dbo].[Routes] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Trips] ON 
 GO
-INSERT [dbo].[Trips] ([ID], [StartDateTime], [Price], [AvailableSeats], [RouteID], [BusID]) VALUES (1, CAST(N'2021-07-01T18:00:00.0000000' AS DateTime2), 49.9900, N'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30', 1, 1)
+INSERT [dbo].[Trips] ([ID], [StartDateTime], [Price], [AvailableSeats], [RouteID], [BusID]) VALUES (1, CAST(N'2021-07-01T18:00:00.0000000' AS DateTime2), 49.9900, N'6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30', 1, 1)
 GO
-INSERT [dbo].[Trips] ([ID], [StartDateTime], [Price], [AvailableSeats], [RouteID], [BusID]) VALUES (2, CAST(N'2021-07-01T19:00:00.0000000' AS DateTime2), 74.9900, N'1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20', 1, 2)
+INSERT [dbo].[Trips] ([ID], [StartDateTime], [Price], [AvailableSeats], [RouteID], [BusID]) VALUES (2, CAST(N'2021-07-01T19:00:00.0000000' AS DateTime2), 74.9900, N'5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20', 1, 2)
 GO
-INSERT [dbo].[Trips] ([ID], [StartDateTime], [Price], [AvailableSeats], [RouteID], [BusID]) VALUES (3, CAST(N'2021-07-01T20:21:00.0000000' AS DateTime2), 99.9900, N'1,2,3,4,5,6,7,8,9,10,11,12', 1, 3)
+INSERT [dbo].[Trips] ([ID], [StartDateTime], [Price], [AvailableSeats], [RouteID], [BusID]) VALUES (3, CAST(N'2021-07-01T20:21:00.0000000' AS DateTime2), 99.9900, N'4,5,6,7,8,9,10,11,12', 1, 3)
 GO
 SET IDENTITY_INSERT [dbo].[Trips] OFF
 GO
