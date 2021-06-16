@@ -38,7 +38,8 @@ namespace BusSystem
             services.AddDatabaseDeveloperPageExceptionFilter();
 
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
                 options.SignIn.RequireConfirmedAccount = false;
 
             }).AddEntityFrameworkStores<ApplicationDbContext>()
@@ -62,7 +63,6 @@ namespace BusSystem
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
-
 
             services.AddScoped<IRepository<Bus>, BusesService>();
             services.AddScoped<IRepository<Station>, StationRepository>();
