@@ -79,7 +79,8 @@ namespace BusSystem
         {
 
             // stripe
-            StripeConfiguration.SetApiKey(Configuration.GetSection("stripe")["SecretKey"]);
+            //StripeConfiguration.SetApiKey(Configuration.GetSection("stripe")["SecretKey"]);
+            StripeConfiguration.ApiKey = Configuration.GetSection("stripe")["SecretKey"];
 
             if (!env.IsDevelopment())
             {

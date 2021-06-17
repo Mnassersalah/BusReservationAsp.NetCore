@@ -44,6 +44,12 @@ namespace BusSystem.Models
         }
 
         [NotMapped]
+        public string Stripe
+        {
+            get => $"{Route} {StartDateTime}";
+        }
+
+        [NotMapped]
         public string tostringprop
         {
             get => $"{ID} {Route} {StartDateTime}";
