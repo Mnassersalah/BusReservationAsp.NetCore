@@ -30,6 +30,7 @@ namespace BusSystem.Services
         {
             return _context.Trips.Include("Bus")
                                  .Include("Tickets")
+                                 .Include("Tickets.Client")
                                  .Include("Route")
                                  .Include("Route.DropOff")
                                  .Include("Route.PickUp")

@@ -4,55 +4,108 @@
     ViewData["Title"] = "Trips";
 }
 
-<h1>Trips</h1>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<link href="~/css/ResponsiveStyle.css" rel="stylesheet" />
 
-<p>
-    @ViewBag.pickUp
-    <i class="fas fa-arrow-right"></i>
-    @ViewBag.dropoff
+<div class="container" style="min-height: 500px;">
+    <div class="row">
+        <div class="col-12">
+            <h1>Trips</h1>
+        </div>
+    </div>
+    <dl class="row">
+        <dt class="col-4 col-sm-2">
+            @Html.DisplayName("Pickup")
+        </dt>
+        <dd class="col-8 col-sm-10">
+            @ViewBag.pickUp
+        </dd>
+        <dt class="col-4 col-sm-2">
+            @Html.DisplayName("Dropoff")
+        </dt>
+        <dd class="col-8 col-sm-10">
+            @ViewBag.dropoff
+        </dd>
+        <dt class="col-4 col-sm-2">
+            @Html.DisplayName("Date")
+        </dt>
+        <dd class="col-8 col-sm-10">
+            @ViewBag.departureDate.ToString("d")
+        </dd>
+    </dl>
 
-</p>
-<p>
-    @ViewBag.departureDate.ToString("d")
-</p>
-<table id="dataTable" class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayName("Departure Time")
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AvailableSeats)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Bus)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @item.StartDateTime.ToString("t")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AvailableSeatsCount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Bus.Category)
-            </td>
-            <td>
-                <a asp-action="TicketBooking" asp-route-tripID="@item.ID" asp-route-passengers="@ViewBag.Passengers" class="btn btn-dark">Choose Trip</a> 
-                
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered" id="dataTable" style="width:100%">
+                    <thead>
+                        <tr class="d-none d-sm-table-row">
+                            <th>
+                                @Html.DisplayName("Departure Time")
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Price)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.AvailableSeats)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Bus)
+                            </th>
+                            <th class="no-sort d-none d-md-table-cell"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="d-none d-sm-table-row">
+                                <td>
+                                    @item.StartDateTime.ToString("t")
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AvailableSeatsCount)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Bus.Category)
+                                </td>
+                                <td class="center d-none d-md-table-cell" style="min-width: 75px;">
+                                    <a class="btn btn-light" asp-action="TicketBooking" asp-route-tripID="@item.ID" asp-route-passengers="@ViewBag.Passengers" style="border: 1.5px solid black;"><div style="font-size: 10pt; width: 18px;">➜</div></a>
+                                </td>
+                            </tr>
+
+                            <tr class="d-table-row d-sm-none">
+                                <td>
+                                    @item.StartDateTime.ToString("t")
+                                </td>
+                            </tr>
+                            <tr class="d-table-row d-sm-none">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+                            </tr>
+                            <tr class="d-table-row d-sm-none">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AvailableSeatsCount)
+                                </td>
+                            </tr>
+                            <tr class="d-table-row d-sm-none">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Bus.Category)
+                                </td>
+                            </tr>
+                            <tr class="d-table-row d-md-none" style="border-bottom: 1.5px solid black;">
+                                <td class="center" colspan="100">
+                                    <a class="btn btn-light" asp-action="TicketBooking" asp-route-tripID="@item.ID" asp-route-passengers="@ViewBag.Passengers" style="border: 1.5px solid black;"><div style="font-size: 10pt; width: 18px;">➜</div></a>
+                                </td>
+                            </tr>
+                            <tr class="d-none"></tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

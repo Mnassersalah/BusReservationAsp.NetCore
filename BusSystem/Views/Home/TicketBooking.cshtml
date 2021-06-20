@@ -1,87 +1,242 @@
 ﻿@model BusSystem.Models.Trip
+@using BusSystem.Models
 
 @{
     ViewData["Title"] = "TicketBooking";
 }
 
-<p>Passengers Count : @ViewBag.Passengers</p>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<link href="~/css/ResponsiveStyle.css" rel="stylesheet" />
 
-@*<style>
-
-    </style>*@
-<link href="~/css/min/AllStyles.min.css" rel="stylesheet" />
-
-<div>
-    <h4>Trip</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDateTime)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StartDateTime)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Route)
-        </dt>
-        <dd class="col-sm-10">
-            @Model.Route.ToString()
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Bus)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Bus.BusNum)
-        </dd>
-    </dl>
-
-    <br />
-    <div class="setsvisualize">
-        <form asp-action="ticketBookseats">
-            <div class="row">
-                <input type="hidden" name="tripID" value="@Model.ID" />
-                @for (int i = 1; i <= Model.Bus.Capacity; i++)
-                {
-
-                    string c = i.ToString();
-                    string classname = ((i + 1) % 4 == 0) ? "offset-md-3" : "";
-
-
-                    <div class="col-md-2  @classname">
-
-
-                        @if (Array.IndexOf(ViewBag.availableSets, c) != -1)
-                        {
-                            <img class="imgTckt" src="~/img/GreenSeat.png" />
-                            <input name="sets[]" value="@i" type="checkbox" />
-                        }
-                        else
-                        {
-
-                            <img class="imgTckt" src="~/img/RedSeat.png" />
-                            <input name="sets[]" value="@i" type="checkbox" disabled="disabled" />
-                        }
+<div class="container" style="min-height: 500px;">
+    <form asp-action="ticketBookseats">
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>Trip</h1>
                     </div>
-                }
-
+                </div>
+                <dl class="row">
+                    <dt class="col-4 col-sm-3 col-lg-4">
+                        @Html.DisplayName("Date")
+                    </dt>
+                    <dd class="col-8 col-sm-9 col-lg-8">
+                        @Html.DisplayFor(model => model.StartDateTime)
+                    </dd>
+                    <dt class="col-4 col-sm-3 col-lg-4">
+                        @Html.DisplayNameFor(model => model.Price)
+                    </dt>
+                    <dd class="col-8 col-sm-9 col-lg-8">
+                        @Html.DisplayFor(model => model.Price)
+                    </dd>
+                    <dt class="col-4 col-sm-3 col-lg-4">
+                        @Html.DisplayNameFor(model => model.Route)
+                    </dt>
+                    <dd class="col-8 col-sm-9 col-lg-8">
+                        @Model.Route.ToString()
+                    </dd>
+                    <dt class="col-4 col-sm-3 col-lg-4">
+                        @Html.DisplayName("# Passengers")
+                    </dt>
+                    <dd class="col-8 col-sm-9 col-lg-8">
+                        @ViewBag.Passengers
+                    </dd>
+                    <dt class="col-4 col-sm-3 col-lg-4">
+                        @Html.DisplayNameFor(model => model.Bus)
+                    </dt>
+                    <dd class="col-8 col-sm-9 col-lg-8">
+                        @Html.DisplayFor(model => model.Bus.BusNum)
+                    </dd>
+                </dl>
+                <div class="row" id="message">
+                    <div class="col-12">
+                        <p style="color:orangered;">* Make sure that you select  @ViewBag.Passengers seats</p>
+                    </div>
+                </div>
+                <div class="row d-none d-lg-block">
+                    <div class="col-12">
+                        <input type="submit" class="btn btn-secondary" id="submitbtn" disabled value="Book Trip" />
+                    </div>
+                </div>
             </div>
-            <hr />
-            <input type="submit" class="btn btn-secondary btn-lg" id="submitbtn" disabled value="Book" />
-            <span id="message" class="alert alert-danger">Make sure that you Selected  @ViewBag.Passengers seats</span>
-        </form>
-    </div>
+            <div class="col-12 col-lg-6">
+                <div class="row">
+                    <div class="col-12">
+                        <h1>Seats</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 col-sm-9 col-md-6 col-lg-8">
+                        <div class="card" style="background-color: rgb(95 95 95); border-radius: 25px;">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-12">
+                                        @if (Model.Bus.Category == Category.Economy)
+                                        {
+                                            <img src="~/img/seats/bs-ecny.png" class="img-fluid" />
+                                        }
+                                        else@if (Model.Bus.Category == Category.Standard)
+                                        {
+                                            <img src="~/img/seats/bs-stnd.png" class="img-fluid" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/img/seats/bs-prem.png" class="img-fluid" />
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <input type="hidden" name="tripID" value="@Model.ID" />
+
+                                    @for (int i = 1; i <= Model.Bus.Capacity; i += 4)
+                                    {
+                                        string s1 = (i + 0).ToString();
+                                        string s2 = (i + 1).ToString();
+                                        string s3 = (i + 2).ToString();
+                                        string s4 = (i + 3).ToString();
+
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-6 center">
+                                                    @if (Array.IndexOf(ViewBag.availableSets, s1) != -1)
+                                                    {
+                                                        <img class="img-tkt img-fluid" src="~/img/seats/st-grey.png" />
+                                                        <input name="sets[]" value="@(i + 0)" type="checkbox" class="d-none" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img class="img-tkt img-fluid" src="~/img/seats/st-red.png" />
+                                                        <input name="sets[]" value="@(i + 0)" type="checkbox" disabled="disabled" class="d-none" />
+                                                    }
+                                                </div>
+                                                <div class="col-6 center">
+                                                    @if (Array.IndexOf(ViewBag.availableSets, s2) != -1)
+                                                    {
+                                                        <img class="img-tkt img-fluid" src="~/img/seats/st-grey.png" />
+                                                        <input name="sets[]" value="@(i + 1)" type="checkbox" class="d-none" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img class="img-tkt img-fluid" src="~/img/seats/st-red.png" />
+                                                        <input name="sets[]" value="@(i + 1)" type="checkbox" disabled="disabled" class="d-none" />
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-2" style="color: rgb(95 95 95);">
+                                            .
+                                        </div>
+
+                                        <div class="col-5">
+                                            <div class="row">
+                                                <div class="col-6 center">
+                                                    @if (Array.IndexOf(ViewBag.availableSets, s3) != -1)
+                                                    {
+                                                        <img class="img-tkt img-fluid" src="~/img/seats/st-grey.png" />
+                                                        <input name="sets[]" value="@(i + 2)" type="checkbox" class="d-none" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img class="img-tkt img-fluid" src="~/img/seats/st-red.png" />
+                                                        <input name="sets[]" value="@(i + 2)" type="checkbox" disabled="disabled" class="d-none" />
+                                                    }
+                                                </div>
+                                                <div class="col-6 center">
+                                                    @if (Array.IndexOf(ViewBag.availableSets, s4) != -1)
+                                                    {
+                                                        <img class="img-tkt img-fluid" src="~/img/seats/st-grey.png" />
+                                                        <input name="sets[]" value="@(i + 3)" type="checkbox" class="d-none" />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img class="img-tkt img-fluid" src="~/img/seats/st-red.png" />
+                                                        <input name="sets[]" value="@(i + 3)" type="checkbox" disabled="disabled" class="d-none" />
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        if (i != Model.Bus.Capacity - 3)
+                                        {
+                                            <div class="col-12" style="color: rgb(95 95 95);">
+                                                ...
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="card-footer center" style="color: white; font-size: 20pt;">
+                                @Html.DisplayFor(model => model.Bus.BusNum)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row d-block d-lg-none">
+            <div class="col-12">
+                <input type="submit" class="btn btn-secondary" id="submitbtn2" disabled value="Book Trip" />
+            </div>
+        </div>
+    </form>
 </div>
 
-
+<br />
 
 @section Scripts {
-    <script src="~/js/TicketScript.js"></script>
+    @*<script src="~/js/TicketScript.js"></script>*@
+
+    <script>
+        var selectCount = 0;
+        var message;
+        var Passenger;
+
+        function OpenMsg(msg) {
+
+            message = "Make sure that you Selected " + msg + " seats";
+            Passenger = msg;
+        }
+
+        $(".img-tkt").click(function () {
+
+            if ($(this).siblings("input").attr("disabled") != "disabled") {
+
+                if ($(this).siblings("input").attr("checked") == "checked") {
+                    $(this).removeClass("selectedimg");
+                    $(this).siblings("input").removeAttr("checked")
+                    selectCount--;
+
+                    $(this).attr("src", "../img/seats/st-grey.png");
+                }
+
+                else if (Passenger > selectCount) {
+                    $(this).siblings("input").attr("checked", "checked")
+                    $(this).addClass("selectedimg");
+                    selectCount++;
+
+                    $(this).attr("src", "../img/seats/st-green.png");
+                }
+
+                if (Passenger == selectCount) {
+                    $("#submitbtn").removeClass("btn btn-secondary").addClass("btn btn-primary").prop('disabled', false);
+                    $("#submitbtn2").removeClass("btn btn-secondary").addClass("btn btn-primary").prop('disabled', false);
+                    $("#message").css("display", "none")
+
+                }
+
+                if (Passenger > selectCount) {
+                    $("#submitbtn").removeClass("btn btn-primary").addClass("btn btn-secondary").prop('disabled', true);
+                    $("#submitbtn2").removeClass("btn btn-primary").addClass("btn btn-secondary").prop('disabled', true);
+                    $("#message").css("display", "inline-block")
+                }
+            }
+        });
+    </script>
+
     <script>OpenMsg(@ViewBag.Passengers);</script>
 }
-

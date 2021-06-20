@@ -2,64 +2,102 @@
 
 @{
     ViewData["Title"] = "Tickets";
-    
 }
 
-<h1>
-    Tickets
-    <a class="btn btn-success" asp-action="Index"><i class="fa fa-plus"></i> Book a new trip</a>
-</h1>
-<table class="table table-striped table-bordered" id="dataTable" style="width:100%">
-    <thead>
-        <tr>
-            <th>
-                Number Of seats
-            </th>
-            <th>
-                @Html.DisplayName("Trip Route")
-            </th>
-            <th>
-                @Html.DisplayName("Trip Date")
-            </th>
-            <th>
-                Cost
-            </th>
-            <th class="no-sort"></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PassengerCount)
-                </td>
-                <td>
-                    @item.Trip.Route.PickUp
-                    <i class="fas fa-arrow-right"></i>
-                    @item.Trip.Route.DropOff
-                </td>
-                <td>
-                    @item.Trip.StartDateTime
-                </td>
-                <td>
-                    @{ 
-                        decimal cost = @item.Trip.Price * item.PassengerCount;
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<link href="~/css/ResponsiveStyle.css" rel="stylesheet" />
+
+<div class="container" style="min-height: 500px;">
+    <div class="row">
+        <div class="col-9 left">
+            <h1>Your Tickets</h1>
+        </div>
+        <div class="col-3 right">
+            <a asp-controller="Home" asp-action="Search" class="btn btn-secondary btn-add"><p class="sgn-add">+</p></a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered" id="dataTable" style="width:100%">
+                <thead>
+                    <tr class="d-none d-sm-table-row">
+                        <th>
+                            @Html.DisplayName("# Seats")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Route")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Date")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Total Cost")
+                        </th>
+                        <th class="no-sort d-none d-md-table-cell"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        decimal cost = Math.Round((item.Trip.Price * item.PassengerCount), 2);
+
+                        <tr class="d-none d-sm-table-row">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PassengerCount)
+                            </td>
+                            <td>
+                                @item.Trip.Route.PickUp
+                                >>
+                                @item.Trip.Route.DropOff
+                            </td>
+                            <td>
+                                @item.Trip.StartDateTime
+                            </td>
+                            <td>
+                                @cost LE
+                            </td>
+                            <td class="center d-none d-md-table-cell" style="min-width: 75px;">
+                                @if (item.Trip.StartDateTime > DateTime.Now)
+                                {
+                                    <a class="btn btn-light" asp-action="DeleteUserTicket" asp-route-id="@item.ID" style="border: 1.5px solid black;"><div style="font-size: 10pt;">✖️</div></a>
+                                }
+                            </td>
+                        </tr>
+
+                        <tr class="d-table-row d-sm-none">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PassengerCount)
+                            </td>
+                        </tr>
+                        <tr class="d-table-row d-sm-none">
+                            <td>
+                                @item.Trip.Route.PickUp
+                                >>
+                                @item.Trip.Route.DropOff
+                            </td>
+                        </tr>
+                        <tr class="d-table-row d-sm-none">
+                            <td>
+                                @item.Trip.StartDateTime
+                            </td>
+                        </tr>
+                        <tr class="d-table-row d-sm-none">
+                            <td>
+                                @cost LE
+                            </td>
+                        </tr>
+                        <tr class="d-table-row d-md-none" style="border-bottom: 1.5px solid black;">
+                            <td class="center" colspan="100">
+                                @if (item.Trip.StartDateTime > DateTime.Now)
+                                {
+                                    <a class="btn btn-light" asp-action="DeleteUserTicket" asp-route-id="@item.ID" style="border: 1.5px solid black;"><div style="font-size: 10pt;">✖️</div></a>
+                                }
+                            </td>
+                        </tr>
+                        <tr class="d-none"></tr>
                     }
-                    @cost LE
-                </td>
-                <td>
-                   @if(item.Trip.StartDateTime > DateTime.Now)
-                   {
-                       
-                    <span></span>
-                       <form asp-action="DeleteUserTicket">
-                           <input type="hidden" value="@item.ID" name="ID"/>
-                           <input type="submit" class="btn btn-outline-danger" value="Cancel Ticket" />
-                       </form>
-                   }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

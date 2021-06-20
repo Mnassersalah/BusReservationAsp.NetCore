@@ -7,9 +7,8 @@ namespace BusSystem.Models
 {
     public enum Category
     {
-        Economic,
+        Economy,
         Standard,
         Premium
-        
     }
 }

@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BusSystem.Controllers
 {
-    //[Authorize(Roles = "Admin,Employee")]
+    [Authorize(Roles = "Admin,Employee")]
 
     public class StationsController : Controller
     {
@@ -142,7 +142,7 @@ namespace BusSystem.Controllers
             // if (Routes.checkRoute(station.ID) == null)
             if (station.PickUpRoutes.Count != 0 || station.DropOffRoutes.Count != 0)
             {
-                ViewBag.Message = " You can't Romove This Station Because IT has route ";
+                ViewBag.Message = "You can't romove this station because it has routes";
                
             }
 

@@ -1,43 +1,23 @@
-﻿    @using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<ul class="navbar-nav">
-
-
-
 @if (SignInManager.IsSignedIn(User))
 {
-
-
-    <li class="nav-item">
-        
+    <a asp-controller="Home" asp-action="Dashboard">
         @if (string.IsNullOrEmpty(UserManager.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).ClientName))
         {
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello  @User.Identity.Name </a>
+            <img src="~/img/user-icon.png" style="height: 20px;" /> @User.Identity.Name
         }
         else
         {
-            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello  @UserManager.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).ClientName</a>
+            <img src="~/img/user-icon.png" style="height: 20px;" /> @UserManager.Users.FirstOrDefault(u => u.UserName == User.Identity.Name).ClientName
         }
-
-    </li>
-
-<li class="nav-item">
-        @*<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>*@
-        <a asp-controller="Home" asp-action="LogOut" class="nav-link btn btn-link text-dark">Log Out</a>
-
-    </li>
+    </a>
 }
 else
 {
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
+    <a asp-area="Identity" asp-page="/Account/Login">
+        <img src="~/img/user-icon.png" style="height: 20px;" /> Login
+    </a>
 }
-</ul>

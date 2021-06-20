@@ -1,137 +1,144 @@
-﻿﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
-<!DOCTYPE html>
-
+﻿<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - BusSystem</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
-    <link href="~/img/ByBus.png" rel="icon"/>
 
-    @*<link href="~/css/clientHomePage.css" rel="stylesheet" />*@
-    <link href="~/lib/datatables/css/dataTables.bootstrap4.css" rel="stylesheet" />
-    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
-    @*<link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/css/LogoStyle.css" type="text/css">
-    <link rel="stylesheet" href="~/css/FootStyle.css" type="text/css">
-    <link rel="stylesheet" href="~/css/HeadStyles.css" type="text/css">*@
-    <link href="~/css/min/AllStyles.min.css" rel="stylesheet" type="text/css"/>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>ByBus - Travel Safe</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="~/img/favicon.png" rel="icon">
+    <link href="~/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="~/vendor/aos/aos.css" rel="stylesheet">
+    <link href="~/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="~/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="~/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="~/css/style.css" rel="stylesheet">
+
+    <!-- =======================================================
+    * Template Name: Flexor - v4.0.1
+    * Template URL: https://bootstrapmade.com/flexor-free-multipurpose-bootstrap-template/
+    * Author: BootstrapMade.com
+    * License: https://bootstrapmade.com/license/
+    ======================================================== -->
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+    <!-- ======= Top Bar ======= -->
+    <section id="topbar" class="d-flex align-items-center">
+        <div class="container d-flex justify-content-end justify-content-md-between">
+            <div class="contact-info d-none d-md-flex align-items-center">
+                <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com">contact@bybus.com</a></i>
+                <i class="bi bi-phone d-flex align-items-center ms-4"><span>+20 100 344 4579</span></i>
+            </div>
+
+            <div class="cta d-flex align-items-center">
+                <partial name="_LoginPartial" />
+            </div>
+        </div>
+    </section>
+
+    <!-- ======= Header ======= -->
+    <header id="header" class="d-flex align-items-center">
+        <div class="container d-flex align-items-center justify-content-between">
+
+            <div class="logo">
+                <h1><a href="index.html">ByBus</a></h1>
+                <!-- Uncomment below if you prefer to use an image logo -->
+                <!-- <a href="index.html"><img src="~/img/logo.png" alt="" class="img-fluid"></a>-->
+            </div>
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link scrollto active" href="./#hero">Home</a></li>
+                    <li><a class="nav-link scrollto" href="./#about">About</a></li>
+                    <li><a class="nav-link scrollto" href="./#services">Services</a></li>
+                    <li><a class="nav-link scrollto" href="./#faq">F.A.Q</a></li>
+                    <li><a class="nav-link scrollto" href="./#contact">Contact</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+
+        </div>
+    </header><!-- End Header -->
+
+    @RenderBody()
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+
+        <div class="footer-top">
             <div class="container">
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="ALogo"><img src="~/img/ByBus.png" class="ByLogo"/></a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-2">
-                        @if (@User.IsInRole("Employee") || @User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Buses" asp-action="Index">Bus</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Stations" asp-action="Index">Station</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Trips" asp-action="Index">Trip</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Tickets" asp-action="Index">Ticket</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Routes" asp-action="Index">Route</a>
-                            </li>
-                            @if (@User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListRoles">Manage Roles</a>
-                                </li>
-                            }
-                        }
-                        @if (SignInManager.IsSignedIn(User))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="UserTickets">My Tickets</a>
-                            </li>
-                        }
-                    </ul>
-                    <partial name="_LoginPartial" />
+                <div class="row">
+
+                    <div class="col-lg-3 col-md-6 footer-contact">
+                        <h3>ByBus</h3>
+                        <p>
+                            ITI Building <br>
+                            Smart Village, Giza<br>
+                            Egypt <br><br>
+                            <strong>Phone:</strong> +20 100 344 4579<br>
+                            <strong>Email:</strong> info@bybus.com<br>
+                        </p>
+                    </div>
+
+                    <div class="col-lg-2 col-md-6 footer-links">
+                        <ul>
+                            <li><i class="bx bx-chevron-right"></i> <a href="./#hero">Home</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="./#about">About us</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="./#services">Services</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6 footer-links">
+                        <ul>
+                            <li><i class="bx bx-chevron-right"></i> <a href="./#faq">F.A.Q</a></li>
+                            <li><i class="bx bx-chevron-right"></i> <a href="./#contact">Contact</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 footer-newsletter">
+                        <h4>Join Our Community</h4>
+                        <p>Subscribe to see our news and updates daily</p>
+                        <form action="" method="post">
+                            <input type="email" name="email"><input type="submit" value="Subscribe">
+                        </form>
+                    </div>
+
                 </div>
             </div>
-        </nav>
-        <div class="ByHead"></div>
-        <div class="FreeNav">
-            <a asp-area="" asp-controller="Home" asp-action="About" class="About">About</a>
-            <a asp-area="" asp-controller="Home" asp-action="FAQ" class="FAQ">FAQ</a>
-            <a asp-area="" asp-controller="Home" asp-action="Contacts" class="Cont">Contacts</a>
         </div>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-    @await RenderSectionAsync("homepage", required: false)
-    <div class="ByFoot">
-        <table style="width: 100%; border-top: 40px solid black;">
-            <tr class="ByBorder">
-                <td class="ByRight" style="width: 25%">
-                    <img src="~/img/ByBusFooter.png" class="ByFootLogo" />
-                </td>
-                <td class="ByLeft" style="width: 75%">
-                    <p class="ByByFoot">
-                        ByBus
-                    </p>
-                </td>
-            </tr>
-            <tr class="ByBorder">
-                <td colspan="2">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="ByLinks" style="padding-left: 40px;">Home</a>
-                    <a asp-area="" asp-controller="Home" asp-action="About" class="ByLinks">About</a>
-                    <a asp-area="" asp-controller="Home" asp-action="FAQ" class="ByLinks">FAQ</a>
-                    <a asp-area="" asp-controller="Home" asp-action="Contacts" class="ByLinks">Contacts</a>
-                </td>
-            </tr>
-            <tr class="ByBorder">
-                <td colspan="2" class="ByRight">
-                    <img src="~/img/Social.png" class="BySocial" style="padding-right: 15px;"/>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <footer class="border-top footer text-muted" style="background-color: black;">
-        <div class="container">
-            &copy; @DateTime.Now.Year - BusSystem - Copyright <span>ITI_INTAKE</span> 41 M5 ©
-            <script>document.write(new Date().getFullYear());</script> All rights reserved
+
+        <div class="container d-lg-flex py-4">
+
+            <div class="me-lg-auto text-center text-lg-start">
+                <div class="copyright">
+                    &copy; Copyright <strong><span>ByBus</span></strong>. All Rights Reserved
+                </div>
+            </div>
+            <div class="social-links text-center text-lg-right pt-3 pt-lg-0">
+                <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+                <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+                <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+                <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+                <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+            </div>
         </div>
-    </footer>
+    </footer><!-- End Footer -->
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script src="~/lib/datatables.net/jquery.dataTables.js"></script>
-
-    <script src="~/lib/datatables/js/dataTables.bootstrap4.js"></script>
-    <script src="~/lib/select2/js/select2.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#dataTable').DataTable({
-
-                "columnDefs": [{
-                    "targets": 'no-sort',
-                    "orderable": false,
-                }]
-
-            });
-        });
-    </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

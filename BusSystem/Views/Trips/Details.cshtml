@@ -4,110 +4,124 @@
     ViewData["Title"] = "Trip Details";
 }
 
-<h1>Details Trip <a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-light"><i class="fa fa-edit"></i></a></h1>
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<link href="~/css/ResponsiveStyle.css" rel="stylesheet" />
 
-<div>
-    <hr />
+<div class="container" style="min-height: 500px;">
+    <div class="row">
+        <div class="col-9">
+            <h1>Trip Details</h1>
+        </div>
+        <div class="col-3 right">
+            <a asp-action="Edit" asp-route-id="@Model.ID" class="btn btn-light" style="border: 1.5px solid black; height: 47.5px;"><p style="font-size: 15pt;">⚙️</p></a>
+        </div>
+    </div>
     <dl class="row">
-        <dt class="col-sm-2">
+        <dt class="col-4 col-sm-3 col-lg-2">
             @Html.DisplayNameFor(model => model.StartDateTime)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StartDateTime)
+        <dd class="col-8 col-sm-9 col-lg-10">
+            @{
+                string StartDateTime = Model.StartDateTime.ToString();
+                StartDateTime = StartDateTime.Substring(0, StartDateTime.Length - 3).Replace(" ", " - ");
+                @StartDateTime
+            }
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-4 col-sm-3 col-lg-2">
             @Html.DisplayNameFor(model => model.Price)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-8 col-sm-9 col-lg-10">
             @Html.DisplayFor(model => model.Price)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-4 col-sm-3 col-lg-2">
             @Html.DisplayNameFor(model => model.AvailableSeats)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-8 col-sm-9 col-lg-10">
             @*@Html.DisplayFor(model => model.AvailableSeats)*@
             @Html.DisplayFor(model => model.AvailableSeatsCount)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-4 col-sm-3 col-lg-2">
             @Html.DisplayNameFor(model => model.Route)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-8 col-sm-9 col-lg-10">
             @*@Html.DisplayFor(model => model.Route.ID)*@
             @Html.DisplayFor(model => model.RouteToString)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-4 col-sm-3 col-lg-2">
             @Html.DisplayNameFor(model => model.Bus)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-8 col-sm-9 col-lg-10">
             @*@Html.DisplayFor(model => model.Bus.ID)*@
             @Html.DisplayFor(model => model.Bus.BusNum)
         </dd>
     </dl>
+    <div class="row">
+        <div class="col-12">
+            <button class="btn btn-primary" id="btn-trips">Tickets</button>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+
+    <div class="row" id="tbl-trips" style="display: none">
+        <div class="table-responsive">
+            <br />
+            <table class="table table-striped table-bordered" id="dataTable" style="width:100%">
+                <thead>
+                    <tr class="d-none d-sm-table-row">
+                        <th>
+                            @Html.DisplayName("Booked Seates")
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().Client)
+                        </th>
+                        <th class="no-sort d-none d-md-table-cell"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Tickets)
+                    {
+                        <tr class="d-none d-sm-table-row">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PassengerCount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Client.ClientName)
+                            </td>
+                            <td class="center d-none d-md-table-cell" style="min-width: 150px;">
+                                <a class="btn btn-light" asp-controller="Tickets" asp-action="Details" asp-route-id="@item.ID" style="border: 1.5px solid black;"><div style="font-size: 10pt; width: 18px;">➜</div></a>
+                            </td>
+                        </tr>
+
+                        <tr class="d-table-row d-sm-none">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PassengerCount)
+                            </td>
+                        </tr>
+                        <tr class="d-table-row d-sm-none">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Client.ClientName)
+                            </td>
+                        </tr>
+                        <tr class="d-table-row d-md-none" style="border-bottom: 1.5px solid black;">
+                            <td class="center" colspan="100">
+                                <a class="btn btn-light" asp-controller="Tickets" asp-action="Details" asp-route-id="@item.ID" style="border: 1.5px solid black;"><div style="font-size: 10pt; width: 18px;">➜</div></a>
+                            </td>
+                        </tr>
+                        <tr class="d-none"></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
-<h2>
-    Trip Tickets
-    <a class="btn btn-success" asp-controller="Tickets" asp-action="Create"><i class="fa fa-plus"></i> Add New</a>
-</h2>
+<br />
 
-
-
-<table class="table table-striped table-bordered" id="dataTable" style="width:100%">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().PassengerCount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().BookedSeats)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Tickets.FirstOrDefault().Client)
-            </th>
-            <th>
-                @Html.DisplayName("Trip Route")
-            </th>
-            <th>
-                @Html.DisplayName("Trip Date")
-            </th>
-            <th class="no-sort"></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Tickets)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PassengerCount)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BookedSeats)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Client.UserName)
-                </td>
-                <td>
-                    @item.Trip.Route.PickUp
-                    <i class="fas fa-arrow-right"></i>
-                    @item.Trip.Route.DropOff
-                </td>
-                <td>
-                    @item.Trip.StartDateTime
-                </td>
-                <td>
-                    <a class="btn btn-light" asp-action="Edit" asp-route-id="@item.ID"><i class="fa fa-edit"></i></a>
-                    <a class="btn btn-light" asp-action="Details" asp-route-id="@item.ID"><i class="fa fa-eye"></i></a>
-                    <a class="btn btn-light" asp-action="Delete" asp-route-id="@item.ID"><i class="fa fa-trash"></i></a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-
-
-<div>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-</div>
-
-
+@section Scripts
+{
+    <script>
+        $("#btn-trips").click(function () {
+            $("#tbl-trips").toggle();
+        });
+    </script>
+}

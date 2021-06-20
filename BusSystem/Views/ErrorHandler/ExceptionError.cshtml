@@ -1,37 +1,20 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "ExceptionError";
     string message = ViewBag.ExceptionMessage;
 }
 
-<style>
-    section {
-        margin: 20px auto;
-        text-align: center;
-    }
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<link href="~/css/ResponsiveStyle.css" rel="stylesheet" />
 
-    img {
-        display: inline-block;
-        width: 25%;
-    }
-
-    #message {
-        width: 50%;
-        line-height: 50px;
-        display: block;
-        margin: 20px auto;
-    }
-    a{
-        font-weight:bold;
-    }
-</style>
-
-<section>
-
-    <img src="~/img/ErrorIconYellow.png" />
-    <p class="alert alert-warning" id="message">@message <br> 
-        For help we are happy to  <a href="mailto: BusSystem@Company.com">Mail Us</a>
-    </p>
-</section>
-
-
+<div class="container" style="min-height: 500px;">
+    <div class="row">
+        <div class="col-12 center">
+            <p style="font-size: 105pt;">ERROR!</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 center">
+            <p style=" font-size: 35pt;">@message</p>
+        </div>
+    </div>
+</div>

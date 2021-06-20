@@ -14,8 +14,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BusSystem.Controllers
 {
-        //[Authorize(Roles = "Admin,Employee")]
-        public class RoutesController : Controller
+    [Authorize(Roles = "Admin,Employee")]
+    public class RoutesController : Controller
     {
         private readonly IRepository<Route> Routes;
         private readonly IRepository<Station> stationRepo;
@@ -66,8 +66,8 @@ namespace BusSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("ID,Duration,PickUpID,DropOffID")] Route route)
         {
-            
-            if(route.PickUpID == route.DropOffID)
+
+            if (route.PickUpID == route.DropOffID)
             {
                 ModelState.AddModelError("DropOffID", "Dropoff station must be different from PickUp Station");
             }
@@ -92,7 +92,7 @@ namespace BusSystem.Controllers
                 return NotFound();
             }
 
-            var Rroute= Routes.Details((int)id);
+            var Rroute = Routes.Details((int)id);
             if (Rroute == null)
             {
                 return NotFound();
@@ -160,9 +160,9 @@ namespace BusSystem.Controllers
 
 
             // if (Routes.checkRoute(station.ID) == null)
-            if (RRout.Trips.Count != 0 )
+            if (RRout.Trips.Count != 0)
             {
-                ViewBag.Message = " You can't Romove This Route Because IT has Trips ";
+                ViewBag.Message = "You can't romove this route because it has trips";
 
             }
 

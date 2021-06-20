@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -38,14 +37,15 @@ namespace BusSystem
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            
-            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
-                options.SignIn.RequireConfirmedAccount = true;
-       
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = false;
+
             }).AddEntityFrameworkStores<ApplicationDbContext>()
               .AddDefaultTokenProviders()
               .AddDefaultUI();
-            
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -58,19 +58,18 @@ namespace BusSystem
                     .AddFacebook(options =>
                     {
                         options.AppId = "419357189359106";
-                        options.AppSecret= "5a20bc6c6bb938181e0a0d74884b03d8";
+                        options.AppSecret = "5a20bc6c6bb938181e0a0d74884b03d8";
                     });
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
-
             services.AddScoped<IRepository<Bus>, BusesService>();
             services.AddScoped<IRepository<Station>, StationRepository>();
             services.AddScoped<IRepository<Ticket>, TicketService>();
             services.AddScoped<IRepository<Trip>, TripService>();
-            services.AddScoped<IRepository<Route>, RoutesService>(); 
-            services.AddScoped<IRepository<ApplicationUser>, ClientService>(); 
+            services.AddScoped<IRepository<Route>, RoutesService>();
+            services.AddScoped<IRepository<ApplicationUser>, ClientService>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.Configure<StripeSettings>(Configuration.GetSection("stripe"));
         }
@@ -80,7 +79,8 @@ namespace BusSystem
         {
 
             // stripe
-            StripeConfiguration.SetApiKey(Configuration.GetSection("stripe")["SecretKey"]);
+            //StripeConfiguration.SetApiKey(Configuration.GetSection("stripe")["SecretKey"]);
+            StripeConfiguration.ApiKey = Configuration.GetSection("stripe")["SecretKey"];
 
             if (!env.IsDevelopment())
             {
@@ -111,3 +111,4 @@ namespace BusSystem
         }
     }
 }
+
