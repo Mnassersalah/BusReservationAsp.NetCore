@@ -39,6 +39,7 @@ namespace BusSystem.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult Dashboard()
         {
             return View();

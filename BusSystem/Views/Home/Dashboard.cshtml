@@ -1,98 +1,123 @@
-﻿<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+﻿@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
 <link href="~/css/ResponsiveStyle.css" rel="stylesheet" />
 
 <div class="container" style="min-height: 500px;">
     <div class="row">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card">
-                <div class="card-body center">
-                    <a asp-controller="Buses" asp-action="Index">
-                        <img src="~/img/dashboard/dsh-bus.png" class="img-fluid" />
-                    </a>
+        @if (@User.IsInRole("Employee") || @User.IsInRole("Admin"))
+        {
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card">
+                    <div class="card-body center">
+                        <a asp-controller="Buses" asp-action="Index">
+                            <img src="~/img/dashboard/dsh-bus.png" class="img-fluid" />
+                        </a>
+                    </div>
+                    <div class="card-footer center">
+                        Buses
+                    </div>
                 </div>
-                <div class="card-footer center">
-                    Buses
-                </div>
+                <br />
             </div>
-            <br />
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card">
-                <div class="card-body center">
-                    <a asp-controller="Stations" asp-action="Index">
-                        <img src="~/img/dashboard/dsh-station.png" class="img-fluid" />
-                    </a>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card">
+                    <div class="card-body center">
+                        <a asp-controller="Stations" asp-action="Index">
+                            <img src="~/img/dashboard/dsh-station.png" class="img-fluid" />
+                        </a>
+                    </div>
+                    <div class="card-footer center">
+                        Sations
+                    </div>
                 </div>
-                <div class="card-footer center">
-                    Sations
-                </div>
+                <br />
             </div>
-            <br />
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card">
-                <div class="card-body center">
-                    <a asp-controller="Routes" asp-action="Index">
-                        <img src="~/img/dashboard/dsh-route.png" class="img-fluid" />
-                    </a>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card">
+                    <div class="card-body center">
+                        <a asp-controller="Routes" asp-action="Index">
+                            <img src="~/img/dashboard/dsh-route.png" class="img-fluid" />
+                        </a>
+                    </div>
+                    <div class="card-footer center">
+                        Routes
+                    </div>
                 </div>
-                <div class="card-footer center">
-                    Routes
-                </div>
+                <br />
             </div>
-            <br />
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card">
-                <div class="card-body center">
-                    <a asp-controller="Trips" asp-action="Index">
-                        <img src="~/img/dashboard/dsh-trip.png" class="img-fluid" />
-                    </a>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card">
+                    <div class="card-body center">
+                        <a asp-controller="Trips" asp-action="Index">
+                            <img src="~/img/dashboard/dsh-trip.png" class="img-fluid" />
+                        </a>
+                    </div>
+                    <div class="card-footer center">
+                        Trips
+                    </div>
                 </div>
-                <div class="card-footer center">
-                    Trips
-                </div>
+                <br />
             </div>
-            <br />
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card">
-                <div class="card-body center">
-                    <a asp-controller="Tickets" asp-action="Index">
-                        <img src="~/img/dashboard/dsh-ticket.png" class="img-fluid" />
-                    </a>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card">
+                    <div class="card-body center">
+                        <a asp-controller="Tickets" asp-action="Index">
+                            <img src="~/img/dashboard/dsh-ticket.png" class="img-fluid" />
+                        </a>
+                    </div>
+                    <div class="card-footer center">
+                        Tickets
+                    </div>
                 </div>
-                <div class="card-footer center">
-                    Tickets
-                </div>
+                <br />
             </div>
-            <br />
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card">
-                <div class="card-body center">
-                    <a asp-controller="Administration" asp-action="ListRoles">
-                        <img src="~/img/dashboard/dsh-user.png" class="img-fluid" />
-                    </a>
+        }
+        @if (@User.IsInRole("Admin"))
+        {
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card">
+                    <div class="card-body center">
+                        <a asp-controller="Administration" asp-action="ListRoles">
+                            <img src="~/img/dashboard/dsh-role.png" class="img-fluid" />
+                        </a>
+                    </div>
+                    <div class="card-footer center">
+                        Roles
+                    </div>
                 </div>
-                <div class="card-footer center">
-                    Account
-                </div>
+                <br />
             </div>
-            <br />
-        </div>
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card">
-                <div class="card-body center">
-                    <a asp-controller="Home" asp-action="LogOut">
-                        <img src="~/img/dashboard/dsh-out.png" class="img-fluid" />
-                    </a>
+        }
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card">
+                    <div class="card-body center">
+                        <a asp-area="Identity" asp-page="/Account/Manage/Index">
+                            <img src="~/img/dashboard/dsh-user.png" class="img-fluid" />
+                        </a>
+                    </div>
+                    <div class="card-footer center">
+                        Account
+                    </div>
                 </div>
-                <div class="card-footer center">
-                    Logout
-                </div>
+                <br />
             </div>
-            <br />
-        </div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card">
+                    <div class="card-body center">
+                        <a asp-controller="Home" asp-action="LogOut">
+                            <img src="~/img/dashboard/dsh-out.png" class="img-fluid" />
+                        </a>
+                    </div>
+                    <div class="card-footer center">
+                        Logout
+                    </div>
+                </div>
+                <br />
+            </div>
+        }
     </div>
 </div>
