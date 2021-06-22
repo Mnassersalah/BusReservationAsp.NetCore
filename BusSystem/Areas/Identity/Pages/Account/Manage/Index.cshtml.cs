@@ -23,7 +23,6 @@ namespace BusSystem.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
-        
         public string Username { get; set; }
 
         [TempData]
@@ -37,24 +36,19 @@ namespace BusSystem.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
-
-            public string Name { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            
-            
+
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber,
-                Name = user.ClientName
-
-        };
+                PhoneNumber = phoneNumber
+            };
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -83,28 +77,16 @@ namespace BusSystem.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            if (Input.Name != user.ClientName)
-            {
-                user.ClientName = Input.Name;
-                await _userManager.UpdateAsync(user);
-            }
-
-
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
             {
-                
-
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
-
             }
-
-           
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
